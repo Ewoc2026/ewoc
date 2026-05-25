@@ -761,37 +761,37 @@ class WorkoutImportServiceTest {
     }
 
     @Test
-    fun importsBundledStarterRideAssetWithLocalizedMessages() {
-        val starterAsset = readBundledWorkoutAsset("25min_starter_ride.ewo")
+    fun importsBundledEnduranceAssetWithLocalizedMessages() {
+        val enduranceAsset = readBundledWorkoutAsset("25min_endurance.ewo")
 
-        val result = service.importFromText(starterAsset.name, starterAsset.readText(), ftpWatts = 200)
+        val result = service.importFromText(enduranceAsset.name, enduranceAsset.readText(), ftpWatts = 200)
 
         val success = requireSuccess(result)
         val workout = requireErgoWorkout(success)
         assertEquals(WorkoutImportFormat.CANONICAL_EWO_JSON, success.format)
-        assertEquals("Starter Ride", workout.title)
+        assertEquals("25 min Endurance", workout.title)
         assertEquals(25 * 60, workout.totalDurationSec)
-        assertEquals(10, workout.steps.size)
-        assertEquals("Bundled FTP-based starter ride with short surges, guided messages, and a controlled threshold finish.", workout.description)
+        assertEquals(5, workout.steps.size)
+        assertEquals("Steady FTP-based endurance ride with one reset and a smooth aerobic finish.", workout.description)
 
         val workoutMetadata = requireNotNull(workout.canonicalMetadata)
         assertEquals(1, workoutMetadata.messages.size)
         assertEquals(
-            "Tämä paketoitu aloitusharjoitus näyttää, miten tiedostopohjainen treeni voi yhdistää rampit, terävät piikit, palautukset ja ohjaavat viestit yhdeksi rakenteiseksi kokonaisuudeksi.",
+            "Tämä lyhyt kestävyysharjoitus näyttää .ewo-rakenteen peruspalikat: loiva ramppi, tasainen aerobinen työ, pieni nollaus ja rauhallinen loppu.",
             workoutMetadata.messages.single().text.translations["fi"],
         )
         assertEquals(
-            "この同梱スターターライドは、ファイルベースのワークアウトでランプ、短い刺激、回復、ガイドメッセージを1本の構造化セッションに組み合わせられることを示します。",
+            "この短いエンデュランス走は、.ewo の基本構成を示します。穏やかなランプ、一定の有酸素走、小さなリセット、そして落ち着いた締めです。",
             workoutMetadata.messages.single().text.translations["ja"],
         )
 
         val stepMessages = workout.steps.mapNotNull { step ->
             step.canonicalMetadata?.messages?.takeIf { it.isNotEmpty() }
         }
-        assertEquals(6, stepMessages.size)
-        assertEquals("surge_one", requireNotNull(workout.steps[1].canonicalMetadata).origin.sourceSegmentId)
-        assertEquals("tempo_block", requireNotNull(workout.steps[7].canonicalMetadata).origin.sourceSegmentId)
-        assertEquals("threshold_finish", requireNotNull(workout.steps[8].canonicalMetadata).origin.sourceSegmentId)
+        assertEquals(5, stepMessages.size)
+        assertEquals("endurance_block_one", requireNotNull(workout.steps[1].canonicalMetadata).origin.sourceSegmentId)
+        assertEquals("endurance_reset", requireNotNull(workout.steps[2].canonicalMetadata).origin.sourceSegmentId)
+        assertEquals("cooldown_ramp", requireNotNull(workout.steps[4].canonicalMetadata).origin.sourceSegmentId)
     }
 
     @Test

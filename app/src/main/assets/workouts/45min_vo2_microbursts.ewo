@@ -40,8 +40,7 @@
       "messages": [
         {
           "kind": "instruction",
-          "when": "end",
-          "offset_sec": -1,
+          "when": { "anchor": "end", "offset_sec": -1 },
           "text": {
             "default": "Find the rhythm: short punch, quick reset.",
             "translations": {

@@ -139,7 +139,7 @@ class ImportedErgoWorkoutTextEventMapperTest {
         assertNull(
             resolveActiveWorkoutTextEvent(
                 textEvents = mappedEvents,
-                workoutElapsedSec = 8,
+                workoutElapsedSec = DefaultWorkoutTextEventDurationSec,
             ),
         )
     }
