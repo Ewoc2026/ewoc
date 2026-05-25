@@ -43,6 +43,8 @@ file.
   capture.
 - A local fdroiddata metadata draft is added for the first F-Droid submission.
 - The first F-Droid source tag is selected as `v1.0.0` for `versionCode=4`.
+- The fdroiddata metadata draft now uses F-Droid's expected Gradle marker and
+  has a successful local fdroiddata build proof.
 
 ### Removed
 

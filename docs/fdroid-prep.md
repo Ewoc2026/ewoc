@@ -86,3 +86,6 @@ Validated locally:
 - `fdroid readmeta`
 - `fdroid lint io.github.ewoc2026.ewoc`
 - `yamllint metadata/io.github.ewoc2026.ewoc.yml`
+- `fdroid build -v -t --no-tarball io.github.ewoc2026.ewoc:4` passed from a
+  committed local fdroiddata branch after adding a local Gradle 9.3.1 hash to
+  the workstation `gradlew-fdroid` helper.
