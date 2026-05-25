@@ -63,3 +63,5 @@ file.
   workout expectation refresh.
 - F-Droid preparation is started with an initial readiness note and the stale
   Play Billing version-catalog alias removed.
+- Upstream Fastlane-style F-Droid metadata is started with title, short
+  description, full description, icon, and `versionCode=4` changelog.

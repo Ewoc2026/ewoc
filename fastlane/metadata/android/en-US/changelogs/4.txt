@@ -1,0 +1,5 @@
+First public-source preparation build:
+- removes paid feature gating and Google Play Billing
+- removes AI workout generation, support-bundle uploads, and Health Connect
+- switches to the public app id io.github.ewoc2026.ewoc
+- keeps local structured workouts, imports, telemetry-only rides, FIT export, and the Android workout editor

@@ -1,0 +1,17 @@
+Ewoc is a free public-source indoor cycling app for Android.
+
+It helps you ride an FTMS-compatible smart trainer with structured workouts,
+live ride telemetry, Bluetooth heart-rate sensor support, local workout files,
+and post-session summaries.
+
+You can ride bundled workouts, import workouts from ZWO, legacy XML, or Ewoc
+EWO files, use the built-in Android workout editor, or ride without a
+structured workout in telemetry-only mode.
+
+Ewoc is local-first. It does not include paid feature gates, Google Play
+Billing, AI workout generation, support-bundle uploads, Health Connect data
+reads, advertising, analytics, or a backend account.
+
+Trainer-sensitive behavior still depends on the trainer model and firmware.
+For best results, use an FTMS-compatible smart trainer or exercise bike and
+keep other trainer-control apps disconnected while riding.

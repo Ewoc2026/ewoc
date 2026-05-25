@@ -34,9 +34,7 @@ fdroiddata metadata merge request.
 
 ## Submission Work Remaining
 
-- Add upstream Fastlane-style metadata:
-  `fastlane/metadata/android/en-US/short_description.txt`,
-  `full_description.txt`, screenshots, icon, and `changelogs/4.txt`.
+- Add upstream Fastlane-style screenshots from a real public build.
 - Decide the first public release tag. F-Droid expects a release commit/tag
   matching the published `versionName`.
 - Run a fresh public snapshot private-marker check before submission.
@@ -49,6 +47,7 @@ fdroiddata metadata merge request.
 
 - `./scripts/gradle-safe.sh :app:compileDebugKotlin --no-daemon --rerun-tasks --no-configuration-cache -Dkotlin.incremental=false`
 - `env -u ERGOMETER_RELEASE_STORE_FILE -u ERGOMETER_RELEASE_STORE_PASSWORD -u ERGOMETER_RELEASE_KEY_ALIAS -u ERGOMETER_RELEASE_KEY_PASSWORD ./scripts/gradle-safe.sh :app:assembleRelease --no-daemon --rerun-tasks --no-configuration-cache -Dkotlin.incremental=false`
+- `wc -c fastlane/metadata/android/en-US/short_description.txt fastlane/metadata/android/en-US/changelogs/4.txt`
 
 ## Known F-Droid Review Notes
 
