@@ -32,6 +32,8 @@ file.
   still passes the private-marker check after the documentation trim.
 - The first public snapshot is published at
   `https://github.com/Ewoc2026/ewoc`.
+- The first public GitHub Actions Android Build is fixed and now validates
+  debug unit tests, JaCoCo, lint, and release bundle generation.
 - F-Droid preparation is started with an initial readiness note and the stale
   Play Billing version-catalog alias removed.
 - Upstream Fastlane-style F-Droid metadata is started with title, short
@@ -67,5 +69,3 @@ file.
 - The generated `/tmp/ewoc-public-snapshot` rehearsal passes Android debug
   Kotlin/unit-test compilation, desktop Kotlin compilation, and
   `:modules:ewo-core:jvmTest`.
-- The public GitHub Actions Android Build workflow passes after the bundled
-  workout expectation refresh.

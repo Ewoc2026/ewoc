@@ -1,3 +1,4 @@
+---
 # Draft fdroiddata metadata for io.github.ewoc2026.ewoc.
 #
 # This file is a local submission draft only. The final copy belongs in the
@@ -14,7 +15,7 @@ License: GPL-3.0-or-later
 AuthorName: Ewoc Project
 SourceCode: https://github.com/Ewoc2026/ewoc
 IssueTracker: https://github.com/Ewoc2026/ewoc/issues
-Changelog: https://github.com/Ewoc2026/ewoc/blob/main/CHANGELOG.md
+Changelog: https://github.com/Ewoc2026/ewoc/blob/HEAD/CHANGELOG.md
 
 AutoName: Ewoc
 
@@ -27,7 +28,7 @@ Builds:
     commit: v1.0.0
     subdir: app
     gradle:
-      - yes
+      - true
 
 AutoUpdateMode: Version v%v
 UpdateCheckMode: Tags
