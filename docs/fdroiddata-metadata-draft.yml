@@ -1,0 +1,35 @@
+# Draft fdroiddata metadata for io.github.ewoc2026.ewoc.
+#
+# This file is a local submission draft only. The final copy belongs in the
+# F-Droid fdroiddata repository as:
+#
+#   metadata/io.github.ewoc2026.ewoc.yml
+#
+# The `commit` value assumes the first public F-Droid submission will use a
+# `v1.0.0` tag that points at the release-ready public repository commit.
+
+Categories:
+  - Sports & Health
+License: GPL-3.0-or-later
+AuthorName: Ewoc Project
+SourceCode: https://github.com/Ewoc2026/ewoc
+IssueTracker: https://github.com/Ewoc2026/ewoc/issues
+Changelog: https://github.com/Ewoc2026/ewoc/blob/main/CHANGELOG.md
+
+AutoName: Ewoc
+
+RepoType: git
+Repo: https://github.com/Ewoc2026/ewoc.git
+
+Builds:
+  - versionName: 1.0.0
+    versionCode: 4
+    commit: v1.0.0
+    subdir: app
+    gradle:
+      - yes
+
+AutoUpdateMode: Version v%v
+UpdateCheckMode: Tags
+CurrentVersion: 1.0.0
+CurrentVersionCode: 4

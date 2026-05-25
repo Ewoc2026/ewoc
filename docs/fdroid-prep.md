@@ -37,7 +37,7 @@ fdroiddata metadata merge request.
 - Decide the first public release tag. F-Droid expects a release commit/tag
   matching the published `versionName`.
 - Run a fresh public snapshot private-marker check before submission.
-- Prepare fdroiddata metadata for `io.github.ewoc2026.ewoc`.
+- Review and test the fdroiddata metadata draft for `io.github.ewoc2026.ewoc`.
 - Prefer auto-update metadata once the first F-Droid build works, so future
   releases only need a version bump and tag.
 - Attempt reproducible-build setup after the basic F-Droid build path is proven.
@@ -66,3 +66,15 @@ fdroiddata metadata merge request.
   actions.
 - Health Connect and Play Billing were intentionally removed from the first
   public build to simplify F-Droid and privacy review.
+
+## fdroiddata Draft
+
+The local draft lives at `docs/fdroiddata-metadata-draft.yml`. It assumes:
+
+- the first public F-Droid tag will be `v1.0.0`
+- `versionName = "1.0.0"` and `versionCode = 4`
+- F-Droid builds from subdirectory `app`
+- future updates can use tag-based auto-update metadata
+
+The draft is not yet submitted to fdroiddata and should be tested with
+F-Droid tooling before opening the merge request.

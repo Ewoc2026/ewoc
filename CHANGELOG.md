@@ -32,6 +32,14 @@ file.
   still passes the private-marker check after the documentation trim.
 - The first public snapshot is published at
   `https://github.com/Ewoc2026/ewoc`.
+- F-Droid preparation is started with an initial readiness note and the stale
+  Play Billing version-catalog alias removed.
+- Upstream Fastlane-style F-Droid metadata is started with title, short
+  description, full description, icon, and `versionCode=4` changelog.
+- F-Droid tablet screenshots are added from a real Samsung tablet capture.
+- F-Droid screenshot metadata now includes a real trainer-backed live-session
+  capture.
+- A local fdroiddata metadata draft is added for the first F-Droid submission.
 
 ### Removed
 
@@ -61,10 +69,3 @@ file.
   `:modules:ewo-core:jvmTest`.
 - The public GitHub Actions Android Build workflow passes after the bundled
   workout expectation refresh.
-- F-Droid preparation is started with an initial readiness note and the stale
-  Play Billing version-catalog alias removed.
-- Upstream Fastlane-style F-Droid metadata is started with title, short
-  description, full description, icon, and `versionCode=4` changelog.
-- F-Droid tablet screenshots are added from a real Samsung tablet capture.
-- F-Droid screenshot metadata now includes a real trainer-backed live-session
-  capture.
