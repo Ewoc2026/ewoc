@@ -87,6 +87,7 @@ with the debug mock trainer.
 ## Documentation
 
 - Build and validation: [docs/building.md](docs/building.md)
+- F-Droid preparation: [docs/fdroid-prep.md](docs/fdroid-prep.md)
 - Privacy: [docs/privacy.md](docs/privacy.md)
 - User guide: [docs/user-guide/](docs/user-guide/)
 - EWO format spec: [spec/ewo/](spec/ewo/)

@@ -1,0 +1,61 @@
+# F-Droid Preparation
+
+Updated: 2026-05-25
+
+Ewoc targets the main F-Droid repository for its first public Android
+distribution path. This note tracks local readiness before opening the
+fdroiddata metadata merge request.
+
+## Current App Identity
+
+- Application ID: `io.github.ewoc2026.ewoc`
+- License: `GPL-3.0-or-later`
+- Source: `https://github.com/Ewoc2026/ewoc`
+- Issue tracker: `https://github.com/Ewoc2026/ewoc/issues`
+- Current version: `versionName = "1.0.0"`, `versionCode = 4`
+
+## Initial Readiness Audit
+
+- Public source repository exists and has a GPL license file.
+- Android app dependencies are pulled from Google Maven or Maven Central.
+- No Firebase, Google Play Services, Crashlytics, analytics, advertising SDK,
+  Google Play Billing, Health Connect, or backend upload dependency is active
+  in the Android app dependency graph.
+- The stale Play Billing version-catalog alias has been removed so dependency
+  scans do not report a retired library as part of the current source.
+- The Android app still declares `INTERNET` and `ACCESS_NETWORK_STATE`.
+  Current intended use is opening documentation, changelog, privacy, and issue
+  links in a browser; there is no app backend.
+- Release signing is configured outside the repository, but F-Droid can build
+  and sign its own APK unless reproducible builds are pursued for the first
+  submission.
+- `:app:assembleRelease` succeeds without private signing environment
+  variables and produces `app-release-unsigned.apk`.
+
+## Submission Work Remaining
+
+- Add upstream Fastlane-style metadata:
+  `fastlane/metadata/android/en-US/short_description.txt`,
+  `full_description.txt`, screenshots, icon, and `changelogs/4.txt`.
+- Decide the first public release tag. F-Droid expects a release commit/tag
+  matching the published `versionName`.
+- Run a fresh public snapshot private-marker check before submission.
+- Prepare fdroiddata metadata for `io.github.ewoc2026.ewoc`.
+- Prefer auto-update metadata once the first F-Droid build works, so future
+  releases only need a version bump and tag.
+- Attempt reproducible-build setup after the basic F-Droid build path is proven.
+
+## Validation
+
+- `./scripts/gradle-safe.sh :app:compileDebugKotlin --no-daemon --rerun-tasks --no-configuration-cache -Dkotlin.incremental=false`
+- `env -u ERGOMETER_RELEASE_STORE_FILE -u ERGOMETER_RELEASE_STORE_PASSWORD -u ERGOMETER_RELEASE_KEY_ALIAS -u ERGOMETER_RELEASE_KEY_PASSWORD ./scripts/gradle-safe.sh :app:assembleRelease --no-daemon --rerun-tasks --no-configuration-cache -Dkotlin.incremental=false`
+
+## Known F-Droid Review Notes
+
+- The app uses Bluetooth permissions for FTMS trainer and heart-rate sensor
+  communication.
+- The app stores workout/session/export state locally and opens external links
+  only when the user chooses documentation, changelog, privacy, or issue
+  actions.
+- Health Connect and Play Billing were intentionally removed from the first
+  public build to simplify F-Droid and privacy review.

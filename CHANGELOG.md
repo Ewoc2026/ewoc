@@ -61,3 +61,5 @@ file.
   `:modules:ewo-core:jvmTest`.
 - The public GitHub Actions Android Build workflow passes after the bundled
   workout expectation refresh.
+- F-Droid preparation is started with an initial readiness note and the stale
+  Play Billing version-catalog alias removed.
