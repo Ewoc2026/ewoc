@@ -1,0 +1,14 @@
+{
+  "format": "ewo",
+  "version": "1.3",
+  "title": "Unknown Difficulty",
+  "difficulty": "extreme",
+  "segments": [
+    {
+      "id": "warmup",
+      "type": "steady",
+      "duration_sec": 300,
+      "target": { "metric": "power", "value": 120 }
+    }
+  ]
+}

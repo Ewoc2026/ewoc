@@ -1,0 +1,173 @@
+{
+  "format": "ewo",
+  "version": "1.5",
+  "title": "30 min Tempo",
+  "description": "Controlled tempo workout that introduces sustained sub-threshold pressure.",
+  "difficulty": "moderate",
+  "tags": ["tempo", "subthreshold", "ftp_percent", "30min", "intro"],
+  "messages": [
+    {
+      "kind": "intro",
+      "when": "start",
+      "text": {
+        "default": "Tempo work sits below threshold and teaches sustained pressure. The goal is smooth focus, not strain or surging.",
+        "translations": {
+          "fi": "Tempo-työ on kynnyksen alapuolella ja opettaa ylläpitämään tasaista painetta. Tavoite on sujuva keskittyminen, ei puristus tai ryntäily.",
+          "de": "Tempoarbeit liegt unter der Schwelle und schult gleichmäßigen Druck. Ziel ist ruhiger Fokus, nicht Verkrampfung oder ständiges Anziehen.",
+          "es": "El trabajo de tempo va por debajo del umbral y enseña a sostener la presión. El objetivo es concentración suave, no tensión ni tirones.",
+          "fr": "Le travail tempo se situe sous le seuil et apprend à tenir une pression régulière. L'objectif est un effort fluide, pas de crispation ni d'à-coups.",
+          "ja": "テンポ走は閾値の下で一定の負荷を保つ練習です。狙いはスムーズな集中で、力みや急な上げ下げではありません。",
+          "nl": "Tempo-werk blijft onder de drempel en leert je langdurige druk vasthouden. Het doel is soepele focus, niet forceren of pieken."
+        }
+      }
+    }
+  ],
+  "segments": [
+    {
+      "id": "warmup_ramp",
+      "label": "Warm-up",
+      "type": "ramp",
+      "duration_sec": 300,
+      "from_target": { "metric": "ftp_percent", "value": 0.45 },
+      "to_target": { "metric": "ftp_percent", "value": 0.7 },
+      "messages": [
+        {
+          "kind": "instruction",
+          "when": "start",
+          "text": {
+            "default": "Build with patience.",
+            "translations": {
+              "fi": "Nosta kärsivällisesti.",
+              "de": "Geduldig aufbauen.",
+              "es": "Sube con paciencia.",
+              "fr": "Monte avec patience.",
+              "ja": "焦らず上げる。",
+              "nl": "Bouw geduldig op."
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "tempo_entry",
+      "label": "Tempo Entry",
+      "type": "steady",
+      "duration_sec": 180,
+      "target": { "metric": "ftp_percent", "value": 0.78 },
+      "messages": [
+        {
+          "kind": "instruction",
+          "when": "start",
+          "text": {
+            "default": "Find smooth pressure.",
+            "translations": {
+              "fi": "Löydä tasainen paine.",
+              "de": "Finde gleichmäßigen Druck.",
+              "es": "Busca una presión fluida.",
+              "fr": "Trouve une pression fluide.",
+              "ja": "なめらかな負荷を探す。",
+              "nl": "Zoek soepele druk."
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "tempo_block_one",
+      "label": "Main Tempo",
+      "type": "steady",
+      "duration_sec": 720,
+      "target": { "metric": "ftp_percent", "value": 0.84 },
+      "messages": [
+        {
+          "kind": "instruction",
+          "when": "start",
+          "text": {
+            "default": "Tempo should feel firm but sustainable, like work you can hold with attention instead of grit.",
+            "translations": {
+              "fi": "Tempon kuuluu tuntua napakalta mutta ylläpidettävältä, sellaiselta työltä jota voi pitää yllä tarkkaavaisuudella eikä pelkällä puristuksella.",
+              "de": "Tempo soll sich deutlich, aber haltbar anfühlen, wie Arbeit, die du mit Aufmerksamkeit statt mit Verkrampfung tragen kannst.",
+              "es": "El tempo debe sentirse sólido pero sostenible, como un esfuerzo que puedes mantener con atención y no solo con dureza.",
+              "fr": "Le tempo doit sembler solide mais durable, comme un effort que l'on tient avec attention plutôt qu'en se crispant.",
+              "ja": "テンポはしっかり感じつつも維持可能であるべきです。根性で押すより、集中して保つ感覚を大切にします。",
+              "nl": "Tempo moet stevig maar houdbaar aanvoelen: werk dat je met aandacht vasthoudt, niet met pure wilskracht."
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "tempo_reset",
+      "label": "Reset",
+      "type": "steady",
+      "duration_sec": 120,
+      "target": { "metric": "ftp_percent", "value": 0.6 },
+      "messages": [
+        {
+          "kind": "transition",
+          "when": "start",
+          "text": {
+            "default": "Back off and reset.",
+            "translations": {
+              "fi": "Kevennä ja nollaa.",
+              "de": "Zurücknehmen und sammeln.",
+              "es": "Afloja y reajusta.",
+              "fr": "Relâche et réinitialise.",
+              "ja": "少し落として整える。",
+              "nl": "Neem terug en reset."
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "tempo_block_two",
+      "label": "Tempo Finish",
+      "type": "steady",
+      "duration_sec": 300,
+      "target": { "metric": "ftp_percent", "value": 0.86 },
+      "messages": [
+        {
+          "kind": "instruction",
+          "when": "start",
+          "text": {
+            "default": "Finish controlled.",
+            "translations": {
+              "fi": "Vie loppu hallitusti.",
+              "de": "Kontrolliert beenden.",
+              "es": "Termina con control.",
+              "fr": "Termine avec contrôle.",
+              "ja": "コントロールして締める。",
+              "nl": "Rond beheerst af."
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "cooldown_ramp",
+      "label": "Cool-down",
+      "type": "ramp",
+      "duration_sec": 180,
+      "from_target": { "metric": "ftp_percent", "value": 0.86 },
+      "to_target": { "metric": "ftp_percent", "value": 0.45 },
+      "messages": [
+        {
+          "kind": "transition",
+          "when": "start",
+          "text": {
+            "default": "Let the effort fade.",
+            "translations": {
+              "fi": "Anna rasituksen hiipua.",
+              "de": "Lass die Belastung abklingen.",
+              "es": "Deja que el esfuerzo se apague.",
+              "fr": "Laisse l'effort retomber.",
+              "ja": "負荷を静かに落とす。",
+              "nl": "Laat de inspanning wegzakken."
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

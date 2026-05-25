@@ -1,0 +1,39 @@
+package com.example.ergometerapp
+
+import androidx.compose.runtime.mutableStateOf
+import com.example.ergometerapp.compat.CompatibilityRunArtifacts
+
+/**
+ * Owns Compatibility Mode UI-facing state.
+ */
+internal class CompatibilityModeUiState {
+    val checkInProgressState = mutableStateOf(false)
+    val statusMessageState = mutableStateOf<String?>(null)
+
+    var latestRunArtifacts: CompatibilityRunArtifacts? = null
+
+    val checkStatePort = object : CompatibilityCheckStatePort {
+        override var latestRunArtifacts: CompatibilityRunArtifacts?
+            get() = this@CompatibilityModeUiState.latestRunArtifacts
+            set(value) {
+                this@CompatibilityModeUiState.latestRunArtifacts = value
+            }
+
+        override var checkInProgress: Boolean
+            get() = checkInProgressState.value
+            set(value) {
+                checkInProgressState.value = value
+            }
+
+        override var statusMessage: String?
+            get() = statusMessageState.value
+            set(value) {
+                statusMessageState.value = value
+            }
+    }
+
+    fun restoreLatestRunArtifacts(artifacts: CompatibilityRunArtifacts?) {
+        latestRunArtifacts = artifacts
+    }
+
+}

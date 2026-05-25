@@ -1,0 +1,149 @@
+{
+  "format": "ewo",
+  "version": "1.5",
+  "title": "25 min Endurance",
+  "description": "Steady FTP-based endurance ride with one reset and a smooth aerobic finish.",
+  "difficulty": "moderate",
+  "tags": ["endurance", "aerobic", "ftp_percent", "25min", "intro"],
+  "messages": [
+    {
+      "kind": "intro",
+      "when": "start",
+      "text": {
+        "default": "This short endurance ride shows the basic .ewo building blocks: a smooth ramp, steady aerobic work, a small reset, and a calm finish.",
+        "translations": {
+          "fi": "Tämä lyhyt kestävyysharjoitus näyttää .ewo-rakenteen peruspalikat: loiva ramppi, tasainen aerobinen työ, pieni nollaus ja rauhallinen loppu.",
+          "de": "Diese kurze Ausdauereinheit zeigt die Grundbausteine von .ewo: eine sanfte Rampe, gleichmäßige aerobe Arbeit, ein kleiner Reset und ein ruhiger Abschluss.",
+          "es": "Esta sesión corta de resistencia muestra los bloques básicos de .ewo: una rampa suave, trabajo aeróbico constante, un pequeño reinicio y un final tranquilo.",
+          "fr": "Cette courte séance d'endurance montre les bases de .ewo : une rampe douce, un travail aérobie régulier, un petit reset et une fin calme.",
+          "ja": "この短いエンデュランス走は、.ewo の基本構成を示します。穏やかなランプ、一定の有酸素走、小さなリセット、そして落ち着いた締めです。",
+          "nl": "Deze korte duurtraining laat de basisblokken van .ewo zien: een geleidelijke ramp, constante aerobe arbeid, een kleine reset en een rustige afronding."
+        }
+      }
+    }
+  ],
+  "segments": [
+    {
+      "id": "warmup_ramp",
+      "label": "Warm-up",
+      "type": "ramp",
+      "duration_sec": 300,
+      "from_target": { "metric": "ftp_percent", "value": 0.45 },
+      "to_target": { "metric": "ftp_percent", "value": 0.65 },
+      "messages": [
+        {
+          "kind": "instruction",
+          "when": "start",
+          "text": {
+            "default": "Build steadily.",
+            "translations": {
+              "fi": "Nosta tasaisesti.",
+              "de": "Ruhig opbouwen.",
+              "es": "Sube de forma constante.",
+              "fr": "Monte régulièrement.",
+              "ja": "一定に上げる。",
+              "nl": "Bouw gestaag op."
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "endurance_block_one",
+      "label": "Endurance",
+      "type": "steady",
+      "duration_sec": 450,
+      "target": { "metric": "ftp_percent", "value": 0.68 },
+      "messages": [
+        {
+          "kind": "instruction",
+          "when": "start",
+          "text": {
+            "default": "Settle into rhythm.",
+            "translations": {
+              "fi": "Löydä tasainen rytmi.",
+              "de": "Finde deinen Rhythmus.",
+              "es": "Encuentra tu ritmo.",
+              "fr": "Trouve ton rythme.",
+              "ja": "リズムをつかむ。",
+              "nl": "Vind je ritme."
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "endurance_reset",
+      "label": "Reset",
+      "type": "steady",
+      "duration_sec": 120,
+      "target": { "metric": "ftp_percent", "value": 0.6 },
+      "messages": [
+        {
+          "kind": "transition",
+          "when": "start",
+          "text": {
+            "default": "Ease off slightly.",
+            "translations": {
+              "fi": "Kevennä hieman.",
+              "de": "Etwas lockern.",
+              "es": "Afloja un poco.",
+              "fr": "Relâche un peu.",
+              "ja": "少し楽にする。",
+              "nl": "Laat iets los."
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "endurance_block_two",
+      "label": "Aerobic Finish",
+      "type": "steady",
+      "duration_sec": 390,
+      "target": { "metric": "ftp_percent", "value": 0.72 },
+      "messages": [
+        {
+          "kind": "instruction",
+          "when": "start",
+          "text": {
+            "default": "A small lift shows how endurance can rise without turning into a hard session.",
+            "translations": {
+              "fi": "Pieni nosto näyttää, miten kestävyyskuormaa voi kasvattaa ilman että harjoituksesta tulee kova.",
+              "de": "Diese kleine Steigerung zeigt, wie Ausdauer ansteigen kann, ohne dass die Einheit hart wird.",
+              "es": "Esta pequeña subida muestra cómo la resistencia puede aumentar sin convertir la sesión en un entrenamiento duro.",
+              "fr": "Cette petite hausse montre comment l'endurance peut progresser sans transformer la séance en effort dur.",
+              "ja": "この小さな引き上げは、きつい練習にせずに持久負荷を少し高める例です。",
+              "nl": "Deze kleine verhoging laat zien hoe duurwerk kan toenemen zonder dat de training echt zwaar wordt."
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "cooldown_ramp",
+      "label": "Cool-down",
+      "type": "ramp",
+      "duration_sec": 240,
+      "from_target": { "metric": "ftp_percent", "value": 0.72 },
+      "to_target": { "metric": "ftp_percent", "value": 0.45 },
+      "messages": [
+        {
+          "kind": "transition",
+          "when": "start",
+          "text": {
+            "default": "Let it come down.",
+            "translations": {
+              "fi": "Anna kuorman laskea.",
+              "de": "Lass es runterkommen.",
+              "es": "Deja que baje.",
+              "fr": "Laisse redescendre.",
+              "ja": "負荷を落ち着かせる。",
+              "nl": "Laat het zakken."
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

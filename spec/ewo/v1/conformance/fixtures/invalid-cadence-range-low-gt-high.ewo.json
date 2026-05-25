@@ -1,0 +1,14 @@
+{
+  "format": "ewo",
+  "version": "1.2",
+  "title": "Invalid cadence range",
+  "segments": [
+    {
+      "id": "block",
+      "type": "steady",
+      "duration_sec": 300,
+      "target": { "metric": "power", "value": 200 },
+      "cadence": { "low": 100, "high": 80 }
+    }
+  ]
+}

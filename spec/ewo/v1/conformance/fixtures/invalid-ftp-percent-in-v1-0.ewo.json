@@ -1,0 +1,13 @@
+{
+  "format": "ewo",
+  "version": "1.0",
+  "title": "FTP percent not allowed in v1.0",
+  "segments": [
+    {
+      "id": "block",
+      "type": "steady",
+      "duration_sec": 300,
+      "target": { "metric": "ftp_percent", "value": 0.80 }
+    }
+  ]
+}

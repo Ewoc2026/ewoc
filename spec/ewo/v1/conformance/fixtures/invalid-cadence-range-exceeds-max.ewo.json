@@ -1,0 +1,14 @@
+{
+  "format": "ewo",
+  "version": "1.2",
+  "title": "Cadence exceeds maximum",
+  "segments": [
+    {
+      "id": "block",
+      "type": "steady",
+      "duration_sec": 300,
+      "target": { "metric": "power", "value": 200 },
+      "cadence": { "low": 180, "high": 220 }
+    }
+  ]
+}

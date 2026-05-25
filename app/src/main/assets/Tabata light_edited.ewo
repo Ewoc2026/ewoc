@@ -1,0 +1,99 @@
+{
+  "format": "ewo",
+  "version": "1.5",
+  "title": "Tabata light",
+  "description": "Tabata light ewo workout",
+"control": {
+  "initial_power_watts": 30,
+  "min_power_watts": 30,
+  "max_power_watts": 270,
+  "signal_loss_power_watts": 30,
+  "hr_upper_cap_bpm": 138
+},
+  "segments": [
+    {
+      "id": "segment_4",
+      "label": "Beginning. Build cadence slowly and warm up.",
+      "type": "ramp",
+      "duration_sec": 300,
+      "from_target": { "metric": "ftp_percent", "value": 0.5 },
+      "to_target": { "metric": "ftp_percent", "value": 1.0 },
+      "messages": [
+        { "kind": "instruction", "when": { "anchor": "start", "offset_sec": 25 }, "text": { "default": "Welcome to a structured, less than 20 minute light Tabal-style exercise." } }
+      ]
+    },
+    {
+      "id": "segment_7",
+      "label": "First set",
+      "type": "repeat",
+      "count": 4,
+      "messages": [
+        { "kind": "instruction", "when": { "anchor": "start", "offset_sec": 10 }, "text": { "default": "This is the first set of 4 on 20s / off 10s intervals" } },
+        { "kind": "instruction", "when": { "anchor": "end", "offset_sec": 30 }, "text": { "default": "Keep going, first set is almost done." } }
+      ],
+      "segments": [
+        {
+          "id": "segment_8",
+          "label": "ON",
+          "type": "steady",
+          "duration_sec": 20,
+          "target": { "metric": "ftp_percent", "value": 1.5 }
+        },
+        {
+          "id": "segment_9",
+          "label": "OFF",
+          "type": "steady",
+          "duration_sec": 10,
+          "target": { "metric": "ftp_percent", "value": 0.75 }
+        }
+      ]
+    },
+    {
+      "id": "segment_13",
+      "label": "Recovery for 4 minutes.",
+      "type": "steady",
+      "duration_sec": 240,
+      "target": { "metric": "ftp_percent", "value": 0.75 },
+      "messages": [
+        { "kind": "instruction", "when": { "anchor": "start", "offset_sec": 3 }, "text": { "default": "Steady pedaling for 4 minutes,, focus on breathing." } }
+      ]
+    },
+    {
+      "id": "segment_14",
+      "label": "Second set",
+      "type": "repeat",
+      "count": 4,
+      "messages": [
+        { "kind": "instruction", "when": { "anchor": "start", "offset_sec": 10 }, "text": { "default": "This is the second set of 4 on 20s / off 10s intervals" } },
+        { "kind": "instruction", "when": { "anchor": "end", "offset_sec": 30 }, "text": { "default": "Keep going, last set is almost done." } }
+      ],
+      "segments": [
+        {
+          "id": "segment_15",
+          "label": "ON",
+          "type": "steady",
+          "duration_sec": 20,
+          "target": { "metric": "ftp_percent", "value": 1.5 }
+        },
+        {
+          "id": "segment_16",
+          "label": "OFF",
+          "type": "steady",
+          "duration_sec": 10,
+          "target": { "metric": "ftp_percent", "value": 0.75 }
+        }
+      ]
+    },
+    {
+      "id": "segment_20",
+      "label": "Cooldown",
+      "type": "ramp",
+      "duration_sec": 240,
+      "from_target": { "metric": "ftp_percent", "value": 0.75 },
+      "to_target": { "metric": "ftp_percent", "value": 0.45 },
+      "messages": [
+        { "kind": "instruction", "when": "start", "text": { "default": "Now slow down, try to relax and concentrate on you breathing. 4 minutes to go." } }
+      ]
+    }
+  ]
+}

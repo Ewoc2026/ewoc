@@ -1,0 +1,19 @@
+{
+  "format": "ewo",
+  "version": "1.0",
+  "title": "Unknown vendor field",
+  "vendor_acme": {
+    "profile": "private"
+  },
+  "segments": [
+    {
+      "id": "warmup",
+      "type": "steady",
+      "duration_sec": 60,
+      "target": {
+        "metric": "power",
+        "value": 100
+      }
+    }
+  ]
+}

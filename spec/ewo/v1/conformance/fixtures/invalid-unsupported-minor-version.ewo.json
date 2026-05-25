@@ -1,0 +1,16 @@
+{
+  "format": "ewo",
+  "version": "1.7",
+  "title": "Unsupported minor version",
+  "segments": [
+    {
+      "id": "warmup",
+      "type": "steady",
+      "duration_sec": 60,
+      "target": {
+        "metric": "power",
+        "value": 100
+      }
+    }
+  ]
+}

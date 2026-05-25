@@ -1,0 +1,36 @@
+{
+  "format": "ewo",
+  "version": "1.0",
+  "title": "Repeat Ramp Child Not Allowed",
+  "segments": [
+    {
+      "id": "main_set",
+      "type": "repeat",
+      "count": 2,
+      "segments": [
+        {
+          "id": "bad_ramp",
+          "type": "ramp",
+          "duration_sec": 60,
+          "from_target": {
+            "metric": "power",
+            "value": 100
+          },
+          "to_target": {
+            "metric": "power",
+            "value": 150
+          }
+        },
+        {
+          "id": "recover",
+          "type": "steady",
+          "duration_sec": 60,
+          "target": {
+            "metric": "power",
+            "value": 100
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "format": "ewo",
+  "version": "1.6",
+  "title": "Missing Description Fallback",
+  "description_localized": {
+    "default": "Localized description without root fallback."
+  },
+  "segments": [
+    {
+      "id": "warmup",
+      "type": "steady",
+      "duration_sec": 300,
+      "target": {
+        "metric": "power",
+        "value": 140
+      }
+    }
+  ]
+}

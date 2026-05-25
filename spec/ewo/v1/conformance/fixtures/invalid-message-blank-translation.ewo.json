@@ -1,0 +1,28 @@
+{
+  "format": "ewo",
+  "version": "1.0",
+  "title": "Blank translation message",
+  "segments": [
+    {
+      "id": "warmup",
+      "type": "steady",
+      "duration_sec": 60,
+      "messages": [
+        {
+          "kind": "instruction",
+          "when": "start",
+          "text": {
+            "default": "Ride steady",
+            "translations": {
+              "fi": "   "
+            }
+          }
+        }
+      ],
+      "target": {
+        "metric": "power",
+        "value": 100
+      }
+    }
+  ]
+}

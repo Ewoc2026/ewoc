@@ -1,0 +1,44 @@
+{
+  "format": "ewo",
+  "version": "1.2",
+  "title": "High Cadence Drills",
+  "description": "6x1 min high-cadence efforts at endurance power to improve pedaling efficiency.",
+  "segments": [
+    {
+      "id": "warmup",
+      "type": "steady",
+      "duration_sec": 600,
+      "target": { "metric": "ftp_percent", "value": 0.55 },
+      "cadence": { "low": 85, "high": 95 }
+    },
+    {
+      "id": "drills",
+      "type": "repeat",
+      "count": 6,
+      "segments": [
+        {
+          "id": "drill-on",
+          "type": "steady",
+          "duration_sec": 60,
+          "target": { "metric": "ftp_percent", "value": 0.60 },
+          "cadence": { "low": 110, "high": 120 }
+        },
+        {
+          "id": "drill-off",
+          "type": "steady",
+          "duration_sec": 60,
+          "target": { "metric": "ftp_percent", "value": 0.50 },
+          "cadence": { "low": 85, "high": 90 }
+        }
+      ]
+    },
+    {
+      "id": "cooldown",
+      "type": "ramp",
+      "duration_sec": 300,
+      "from_target": { "metric": "ftp_percent", "value": 0.50 },
+      "to_target":   { "metric": "ftp_percent", "value": 0.40 },
+      "cadence": { "low": 80, "high": 90 }
+    }
+  ]
+}

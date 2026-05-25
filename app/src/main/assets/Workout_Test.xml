@@ -1,0 +1,14 @@
+<workout_file>
+  <author>ChatGPT</author>
+  <name>HIIT Session 5c – Neuromuscular Density</name>
+  <description>Short neuromuscular spikes with aerobic floor</description>
+  <sportType>bike</sportType>
+  <durationType>time</durationType>
+  <workout>
+    <Warmup Duration="20" PowerLow="0.2" PowerHigh="0.50"/>
+    <IntervalsT Repeat="1" OnDuration="5" OffDuration="10" OnPower="0.9" OffPower="0.5"/>
+    <SteadyState Duration="10" Power="0.3"/>
+    <Cooldown Duration="20" PowerLow="0.10" PowerHigh="0.60"/>
+  </workout>
+</workout_file>
+

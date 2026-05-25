@@ -1,0 +1,416 @@
+name: Android Build
+
+on:
+  pull_request:
+  push:
+  workflow_dispatch:
+    inputs:
+      run_instrumentation_smoke:
+        description: "Run emulator instrumentation smoke job"
+        required: false
+        default: false
+        type: boolean
+      include_flaky_tests:
+        description: "Include @FlakyTest in instrumentation smoke (manual dispatch only)"
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  detect-android-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      run_android_ci: ${{ steps.detect.outputs.run_android_ci }}
+      run_instrumentation_smoke: ${{ steps.detect.outputs.run_instrumentation_smoke }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Detect Android-impacting changes
+        id: detect
+        shell: bash
+        run: |
+          run_android_ci="true"
+          run_instrumentation_smoke="false"
+          relevant_changes=""
+          smoke_changes=""
+          base_sha=""
+          head_sha=""
+
+          if [[ "${GITHUB_EVENT_NAME}" == "schedule" && "${{ github.event.schedule }}" == "30 4 * * *" ]]; then
+            run_instrumentation_smoke="true"
+          elif [[ "${GITHUB_EVENT_NAME}" == "workflow_dispatch" && "${{ github.event.inputs.run_instrumentation_smoke }}" == "true" ]]; then
+            run_instrumentation_smoke="true"
+          fi
+
+          if [[ "${GITHUB_EVENT_NAME}" == "pull_request" ]]; then
+            base_sha="${{ github.event.pull_request.base.sha }}"
+            head_sha="${{ github.event.pull_request.head.sha }}"
+          elif [[ "${GITHUB_EVENT_NAME}" == "push" ]]; then
+            base_sha="${{ github.event.before }}"
+            head_sha="${{ github.sha }}"
+          else
+            {
+              echo "run_android_ci=${run_android_ci}"
+              echo "run_instrumentation_smoke=${run_instrumentation_smoke}"
+              echo "base_sha=${base_sha}"
+              echo "head_sha=${head_sha}"
+            } >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          if [[ -z "${base_sha}" || "${base_sha}" == "0000000000000000000000000000000000000000" ]]; then
+            {
+              echo "run_android_ci=${run_android_ci}"
+              echo "run_instrumentation_smoke=${run_instrumentation_smoke}"
+              echo "base_sha=${base_sha}"
+              echo "head_sha=${head_sha}"
+            } >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          changed_files="$(git diff --name-only "${base_sha}" "${head_sha}")"
+          relevant_changes="$(
+            printf '%s\n' "${changed_files}" | grep -E \
+              '^(app/|build\.gradle$|build\.gradle\.kts$|settings\.gradle$|settings\.gradle\.kts$|gradle\.properties$|gradle/|gradlew$|gradlew\.bat$|scripts/|\.github/workflows/android-build\.yml$)' \
+              || true
+          )"
+
+          if [[ -z "${relevant_changes}" ]]; then
+            run_android_ci="false"
+          fi
+
+          if [[ "${GITHUB_EVENT_NAME}" == "pull_request" ]]; then
+            smoke_changes="$(
+              printf '%s\n' "${changed_files}" | grep -E \
+                '^(app/src/main/java/.*/(ui|session)/|app/src/main/res/|app/src/main/AndroidManifest\.xml$|app/src/androidTest/|\.github/workflows/android-build\.yml$)' \
+                || true
+            )"
+            if [[ -n "${smoke_changes}" ]]; then
+              run_instrumentation_smoke="true"
+            fi
+          fi
+
+          {
+            echo "run_android_ci=${run_android_ci}"
+            echo "run_instrumentation_smoke=${run_instrumentation_smoke}"
+            echo "base_sha=${base_sha}"
+            echo "head_sha=${head_sha}"
+          } >> "$GITHUB_OUTPUT"
+
+          {
+            echo "### Android CI change detection"
+            echo
+            echo "- run_android_ci=${run_android_ci}"
+            echo "- run_instrumentation_smoke=${run_instrumentation_smoke}"
+            if [[ -n "${relevant_changes}" ]]; then
+              echo "- Relevant files changed:"
+              echo '```'
+              echo "${relevant_changes}"
+              echo '```'
+            else
+              echo "- No Android-impacting file changes detected."
+            fi
+            if [[ -n "${smoke_changes}" ]]; then
+              echo "- Smoke-triggering files changed:"
+              echo '```'
+              echo "${smoke_changes}"
+              echo '```'
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  build-test-lint:
+    needs: detect-android-changes
+    if: ${{ github.event_name != 'schedule' && !(github.event_name == 'workflow_dispatch' && github.event.inputs.run_instrumentation_smoke == 'true') && (github.event_name == 'workflow_dispatch' || needs.detect-android-changes.outputs.run_android_ci == 'true') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: gradle
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Accept licenses and install SDK packages
+        run: |
+          yes | sdkmanager --licenses > /dev/null
+          sdkmanager "platform-tools" "platforms;android-36" "build-tools;36.0.0"
+
+      - name: Configure SDK path for Gradle
+        run: |
+          echo "ANDROID_HOME=$ANDROID_SDK_ROOT" >> "$GITHUB_ENV"
+          echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
+
+      - name: Ensure Gradle wrapper is executable
+        run: chmod +x gradlew
+
+      - name: Dev doctor sanity check
+        run: ./scripts/dev-doctor.sh
+
+      - name: Validate string resources parity
+        run: python3 scripts/check-string-resources.py
+
+      - name: Guard forbidden debug-signing property
+        run: |
+          if grep -Eq "^[[:space:]]*ergometer\\.release\\.debugSigning[[:space:]]*=[[:space:]]*true[[:space:]]*$" gradle.properties; then
+            echo "Forbidden property detected: ergometer.release.debugSigning=true"
+            exit 1
+          fi
+
+      - name: Decode release keystore (optional)
+        env:
+          ANDROID_RELEASE_KEYSTORE_B64: ${{ secrets.ANDROID_RELEASE_KEYSTORE_B64 }}
+          ANDROID_RELEASE_STORE_PASSWORD: ${{ secrets.ANDROID_RELEASE_STORE_PASSWORD }}
+          ANDROID_RELEASE_KEY_ALIAS: ${{ secrets.ANDROID_RELEASE_KEY_ALIAS }}
+          ANDROID_RELEASE_KEY_PASSWORD: ${{ secrets.ANDROID_RELEASE_KEY_PASSWORD }}
+        run: |
+          if [ -n "$ANDROID_RELEASE_KEYSTORE_B64" ] && \
+             [ -n "$ANDROID_RELEASE_STORE_PASSWORD" ] && \
+             [ -n "$ANDROID_RELEASE_KEY_ALIAS" ] && \
+             [ -n "$ANDROID_RELEASE_KEY_PASSWORD" ]; then
+            echo "$ANDROID_RELEASE_KEYSTORE_B64" | base64 --decode > "$RUNNER_TEMP/release-keystore.jks"
+            {
+              echo "ERGOMETER_RELEASE_STORE_FILE=$RUNNER_TEMP/release-keystore.jks"
+              echo "ERGOMETER_RELEASE_STORE_PASSWORD=$ANDROID_RELEASE_STORE_PASSWORD"
+              echo "ERGOMETER_RELEASE_KEY_ALIAS=$ANDROID_RELEASE_KEY_ALIAS"
+              echo "ERGOMETER_RELEASE_KEY_PASSWORD=$ANDROID_RELEASE_KEY_PASSWORD"
+            } >> "$GITHUB_ENV"
+          elif [ -n "$ANDROID_RELEASE_KEYSTORE_B64" ] || \
+               [ -n "$ANDROID_RELEASE_STORE_PASSWORD" ] || \
+               [ -n "$ANDROID_RELEASE_KEY_ALIAS" ] || \
+               [ -n "$ANDROID_RELEASE_KEY_PASSWORD" ]; then
+            echo "Release signing secrets are partially configured."
+            exit 1
+          fi
+
+      - name: Compile Debug Kotlin
+        run: ./gradlew :app:compileDebugKotlin --no-daemon --stacktrace
+
+      - name: Run Debug Unit Tests and Generate JaCoCo Report
+        run: ./gradlew :app:testDebugUnitTest :app:jacocoDebugUnitTestReport --no-daemon --stacktrace
+
+      - name: Upload JaCoCo debug unit test artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: jacoco-debug-unit-test-${{ github.run_id }}
+          if-no-files-found: warn
+          path: |
+            app/build/reports/jacoco/jacocoDebugUnitTestReport/jacocoDebugUnitTestReport.xml
+            app/build/reports/jacoco/jacocoDebugUnitTestReport/html
+            app/build/jacoco/testDebugUnitTest.exec
+            app/build/outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec
+
+      - name: Run Debug Lint
+        run: ./gradlew :app:lintDebug --no-daemon --stacktrace
+
+      - name: Bundle Release (minified)
+        env:
+          ERGOMETER_RELEASE_STORE_PASSWORD: ${{ secrets.ANDROID_RELEASE_STORE_PASSWORD }}
+          ERGOMETER_RELEASE_KEY_ALIAS: ${{ secrets.ANDROID_RELEASE_KEY_ALIAS }}
+          ERGOMETER_RELEASE_KEY_PASSWORD: ${{ secrets.ANDROID_RELEASE_KEY_PASSWORD }}
+        run: ./gradlew :app:bundleRelease --no-daemon --stacktrace -Pergometer.release.minify=true
+
+      - name: Verify release AAB output
+        shell: bash
+        run: |
+          aab_path="app/build/outputs/bundle/release/app-release.aab"
+          test -f "$aab_path"
+          if [[ -n "${ERGOMETER_RELEASE_STORE_FILE:-}" ]]; then
+            jarsigner -verify -verbose -certs "$aab_path"
+          else
+            echo "Release signing not configured; unsigned AAB is expected for this CI run."
+          fi
+
+      - name: Upload release AAB artifact
+        if: ${{ success() && hashFiles('app/build/outputs/bundle/release/app-release.aab') != '' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-aab-${{ github.run_id }}
+          if-no-files-found: error
+          path: app/build/outputs/bundle/release/app-release.aab
+
+      - name: Run Release Lint
+        env:
+          ERGOMETER_RELEASE_STORE_PASSWORD: ${{ secrets.ANDROID_RELEASE_STORE_PASSWORD }}
+          ERGOMETER_RELEASE_KEY_ALIAS: ${{ secrets.ANDROID_RELEASE_KEY_ALIAS }}
+          ERGOMETER_RELEASE_KEY_PASSWORD: ${{ secrets.ANDROID_RELEASE_KEY_PASSWORD }}
+        run: ./gradlew :app:lintRelease --no-daemon --stacktrace -Pergometer.release.minify=true
+
+  android-instrumentation-smoke:
+    needs: detect-android-changes
+    if: ${{ needs.detect-android-changes.outputs.run_instrumentation_smoke == 'true' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    continue-on-error: ${{ github.event_name == 'pull_request' }}
+    env:
+      SMOKE_TEST_CLASSES: com.example.ergometerapp.ui.MainActivityContentFlowTest,com.example.ergometerapp.MainActivityRecreationRotationTest,com.example.ergometerapp.MainActivityLifecycleContinuityTest
+      SMOKE_ATTEMPT_TIMEOUT_SECONDS: 1200
+    concurrency:
+      group: ${{ github.workflow }}-smoke-${{ github.ref_name || github.ref }}
+      cancel-in-progress: true
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: gradle
+
+      - name: Ensure Gradle wrapper is executable
+        run: chmod +x gradlew
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Resolve smoke policy
+        id: smoke-policy
+        shell: bash
+        run: |
+          include_flaky="false"
+          smoke_test_classes="${SMOKE_TEST_CLASSES}"
+          if [[ "${GITHUB_EVENT_NAME}" == "schedule" ]]; then
+            include_flaky="true"
+          elif [[ "${{ github.event.inputs.include_flaky_tests }}" == "true" ]]; then
+            include_flaky="true"
+          fi
+          echo "include_flaky=${include_flaky}" >> "$GITHUB_OUTPUT"
+          echo "smoke_test_classes=${smoke_test_classes}" >> "$GITHUB_OUTPUT"
+          {
+            echo "event_name=${GITHUB_EVENT_NAME}"
+            echo "include_flaky=${include_flaky}"
+            echo "smoke_test_classes=${smoke_test_classes}"
+          } > smoke-policy.txt
+
+      - name: Run instrumentation smoke on emulator (include flaky)
+        id: smoke-include-flaky
+        if: ${{ steps.smoke-policy.outputs.include_flaky == 'true' }}
+        continue-on-error: ${{ github.event_name == 'schedule' }}
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 33
+          target: default
+          arch: x86_64
+          emulator-boot-timeout: 900
+          disk-size: 4096M
+          disable-animations: false
+          emulator-options: -no-snapshot -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -camera-front none
+          script: |
+            SMOKE_INCLUDE_FLAKY=true ./scripts/ci/run-instrumentation-smoke.sh
+
+      - name: Summarize include-flaky smoke outcome
+        if: ${{ always() && steps.smoke-policy.outputs.include_flaky == 'true' }}
+        shell: bash
+        run: |
+          blocking_mode="true"
+          if [[ "${GITHUB_EVENT_NAME}" == "schedule" ]]; then
+            blocking_mode="false"
+          fi
+
+          step_outcome="${{ steps.smoke-include-flaky.outcome }}"
+          step_conclusion="${{ steps.smoke-include-flaky.conclusion }}"
+
+          {
+            echo "event_name=${GITHUB_EVENT_NAME}"
+            echo "include_flaky=true"
+            echo "blocking_mode=${blocking_mode}"
+            echo "step_outcome=${step_outcome}"
+            echo "step_conclusion=${step_conclusion}"
+          } > smoke-flaky-summary.txt
+
+          {
+            echo "### Instrumentation Smoke Include-Flaky Summary"
+            echo
+            echo "- event_name=${GITHUB_EVENT_NAME}"
+            echo "- include_flaky=true"
+            echo "- blocking_mode=${blocking_mode}"
+            echo "- step_outcome=${step_outcome}"
+            echo "- step_conclusion=${step_conclusion}"
+            if [[ "${blocking_mode}" == "false" && "${step_outcome}" == "failure" ]]; then
+              echo "- note: scheduled include-flaky failures are reported but do not fail the workflow."
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Run instrumentation smoke on emulator (exclude flaky)
+        if: ${{ steps.smoke-policy.outputs.include_flaky != 'true' }}
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 33
+          target: default
+          arch: x86_64
+          emulator-boot-timeout: 900
+          disk-size: 4096M
+          disable-animations: false
+          emulator-options: -no-snapshot -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -camera-front none
+          script: |
+            SMOKE_INCLUDE_FLAKY=false ./scripts/ci/run-instrumentation-smoke.sh
+
+      - name: Upload instrumentation smoke artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-instrumentation-smoke-${{ github.run_id }}
+          if-no-files-found: warn
+          path: |
+            smoke-policy.txt
+            smoke-flaky-summary.txt
+            smoke-retry-summary.txt
+            smoke-classification-summary.txt
+            smoke-run.log
+            smoke-run.attempt1.log
+            smoke-run.attempt2.log
+            app/build/outputs/androidTest-results/connected/debug
+            app/build/reports/androidTests/connected/debug
+
+  weekly-flake-metrics:
+    if: ${{ github.event_name == 'schedule' && github.event.schedule == '0 5 * * 1' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Generate weekly flake metrics report
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPOSITORY: ${{ github.repository }}
+        run: ./scripts/ci/weekly-flake-report.py --workflow-file android-build.yml --days 7
+
+      - name: Upload weekly flake metrics artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: weekly-flake-metrics-${{ github.run_id }}
+          if-no-files-found: error
+          path: |
+            weekly-flake-report.md
+            weekly-flake-report.json

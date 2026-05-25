@@ -1,0 +1,157 @@
+{
+  "format": "ewo",
+  "version": "1.5",
+  "title": "40 min Threshold Intro",
+  "description": "Threshold introduction with three controlled efforts near FTP and generous structure around them.",
+  "difficulty": "hard",
+  "tags": ["threshold", "intervals", "ftp_percent", "40min", "intro"],
+  "messages": [
+    {
+      "kind": "intro",
+      "when": "start",
+      "text": {
+        "default": "Threshold work teaches you to stay composed near FTP. These repeats are long enough to require focus, but short enough to learn pacing.",
+        "translations": {
+          "fi": "Kynnystyö opettaa pysymään hallittuna FTP:n tuntumassa. Nämä toistot ovat riittävän pitkiä vaatiakseen keskittymistä mutta riittävän lyhyitä tahdituksen harjoitteluun.",
+          "de": "Schwellentraining lehrt dich, nahe an FTP kontrolliert zu bleiben. Diese Wiederholungen sind lang genug für Fokus, aber kurz genug, um Pacing zu lernen.",
+          "es": "El trabajo de umbral te enseña a mantener la compostura cerca del FTP. Estas repeticiones son lo bastante largas para exigir atención, pero lo bastante cortas para aprender el ritmo.",
+          "fr": "Le travail au seuil apprend à rester maîtrisé près du FTP. Ces répétitions sont assez longues pour demander de l'attention, mais assez courtes pour apprendre le pacing.",
+          "ja": "スレッショルド練習は、FTP付近で落ち着いて走る力を養います。これらの反復は集中を要する長さですが、ペース配分を学べる範囲に収めています。",
+          "nl": "Drempelwerk leert je rustig blijven dicht bij FTP. Deze herhalingen zijn lang genoeg om focus te vragen, maar kort genoeg om pacing te leren."
+        }
+      }
+    }
+  ],
+  "segments": [
+    {
+      "id": "warmup_ramp",
+      "label": "Warm-up",
+      "type": "ramp",
+      "duration_sec": 480,
+      "from_target": { "metric": "ftp_percent", "value": 0.45 },
+      "to_target": { "metric": "ftp_percent", "value": 0.8 },
+      "messages": [
+        {
+          "kind": "instruction",
+          "when": "start",
+          "text": {
+            "default": "Build with control.",
+            "translations": {
+              "fi": "Nosta hallitusti.",
+              "de": "Kontrolliert aufbauen.",
+              "es": "Sube con control.",
+              "fr": "Monte avec contrôle.",
+              "ja": "コントロールして上げる。",
+              "nl": "Bouw beheerst op."
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "settle_before_main",
+      "label": "Settle",
+      "type": "steady",
+      "duration_sec": 120,
+      "target": { "metric": "ftp_percent", "value": 0.6 },
+      "messages": [
+        {
+          "kind": "transition",
+          "when": "start",
+          "text": {
+            "default": "Reset before threshold.",
+            "translations": {
+              "fi": "Nollaa ennen kynnystä.",
+              "de": "Vor der Schwelle sammeln.",
+              "es": "Reajusta antes del umbral.",
+              "fr": "Réinitialise-toi avant le seuil.",
+              "ja": "閾値前に整える。",
+              "nl": "Reset voor de drempel."
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "threshold_rounds",
+      "label": "Threshold Set",
+      "type": "repeat",
+      "count": 3,
+      "segments": [
+        {
+          "id": "threshold_work",
+          "label": "Work",
+          "type": "steady",
+          "duration_sec": 360,
+          "target": { "metric": "ftp_percent", "value": 0.98 },
+          "messages": [
+            {
+              "kind": "instruction",
+              "when": "start",
+              "text": {
+                "default": "Locked-in pressure.",
+                "translations": {
+                  "fi": "Lukittu, tasainen paine.",
+                  "de": "Fester, gleichmäßiger Druck.",
+                  "es": "Presión fija y estable.",
+                  "fr": "Pression calée et stable.",
+                  "ja": "安定したしっかり負荷。",
+                  "nl": "Vaste, stabiele druk."
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "threshold_recover",
+          "label": "Recovery",
+          "type": "steady",
+          "duration_sec": 120,
+          "target": { "metric": "ftp_percent", "value": 0.6 },
+          "messages": [
+            {
+              "kind": "transition",
+              "when": "start",
+              "text": {
+                "default": "Recover, then repeat.",
+                "translations": {
+                  "fi": "Palaudu ja toista.",
+                  "de": "Erholen, dann wiederholen.",
+                  "es": "Recupera y repite.",
+                  "fr": "Récupère puis répète.",
+                  "ja": "回復して繰り返す。",
+                  "nl": "Herstel en herhaal."
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cooldown_ramp",
+      "label": "Cool-down",
+      "type": "ramp",
+      "duration_sec": 360,
+      "from_target": { "metric": "ftp_percent", "value": 0.98 },
+      "to_target": { "metric": "ftp_percent", "value": 0.45 },
+      "messages": [
+        {
+          "kind": "transition",
+          "when": "start",
+          "text": {
+            "default": "Let the legs settle.",
+            "translations": {
+              "fi": "Anna jalkojen rauhoittua.",
+              "de": "Lass die Beine zur Ruhe kommen.",
+              "es": "Deja que las piernas se asienten.",
+              "fr": "Laisse les jambes se poser.",
+              "ja": "脚を落ち着かせる。",
+              "nl": "Laat de benen kalmeren."
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "format": "ewo",
+  "version": "1.0",
+  "title": "Duplicate ids",
+  "segments": [
+    {
+      "id": "warmup",
+      "type": "steady",
+      "duration_sec": 60,
+      "target": {
+        "metric": "power",
+        "value": 100
+      }
+    },
+    {
+      "id": "repeat_block",
+      "type": "repeat",
+      "count": 2,
+      "segments": [
+        {
+          "id": "warmup",
+          "type": "steady",
+          "duration_sec": 30,
+          "target": {
+            "metric": "power",
+            "value": 120
+          }
+        },
+        {
+          "id": "recover",
+          "type": "steady",
+          "duration_sec": 30,
+          "target": {
+            "metric": "power",
+            "value": 100
+          }
+        }
+      ]
+    }
+  ]
+}

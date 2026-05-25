@@ -1,0 +1,40 @@
+{
+  "format": "ewo",
+  "version": "1.1",
+  "title": "Sweet Spot Intervals",
+  "description": "3x10 min at 88% FTP with 5 min recovery. Requires FTP to be configured.",
+  "segments": [
+    {
+      "id": "warmup",
+      "type": "ramp",
+      "duration_sec": 600,
+      "from_target": { "metric": "ftp_percent", "value": 0.40 },
+      "to_target":   { "metric": "ftp_percent", "value": 0.60 }
+    },
+    {
+      "id": "sweet-spot-set",
+      "type": "repeat",
+      "count": 3,
+      "segments": [
+        {
+          "id": "interval",
+          "type": "steady",
+          "duration_sec": 600,
+          "target": { "metric": "ftp_percent", "value": 0.88 }
+        },
+        {
+          "id": "recovery",
+          "type": "steady",
+          "duration_sec": 300,
+          "target": { "metric": "ftp_percent", "value": 0.50 }
+        }
+      ]
+    },
+    {
+      "id": "cooldown",
+      "type": "steady",
+      "duration_sec": 600,
+      "target": { "metric": "ftp_percent", "value": 0.45 }
+    }
+  ]
+}

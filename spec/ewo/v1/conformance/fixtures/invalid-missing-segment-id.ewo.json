@@ -1,0 +1,15 @@
+{
+  "format": "ewo",
+  "version": "1.0",
+  "title": "Missing Segment Id",
+  "segments": [
+    {
+      "type": "steady",
+      "duration_sec": 60,
+      "target": {
+        "metric": "power",
+        "value": 100
+      }
+    }
+  ]
+}

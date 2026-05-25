@@ -1,0 +1,83 @@
+{
+  "format": "ewo",
+  "version": "1.5",
+  "title": "Tabata Light (Neuromuscular Wake)",
+  "description": "Short neuromuscular session with brief high-intensity efforts and long recovery. Low total load.",
+  "difficulty": "hard",
+  "tags": ["anaerobic", "micro_intervals", "ftp_percent", "short", "optional"],
+    "messages": [
+      { "kind": "intro", "when": "start", "text": { "default": "This short session uses brief high-intensity bursts with long recovery. Focus on clean, controlled efforts rather than maximum output.", "translations": { "fi": "Tämä lyhyt harjoitus käyttää lyhyitä kovia vetoja ja pitkiä palautuksia. Keskity puhtaisiin ja hallittuihin suorituksiin, älä maksimiin.", "de": "Diese kurze Einheit nutzt kurze intensive Spitzen mit langen Erholungen. Fokus auf saubere, kontrollierte Belastung statt Maximalleistung.", "es": "Esta sesión corta usa esfuerzos intensos breves con recuperaciones largas. Enfócate en esfuerzos limpios y controlados, no en el máximo.", "fr": "Cette séance courte utilise de brèves intensités élevées avec de longues récupérations. Concentre-toi sur des efforts propres et contrôlés.", "ja": "この短いセッションは短い高強度と長めの回復で構成されます。最大ではなく、コントロールされた動きを意識します。", "nl": "Deze korte sessie gebruikt korte intensieve pieken met lange herstelperiodes. Focus op gecontroleerde inspanning, niet op maximaal gaan." } } }
+    ],
+  "segments": [
+    {
+      "id": "warmup_ramp",
+      "label": "Warm-up",
+      "type": "ramp",
+      "duration_sec": 480,
+      "from_target": { "metric": "ftp_percent", "value": 0.55 },
+      "to_target": { "metric": "ftp_percent", "value": 0.7 }
+    },
+    {
+      "id": "set_one",
+      "label": "Set One",
+      "type": "repeat",
+      "count": 4,
+      "segments": [
+        {
+          "id": "work",
+          "label": "Work",
+          "type": "steady",
+          "duration_sec": 20,
+          "target": { "metric": "ftp_percent", "value": 1.25 }
+        },
+        {
+          "id": "recover",
+          "label": "Recovery",
+          "type": "steady",
+          "duration_sec": 10,
+          "target": { "metric": "ftp_percent", "value": 0.55 }
+        }
+      ]
+    },
+    {
+      "id": "reset",
+      "label": "Reset",
+      "type": "steady",
+      "duration_sec": 240,
+      "target": { "metric": "ftp_percent", "value": 0.55 },
+      "messages": [
+        { "kind": "instruction", "when": { "anchor": "end", "offset_sec": -1 }, "text": { "default": "Repeat the same controlled efforts.", "translations": { "fi": "Toista samat hallitut vedot.", "de": "Wiederhole die gleichen kontrollierten Belastungen.", "es": "Repite los mismos esfuerzos controlados.", "fr": "Répète les mêmes efforts contrôlés.", "ja": "同じコントロールされた動きを繰り返す。", "nl": "Herhaal dezelfde gecontroleerde inspanning." } } }
+      ]
+    },
+    {
+      "id": "set_two",
+      "label": "Set Two",
+      "type": "repeat",
+      "count": 4,
+      "segments": [
+        {
+          "id": "work_2",
+          "label": "Work",
+          "type": "steady",
+          "duration_sec": 20,
+          "target": { "metric": "ftp_percent", "value": 1.25 }
+        },
+        {
+          "id": "recover_2",
+          "label": "Recovery",
+          "type": "steady",
+          "duration_sec": 10,
+          "target": { "metric": "ftp_percent", "value": 0.55 }
+        }
+      ]
+    },
+    {
+      "id": "cooldown_ramp",
+      "label": "Cool-down",
+      "type": "ramp",
+      "duration_sec": 360,
+      "from_target": { "metric": "ftp_percent", "value": 0.65 },
+      "to_target": { "metric": "ftp_percent", "value": 0.5 }
+    }
+  ]
+}

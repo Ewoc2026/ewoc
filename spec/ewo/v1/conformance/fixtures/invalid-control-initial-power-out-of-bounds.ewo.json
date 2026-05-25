@@ -1,0 +1,26 @@
+{
+  "format": "ewo",
+  "version": "1.0",
+  "title": "Initial power out of bounds",
+  "control": {
+    "initial_power_watts": 260,
+    "min_power_watts": 120,
+    "max_power_watts": 220,
+    "signal_loss_power_watts": 140,
+    "hr_upper_cap_bpm": 175
+  },
+  "segments": [
+    {
+      "id": "steady_hr",
+      "type": "steady",
+      "duration_sec": 300,
+      "target": {
+        "metric": "heart_rate",
+        "range": {
+          "low": 145,
+          "high": 155
+        }
+      }
+    }
+  ]
+}

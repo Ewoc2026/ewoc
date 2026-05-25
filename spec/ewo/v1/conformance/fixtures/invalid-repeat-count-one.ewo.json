@@ -1,0 +1,32 @@
+{
+  "format": "ewo",
+  "version": "1.0",
+  "title": "Repeat Count One Not Allowed",
+  "segments": [
+    {
+      "id": "main_set",
+      "type": "repeat",
+      "count": 1,
+      "segments": [
+        {
+          "id": "effort",
+          "type": "steady",
+          "duration_sec": 120,
+          "target": {
+            "metric": "power",
+            "value": 250
+          }
+        },
+        {
+          "id": "recover",
+          "type": "steady",
+          "duration_sec": 60,
+          "target": {
+            "metric": "power",
+            "value": 100
+          }
+        }
+      ]
+    }
+  ]
+}

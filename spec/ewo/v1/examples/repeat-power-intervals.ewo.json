@@ -1,0 +1,82 @@
+{
+  "format": "ewo",
+  "version": "1.0",
+  "title": "Repeat Power Intervals",
+  "description": "v1 repeat fixture with required IDs on the repeat container and children.",
+  "segments": [
+    {
+      "id": "warmup",
+      "type": "steady",
+      "duration_sec": 300,
+      "target": {
+        "metric": "power",
+        "value": 140
+      }
+    },
+    {
+      "id": "main_set",
+      "type": "repeat",
+      "count": 3,
+      "messages": [
+        {
+          "kind": "intro",
+          "when": "start",
+          "text": {
+            "default": "Main set starts now."
+          }
+        }
+      ],
+      "segments": [
+        {
+          "id": "work",
+          "type": "steady",
+          "duration_sec": 120,
+          "target": {
+            "metric": "power",
+            "value": 220
+          },
+          "messages": [
+            {
+              "kind": "instruction",
+              "when": "start",
+              "text": {
+                "default": "Ride tall and smooth through the interval."
+              }
+            }
+          ]
+        },
+        {
+          "id": "recover",
+          "type": "steady",
+          "duration_sec": 90,
+          "target": {
+            "metric": "power",
+            "value": 120
+          },
+          "messages": [
+            {
+              "kind": "transition",
+              "when": "start",
+              "text": {
+                "default": "Back off and prepare for the next effort."
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cooldown",
+      "type": "ramp",
+      "duration_sec": 180,
+      "from_target": {
+        "metric": "power",
+        "value": 140
+      },
+      "to_target": {
+        "metric": "power",
+        "value": 100
+      }
+    }
+  ]
+}

@@ -1,0 +1,126 @@
+{
+  "format": "ewo",
+  "version": "1.5",
+  "title": "45 min VO2 Microbursts",
+  "description": "VO2-focused microburst session with two ten-minute sets of short on-off work.",
+  "difficulty": "very_hard",
+  "tags": ["vo2", "microbursts", "intervals", "ftp_percent", "45min"],
+  "messages": [
+    {
+      "kind": "intro",
+      "when": "start",
+      "text": {
+        "default": "Microbursts use very short surges and short recoveries to build high aerobic demand without one long all-out effort. Aim for repeatable punch, not a sprint contest.",
+        "translations": {
+          "fi": "Mikropurskeet käyttävät hyvin lyhyitä vetoja ja lyhyitä palautuksia rakentaakseen korkean aerobisen kuorman ilman yhtä pitkää täyskovaa suoritusta. Tavoittele toistettavaa terävyyttä, älä sprinttikisaa.",
+          "de": "Microbursts nutzen sehr kurze Spitzen und kurze Erholungen, um eine hohe aerobe Belastung ohne eine lange Vollgasphase aufzubauen. Ziel ist wiederholbarer Punch, kein Sprintwettkampf.",
+          "es": "Los microbursts usan aceleraciones muy cortas y recuperaciones breves para crear una alta demanda aeróbica sin un esfuerzo largo a tope. Busca una chispa repetible, no una competición de sprint.",
+          "fr": "Les microbursts utilisent de très courtes poussées et de brèves récupérations pour créer une forte demande aérobie sans un long effort à bloc. Cherche un punch répétable, pas un concours de sprint.",
+          "ja": "マイクロバーストは、非常に短い上げ下げで高い有酸素負荷を作りつつ、一本の長い全力走を避ける方法です。全力スプリントではなく、繰り返せるキレを狙いましょう。",
+          "nl": "Microbursts gebruiken zeer korte versnellingen en korte herstelfases om een hoge aerobe prikkel te geven zonder één lange maximale inspanning. Mik op herhaalbare punch, niet op een sprintwedstrijd."
+        }
+      }
+    }
+  ],
+  "segments": [
+    {
+      "id": "warmup_ramp",
+      "label": "Warm-up",
+      "type": "ramp",
+      "duration_sec": 480,
+      "from_target": { "metric": "ftp_percent", "value": 0.45 },
+      "to_target": { "metric": "ftp_percent", "value": 0.75 }
+    },
+    {
+      "id": "primer_openers",
+      "label": "Primer",
+      "type": "steady",
+      "duration_sec": 120,
+      "target": { "metric": "ftp_percent", "value": 0.85 },
+      "messages": [
+        {
+          "kind": "instruction",
+          "when": "end",
+          "offset_sec": -1,
+          "text": {
+            "default": "Find the rhythm: short punch, quick reset.",
+            "translations": {
+              "fi": "Löydä rytmi: lyhyt veto, nopea palautus.",
+              "de": "Finde den Rhythmus: kurzer Druck, schnelle Erholung.",
+              "es": "Encuentra el ritmo: golpe corto, recuperación rápida.",
+              "fr": "Trouve le rythme : effort court, récupération rapide.",
+              "ja": "リズムをつかむ：短く上げて、すぐ戻す。",
+              "nl": "Vind het ritme: korte punch, snelle reset."
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "microburst_set_one",
+      "label": "Set One",
+      "type": "repeat",
+      "count": 10,
+      "segments": [
+        {
+          "id": "set_one_work",
+          "label": "Work",
+          "type": "steady",
+          "duration_sec": 30,
+          "target": { "metric": "ftp_percent", "value": 1.15 }
+        },
+        {
+          "id": "set_one_recover",
+          "label": "Recovery",
+          "type": "steady",
+          "duration_sec": 30,
+          "target": { "metric": "ftp_percent", "value": 0.6 }
+        }
+      ]
+    },
+    {
+      "id": "between_sets",
+      "label": "Reset",
+      "type": "steady",
+      "duration_sec": 300,
+      "target": { "metric": "ftp_percent", "value": 0.6 }
+    },
+    {
+      "id": "microburst_set_two",
+      "label": "Set Two",
+      "type": "repeat",
+      "count": 10,
+      "segments": [
+        {
+          "id": "set_two_work",
+          "label": "Work",
+          "type": "steady",
+          "duration_sec": 30,
+          "target": { "metric": "ftp_percent", "value": 1.15 }
+        },
+        {
+          "id": "set_two_recover",
+          "label": "Recovery",
+          "type": "steady",
+          "duration_sec": 30,
+          "target": { "metric": "ftp_percent", "value": 0.6 }
+        }
+      ]
+    },
+    {
+      "id": "settle_after_sets",
+      "label": "Settle",
+      "type": "steady",
+      "duration_sec": 180,
+      "target": { "metric": "ftp_percent", "value": 0.65 }
+    },
+    {
+      "id": "cooldown_ramp",
+      "label": "Cool-down",
+      "type": "ramp",
+      "duration_sec": 420,
+      "from_target": { "metric": "ftp_percent", "value": 0.65 },
+      "to_target": { "metric": "ftp_percent", "value": 0.45 }
+    }
+  ]
+}

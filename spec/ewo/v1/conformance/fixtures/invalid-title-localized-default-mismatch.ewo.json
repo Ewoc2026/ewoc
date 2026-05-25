@@ -1,0 +1,22 @@
+{
+  "format": "ewo",
+  "version": "1.6",
+  "title": "Threshold Builder",
+  "title_localized": {
+    "default": "Tempo Builder",
+    "translations": {
+      "fi": "Kynnystehon rakentaja"
+    }
+  },
+  "segments": [
+    {
+      "id": "warmup",
+      "type": "steady",
+      "duration_sec": 300,
+      "target": {
+        "metric": "power",
+        "value": 140
+      }
+    }
+  ]
+}

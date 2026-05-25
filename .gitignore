@@ -1,0 +1,55 @@
+
+# Gradle
+.gradle/
+build/
+
+# IntelliJ / Android Studio
+.idea/
+*.iml
+
+# Local SDK config
+local.properties
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Log/OS Files
+*.log
+*.stderr.log
+*.stdout.log
+*.codex.log
+
+# Android Studio generated files and folders
+captures/
+.externalNativeBuild/
+.cxx/
+*.aab
+*.apk
+output-metadata.json
+
+# IntelliJ
+misc.xml
+deploymentTargetDropDown.xml
+render.experimental.xml
+
+# Keystore files
+*.jks
+*.keystore
+
+# Local secrets / generated signing material
+.local/
+.codex-home/
+
+# Google Services (e.g. APIs or Firebase)
+google-services.json
+
+# Android Profiling
+*.hprof
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Local validation artifacts
+artifacts/

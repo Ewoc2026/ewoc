@@ -1,0 +1,13 @@
+{
+  "format": "ewo",
+  "version": "1.1",
+  "title": "Invalid FTP percent value",
+  "segments": [
+    {
+      "id": "block",
+      "type": "steady",
+      "duration_sec": 300,
+      "target": { "metric": "ftp_percent", "value": 90 }
+    }
+  ]
+}

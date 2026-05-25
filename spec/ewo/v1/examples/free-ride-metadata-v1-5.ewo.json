@@ -1,0 +1,41 @@
+{
+  "format": "ewo",
+  "version": "1.5",
+  "uid": "free-ride-metadata-v1-5",
+  "revision": 2,
+  "title": "Free Ride Cooldown",
+  "description": "Shows v1.5 identity, free_ride, labels, notes, and structured message timing.",
+  "messages": [
+    {
+      "kind": "intro",
+      "when": {
+        "anchor": "end",
+        "offset_sec": -20
+      },
+      "text": {
+        "default": "Ride ends soon."
+      }
+    }
+  ],
+  "segments": [
+    {
+      "id": "spin_out",
+      "type": "free_ride",
+      "label": "Spin Out",
+      "note": "Let the rider choose resistance and cadence.",
+      "duration_sec": 180,
+      "messages": [
+        {
+          "kind": "instruction",
+          "when": {
+            "anchor": "end",
+            "offset_sec": -5
+          },
+          "text": {
+            "default": "Prepare to stop."
+          }
+        }
+      ]
+    }
+  ]
+}

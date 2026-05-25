@@ -1,0 +1,24 @@
+{
+  "format": "ewo",
+  "version": "1.5",
+  "title": "FTP Preview Required Minimal",
+  "description": "Minimal desktop-editor fixture that requires FTP to resolve preview targets.",
+  "difficulty": "easy",
+  "tags": [
+    "desktop_editor_fixture",
+    "ftp_percent",
+    "preview"
+  ],
+  "segments": [
+    {
+      "id": "steady_ftp_preview",
+      "label": "Steady FTP Step",
+      "type": "steady",
+      "duration_sec": 300,
+      "target": {
+        "metric": "ftp_percent",
+        "value": 0.75
+      }
+    }
+  ]
+}

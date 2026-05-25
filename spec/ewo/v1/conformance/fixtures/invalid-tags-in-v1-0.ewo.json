@@ -1,0 +1,14 @@
+{
+  "format": "ewo",
+  "version": "1.0",
+  "title": "Tags in v1.0",
+  "tags": ["threshold"],
+  "segments": [
+    {
+      "id": "warmup",
+      "type": "steady",
+      "duration_sec": 300,
+      "target": { "metric": "power", "value": 120 }
+    }
+  ]
+}

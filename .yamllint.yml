@@ -1,0 +1,8 @@
+extends: default
+
+rules:
+  # GitHub workflow files commonly use long one-line shell snippets and "on" as a top-level key.
+  document-start: disable
+  line-length: disable
+  truthy:
+    check-keys: false

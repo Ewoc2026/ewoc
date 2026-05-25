@@ -1,0 +1,113 @@
+{
+  "format": "ewo",
+  "version": "1.6",
+  "title": "Basic workout",
+  "description": "Free basic workout",
+  "segments": [
+    {
+      "id": "segment_3",
+      "type": "ramp",
+      "duration_sec": 300,
+      "from_target": { "metric": "ftp_percent", "value": 0.5 },
+      "to_target": { "metric": "ftp_percent", "value": 0.6 },
+      "messages": [
+        {
+          "kind": "instruction",
+          "when": { "anchor": "start", "offset_sec": 5 },
+          "text": {
+            "default": "Easy start. Find your rhythm.",
+            "translations": {
+              "fi": "Rauhallinen alku. Löydä rytmi.",
+              "de": "Ruhiger Start. Finde deinen Rhythmus.",
+              "es": "Inicio suave. Encuentra tu ritmo.",
+              "fr": "Départ facile. Trouve ton rythme.",
+              "ja": "ゆっくり開始。リズムをつかむ。",
+              "nl": "Rustig beginnen. Vind je ritme."
+            }
+          }
+        },
+        {
+          "kind": "instruction",
+          "when": { "anchor": "end", "offset_sec": -1 },
+          "text": {
+            "default": "Intervals next: 1 min on, 1 min off.",
+            "translations": {
+              "fi": "Seuraavaksi intervallit: 1 min veto, 1 min palautus.",
+              "de": "Als Nächstes Intervalle: 1 Min. Belastung, 1 Min. Erholung.",
+              "es": "A continuación intervalos: 1 min esfuerzo, 1 min recuperación.",
+              "fr": "Ensuite des intervalles : 1 min effort, 1 min récupération.",
+              "ja": "次はインターバル：1分強め、1分回復。",
+              "nl": "Daarna intervallen: 1 min inspanning, 1 min herstel."
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "segment_4",
+      "type": "repeat",
+      "count": 5,
+      "segments": [
+        {
+          "id": "segment_17",
+          "type": "steady",
+          "duration_sec": 60,
+          "target": { "metric": "ftp_percent", "value": 0.9 }
+        },
+        {
+          "id": "segment_18",
+          "type": "steady",
+          "duration_sec": 60,
+          "target": { "metric": "ftp_percent", "value": 0.65 }
+        }
+      ]
+    },
+    {
+      "id": "segment_20",
+      "type": "steady",
+      "duration_sec": 120,
+      "target": { "metric": "ftp_percent", "value": 0.75 },
+      "messages": [
+        {
+          "kind": "instruction",
+          "when": "start",
+          "text": {
+            "default": "Good. Settle into steady work.",
+            "translations": {
+              "fi": "Hyvä. Tasaa rytmi.",
+              "de": "Gut. Finde einen gleichmäßigen Rhythmus.",
+              "es": "Bien. Mantén un ritmo constante.",
+              "fr": "Bien. Trouve un rythme régulier.",
+              "ja": "いい感じ。安定したペースへ。",
+              "nl": "Goed. Ga naar een stabiel tempo."
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "segment_21",
+      "type": "ramp",
+      "duration_sec": 300,
+      "from_target": { "metric": "ftp_percent", "value": 0.7 },
+      "to_target": { "metric": "ftp_percent", "value": 0.4 },
+      "messages": [
+        {
+          "kind": "instruction",
+          "when": "start",
+          "text": {
+            "default": "Cooldown. Let it come down.",
+            "translations": {
+              "fi": "Jäähdyttely. Anna kuorman laskea.",
+              "de": "Cooldown. Lass die Belastung sinken.",
+              "es": "Enfriamiento. Deja que baje la intensidad.",
+              "fr": "Retour au calme. Laisse l'effort redescendre.",
+              "ja": "クールダウン。負荷を落ち着かせる。",
+              "nl": "Cooling-down. Laat de inspanning zakken."
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

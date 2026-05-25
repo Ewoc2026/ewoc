@@ -1,0 +1,86 @@
+{
+  "format": "ewo",
+  "version": "1.6",
+  "uid": "root-localized-metadata-v1-6",
+  "revision": 1,
+  "title": "Threshold Builder",
+  "description": "3 x 8 min near threshold with controlled recoveries.",
+  "title_localized": {
+    "default": "Threshold Builder",
+    "translations": {
+      "fi": "Kynnystehon rakentaja",
+      "de": "Schwellenaufbau"
+    }
+  },
+  "description_localized": {
+    "default": "3 x 8 min near threshold with controlled recoveries.",
+    "translations": {
+      "fi": "3 x 8 min lahella kynnysta hallituilla palautuksilla.",
+      "de": "3 x 8 Min nahe der Schwelle mit kontrollierten Erholungen."
+    }
+  },
+  "messages": [
+    {
+      "kind": "intro",
+      "when": "start",
+      "text": {
+        "default": "Settle in before the first threshold block."
+      }
+    }
+  ],
+  "segments": [
+    {
+      "id": "warmup",
+      "type": "steady",
+      "label": "Warmup",
+      "duration_sec": 480,
+      "target": {
+        "metric": "power",
+        "value": 150
+      }
+    },
+    {
+      "id": "main_set",
+      "type": "repeat",
+      "label": "Threshold Set",
+      "count": 3,
+      "messages": [
+        {
+          "kind": "intro",
+          "when": "start",
+          "text": {
+            "default": "Control the start of each effort."
+          }
+        }
+      ],
+      "segments": [
+        {
+          "id": "work",
+          "type": "steady",
+          "label": "Threshold",
+          "duration_sec": 480,
+          "target": {
+            "metric": "ftp_percent",
+            "value": 0.95
+          }
+        },
+        {
+          "id": "recover",
+          "type": "steady",
+          "label": "Recover",
+          "duration_sec": 240,
+          "target": {
+            "metric": "power",
+            "value": 130
+          }
+        }
+      ]
+    },
+    {
+      "id": "cooldown",
+      "type": "free_ride",
+      "label": "Cooldown",
+      "duration_sec": 180
+    }
+  ]
+}

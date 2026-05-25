@@ -1,0 +1,518 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ergometerapp.local/spec/ewo/v1/schema.json",
+  "title": "Canonical .ewo v1 family",
+  "description": "Structural schema for the canonical .ewo v1 workout format (versions 1.0–1.6). Cross-field invariants and version-gated feature checks are normative semantic rules enforced by the Kotlin validator, not by this schema alone.",
+  "type": "object",
+  "additionalProperties": false,
+  "$comment": "The .ewo v1 family uses a single closed-world schema. Unknown fields are always invalid. Version-specific features (ftp_percent ≥1.1, cadence ≥1.2, difficulty/tags ≥1.3, heart_rate_relative ≥1.4, uid/revision + label/note + free_ride + structured message timing ≥1.5, root title/description localized companions ≥1.6) are accepted structurally here but rejected by semantic validation when the version field does not meet the minimum requirement.",
+  "required": [
+    "format",
+    "version",
+    "title",
+    "segments"
+  ],
+  "properties": {
+    "format": {
+      "const": "ewo"
+    },
+    "version": {
+      "enum": ["1.0", "1.1", "1.2", "1.3", "1.4", "1.5", "1.6"],
+      "description": "Minor-version field for the .ewo v1 family. Versions 1.0–1.6 are accepted; unknown versions are rejected by semantic validation. Feature availability is gated per version: ftp_percent ≥1.1, cadence ≥1.2, difficulty/tags ≥1.3, heart_rate_relative ≥1.4, uid/revision + label/note + free_ride + structured message timing ≥1.5, root title/description localized companions ≥1.6."
+    },
+    "uid": {
+      "type": "string",
+      "description": "Optional stable document identity (v1.5+). Semantic validation trims and rejects blank values."
+    },
+    "revision": {
+      "type": "integer",
+      "description": "Optional positive document revision number (v1.5+)."
+    },
+    "title": {
+      "type": "string",
+      "description": "Semantic validation trims and rejects blank titles."
+    },
+    "description": {
+      "type": "string"
+    },
+    "title_localized": {
+      "$ref": "#/$defs/localizedText",
+      "description": "Optional localized title companion (v1.6+). Semantic validation requires default to match root title after trimming normalization."
+    },
+    "description_localized": {
+      "$ref": "#/$defs/localizedText",
+      "description": "Optional localized description companion (v1.6+). Semantic validation requires root description to be present and default to match it after trimming normalization."
+    },
+    "difficulty": {
+      "enum": ["easy", "moderate", "hard", "very_hard"],
+      "description": "Optional workout difficulty hint (v1.3+). Semantic validation rejects this field for earlier versions."
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9_-]{1,32}$"
+      },
+      "maxItems": 10,
+      "description": "Optional workout classification tags (v1.3+). Semantic validation rejects this field for earlier versions."
+    },
+    "control": {
+      "$ref": "#/$defs/control",
+      "description": "Semantic validation requires this object whenever any segment targets heart_rate."
+    },
+    "messages": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/message"
+      }
+    },
+    "segments": {
+      "type": "array",
+      "description": "Whole-tree segment ID uniqueness and non-empty workout requirements are semantic rules.",
+      "items": {
+        "$ref": "#/$defs/segment"
+      }
+    }
+  },
+  "$defs": {
+    "segmentId": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+    },
+    "localizedText": {
+      "type": "object",
+      "additionalProperties": false,
+      "$comment": "Blank-after-trim checks for default and translation values are semantic rules.",
+      "required": [
+        "default"
+      ],
+      "properties": {
+        "default": {
+          "type": "string"
+        },
+        "translations": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string",
+            "minLength": 1
+          },
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "message": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "when",
+        "text"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "intro",
+            "instruction",
+            "transition",
+            "warning",
+            "motivation"
+          ]
+        },
+        "when": {
+          "oneOf": [
+            {
+              "const": "start"
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["anchor", "offset_sec"],
+              "properties": {
+                "anchor": {
+                  "enum": ["start", "end"]
+                },
+                "offset_sec": {
+                  "type": "integer"
+                }
+              }
+            }
+          ]
+        },
+        "text": {
+          "$ref": "#/$defs/localizedText"
+        }
+      }
+    },
+    "control": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "initial_power_watts",
+        "min_power_watts",
+        "max_power_watts",
+        "signal_loss_power_watts",
+        "hr_upper_cap_bpm"
+      ],
+      "properties": {
+        "initial_power_watts": {
+          "type": "integer"
+        },
+        "min_power_watts": {
+          "type": "integer"
+        },
+        "max_power_watts": {
+          "type": "integer"
+        },
+        "signal_loss_power_watts": {
+          "type": "integer"
+        },
+        "hr_upper_cap_bpm": {
+          "type": "integer"
+        }
+      },
+      "$comment": "Cross-field bounds (min < max, initial and signal_loss within bounds, hr_upper_cap in 40..220) and the requirement to provide control for heart_rate workouts are semantic rules."
+    },
+    "powerTarget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "metric",
+        "value"
+      ],
+      "properties": {
+        "metric": {
+          "const": "power"
+        },
+        "value": {
+          "type": "integer",
+          "description": "Absolute watts. Semantic validation requires a positive value."
+        }
+      }
+    },
+    "ftpPercentTarget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "metric",
+        "value"
+      ],
+      "properties": {
+        "metric": {
+          "const": "ftp_percent"
+        },
+        "value": {
+          "type": "number",
+          "description": "Fraction of FTP, e.g. 0.90 for 90%. Semantic validation enforces 0.10..2.50. Requires version 1.1 or later."
+        }
+      },
+      "$comment": "ftp_percent targets require version 1.1 or later. Semantic validation rejects this metric for version 1.0 workouts."
+    },
+    "heartRateTarget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "metric",
+        "range"
+      ],
+      "properties": {
+        "metric": {
+          "const": "heart_rate"
+        },
+        "range": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "low",
+            "high"
+          ],
+          "properties": {
+            "low": {
+              "type": "integer"
+            },
+            "high": {
+              "type": "integer"
+            }
+          }
+        }
+      },
+      "$comment": "Target range ordering and the canonical 40..220 heart-rate bounds are semantic rules."
+    },
+    "heartRateRelativeTarget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "metric",
+        "reference",
+        "range"
+      ],
+      "properties": {
+        "metric": {
+          "const": "heart_rate_relative"
+        },
+        "reference": {
+          "enum": ["hr_max", "heart_rate_reserve", "lthr"]
+        },
+        "range": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "low",
+            "high"
+          ],
+          "properties": {
+            "low": {
+              "type": "number"
+            },
+            "high": {
+              "type": "number"
+            }
+          }
+        }
+      },
+      "$comment": "heart_rate_relative requires version 1.4 or later. Semantic validation enforces 0 < low < high and validates the reference."
+    },
+    "cadenceRange": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "low",
+        "high"
+      ],
+      "properties": {
+        "low": {
+          "type": "integer"
+        },
+        "high": {
+          "type": "integer"
+        }
+      },
+      "$comment": "Cadence is a coaching hint only — it never affects trainer resistance or execution semantics. Semantic validation enforces 30 <= low <= high <= 200. Requires version 1.2 or later."
+    },
+    "steadyTarget": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/powerTarget"
+        },
+        {
+          "$ref": "#/$defs/ftpPercentTarget"
+        },
+        {
+          "$ref": "#/$defs/heartRateTarget"
+        },
+        {
+          "$ref": "#/$defs/heartRateRelativeTarget"
+        }
+      ]
+    },
+    "rampEndpointTarget": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/powerTarget"
+        },
+        {
+          "$ref": "#/$defs/ftpPercentTarget"
+        }
+      ],
+      "$comment": "heart_rate is not a valid ramp target metric. Semantic validation also requires both endpoints to use the same metric."
+    },
+    "steadySegment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "type",
+        "duration_sec",
+        "target"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/segmentId"
+        },
+        "label": {
+          "type": "string",
+          "description": "Optional rider-facing segment label (v1.5+)."
+        },
+        "note": {
+          "type": "string",
+          "description": "Optional authoring note preserved by canonical round-trip flows (v1.5+)."
+        },
+        "type": {
+          "const": "steady"
+        },
+        "duration_sec": {
+          "type": "integer"
+        },
+        "target": {
+          "$ref": "#/$defs/steadyTarget"
+        },
+        "cadence": {
+          "$ref": "#/$defs/cadenceRange",
+          "description": "Optional cadence coaching hint (v1.2+). Semantic validation rejects this field for earlier versions."
+        },
+        "messages": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/message"
+          }
+        }
+      }
+    },
+    "rampSegment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "type",
+        "duration_sec",
+        "from_target",
+        "to_target"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/segmentId"
+        },
+        "label": {
+          "type": "string",
+          "description": "Optional rider-facing segment label (v1.5+)."
+        },
+        "note": {
+          "type": "string",
+          "description": "Optional authoring note preserved by canonical round-trip flows (v1.5+)."
+        },
+        "type": {
+          "const": "ramp"
+        },
+        "duration_sec": {
+          "type": "integer"
+        },
+        "from_target": {
+          "$ref": "#/$defs/rampEndpointTarget"
+        },
+        "to_target": {
+          "$ref": "#/$defs/rampEndpointTarget"
+        },
+        "cadence": {
+          "$ref": "#/$defs/cadenceRange",
+          "description": "Optional cadence coaching hint (v1.2+). Semantic validation rejects this field for earlier versions."
+        },
+        "messages": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/message"
+          }
+        }
+      },
+      "$comment": "Semantic validation requires from_target and to_target to use the same metric. ftp_percent ramps require version 1.1 or later."
+    },
+    "freeRideSegment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "type",
+        "duration_sec"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/segmentId"
+        },
+        "label": {
+          "type": "string",
+          "description": "Optional rider-facing segment label (v1.5+)."
+        },
+        "note": {
+          "type": "string",
+          "description": "Optional authoring note preserved by canonical round-trip flows (v1.5+)."
+        },
+        "type": {
+          "const": "free_ride"
+        },
+        "duration_sec": {
+          "type": "integer"
+        },
+        "cadence": {
+          "$ref": "#/$defs/cadenceRange",
+          "description": "Optional cadence coaching hint (v1.2+). Semantic validation rejects this field for earlier versions."
+        },
+        "messages": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/message"
+          }
+        }
+      },
+      "$comment": "free_ride requires version 1.5 or later."
+    },
+    "repeatChildSegment": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/steadySegment"
+        },
+        {
+          "$ref": "#/$defs/freeRideSegment"
+        }
+      ],
+      "$comment": "Repeat children may only be steady or free_ride segments. Ramp and repeat nesting are not allowed."
+    },
+    "repeatSegment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "type",
+        "count",
+        "segments"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/segmentId"
+        },
+        "label": {
+          "type": "string",
+          "description": "Optional rider-facing segment label (v1.5+)."
+        },
+        "note": {
+          "type": "string",
+          "description": "Optional authoring note preserved by canonical round-trip flows (v1.5+)."
+        },
+        "type": {
+          "const": "repeat"
+        },
+        "count": {
+          "type": "integer"
+        },
+        "segments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/repeatChildSegment"
+          }
+        },
+        "messages": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/message"
+          }
+        }
+      },
+      "$comment": "Semantic validation requires count >= 2 and at least two child segments."
+    },
+    "segment": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/steadySegment"
+        },
+        {
+          "$ref": "#/$defs/rampSegment"
+        },
+        {
+          "$ref": "#/$defs/freeRideSegment"
+        },
+        {
+          "$ref": "#/$defs/repeatSegment"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,133 @@
+{
+  "format": "ewo",
+  "version": "1.5",
+  "title": "35 min Sweet Spot",
+  "description": "Sweet spot introduction with two sustained efforts separated by a short recovery.",
+  "difficulty": "hard",
+  "tags": ["sweet_spot", "intervals", "ftp_percent", "35min", "intro"],
+  "messages": [
+    {
+      "kind": "intro",
+      "when": "start",
+      "text": {
+        "default": "Sweet spot sits close to threshold but stays more repeatable. This workout shows how a repeat block can deliver strong aerobic work without all-out strain.",
+        "translations": {
+          "fi": "Sweet spot on lähellä kynnystä mutta pysyy paremmin toistettavana. Tämä harjoitus näyttää, miten toistoblokki voi tuottaa vahvaa aerobista työtä ilman täyttä puristusta.",
+          "de": "Sweet Spot liegt nahe an der Schwelle, bleibt aber besser wiederholbar. Diese Einheit zeigt, wie ein Wiederholungsblock starke aerobe Arbeit ohne Vollgas liefern kann.",
+          "es": "El sweet spot está cerca del umbral, pero se puede repetir mejor. Esta sesión muestra cómo un bloque repetido puede dar un trabajo aeróbico sólido sin ir a tope.",
+          "fr": "Le sweet spot se situe près du seuil mais reste plus répétable. Cette séance montre comment un bloc répété peut donner un fort travail aérobie sans effort maximal.",
+          "ja": "スイートスポットは閾値に近い一方で、より繰り返しやすい強度です。この練習は、全開にせずに強い有酸素刺激を作るリピート構成を示します。",
+          "nl": "Sweet spot ligt dicht bij de drempel maar blijft beter herhaalbaar. Deze training laat zien hoe een herhaalblok stevige aerobe arbeid kan geven zonder voluit te gaan."
+        }
+      }
+    }
+  ],
+  "segments": [
+    {
+      "id": "warmup_ramp",
+      "label": "Warm-up",
+      "type": "ramp",
+      "duration_sec": 420,
+      "from_target": { "metric": "ftp_percent", "value": 0.45 },
+      "to_target": { "metric": "ftp_percent", "value": 0.75 },
+      "messages": [
+        {
+          "kind": "instruction",
+          "when": "start",
+          "text": {
+            "default": "Build into it.",
+            "translations": {
+              "fi": "Nosta kohti pääosaa.",
+              "de": "In den Hauptteil hinein aufbauen.",
+              "es": "Sube hacia el bloque principal.",
+              "fr": "Monte vers le bloc principal.",
+              "ja": "メインに向けて上げる。",
+              "nl": "Bouw op naar het hoofdblok."
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "sweetspot_rounds",
+      "label": "Sweet Spot Set",
+      "type": "repeat",
+      "count": 2,
+      "segments": [
+        {
+          "id": "sweetspot_work",
+          "label": "Work",
+          "type": "steady",
+          "duration_sec": 480,
+          "target": { "metric": "ftp_percent", "value": 0.9 },
+          "messages": [
+            {
+              "kind": "instruction",
+              "when": "start",
+              "text": {
+                "default": "Strong, steady pressure.",
+                "translations": {
+                  "fi": "Vahva, tasainen paine.",
+                  "de": "Kräftiger, gleichmäßiger Druck.",
+                  "es": "Presión firme y constante.",
+                  "fr": "Pression solide et régulière.",
+                  "ja": "強く、一定に。",
+                  "nl": "Stevige, constante druk."
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "sweetspot_recover",
+          "label": "Recovery",
+          "type": "steady",
+          "duration_sec": 180,
+          "target": { "metric": "ftp_percent", "value": 0.6 },
+          "messages": [
+            {
+              "kind": "transition",
+              "when": "start",
+              "text": {
+                "default": "Reset for the next round.",
+                "translations": {
+                  "fi": "Nollaa seuraavaa kierrosta varten.",
+                  "de": "Für die nächste Runde sammeln.",
+                  "es": "Reajusta para la siguiente ronda.",
+                  "fr": "Réinitialise-toi pour le tour suivant.",
+                  "ja": "次のラウンドへ整える。",
+                  "nl": "Reset voor de volgende ronde."
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cooldown_ramp",
+      "label": "Cool-down",
+      "type": "ramp",
+      "duration_sec": 360,
+      "from_target": { "metric": "ftp_percent", "value": 0.9 },
+      "to_target": { "metric": "ftp_percent", "value": 0.45 },
+      "messages": [
+        {
+          "kind": "transition",
+          "when": "start",
+          "text": {
+            "default": "Bring it down.",
+            "translations": {
+              "fi": "Laske kuormaa.",
+              "de": "Belastung senken.",
+              "es": "Baja la carga.",
+              "fr": "Fais redescendre l'effort.",
+              "ja": "負荷を下げる。",
+              "nl": "Breng het omlaag."
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

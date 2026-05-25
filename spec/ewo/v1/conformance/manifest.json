@@ -1,0 +1,382 @@
+{
+  "suite": "ewo-v1-family",
+  "format": "ewo",
+  "supported_versions": ["1.0", "1.1", "1.2", "1.3", "1.4", "1.5", "1.6"],
+  "cases": [
+    {
+      "id": "minimal-power-steady",
+      "file": "../examples/minimal-power-steady.ewo.json",
+      "expected": {
+        "parser_result": "success",
+        "validation_levels": [
+          "structural",
+          "semantic",
+          "runtime_executable"
+        ],
+        "runtime_profile": "android-power-v1"
+      }
+    },
+    {
+      "id": "repeat-power-intervals",
+      "file": "../examples/repeat-power-intervals.ewo.json",
+      "expected": {
+        "parser_result": "success",
+        "validation_levels": [
+          "structural",
+          "semantic",
+          "runtime_executable"
+        ],
+        "runtime_profile": "android-power-v1"
+      }
+    },
+    {
+      "id": "hr-structured-runtime-gated",
+      "file": "../examples/hr-structured-runtime-gated.ewo.json",
+      "expected": {
+        "parser_result": "success",
+        "validation_levels": [
+          "structural",
+          "semantic"
+        ],
+        "runtime_profile": "android-power-v1",
+        "runtime_executable": false,
+        "note": "Canonical heart-rate workouts are parser-valid but still gated in the Android execution mapper."
+      }
+    },
+    {
+      "id": "ftp-percent-sweet-spot",
+      "file": "../examples/ftp-percent-sweet-spot.ewo.json",
+      "expected": {
+        "parser_result": "success",
+        "validation_levels": [
+          "structural",
+          "semantic",
+          "runtime_executable"
+        ],
+        "runtime_profile": "android-power-v1",
+        "note": "v1.1 ftp_percent workout; requires ftpWatts to be passed at compile time."
+      }
+    },
+    {
+      "id": "cadence-high-cadence-drills",
+      "file": "../examples/cadence-high-cadence-drills.ewo.json",
+      "expected": {
+        "parser_result": "success",
+        "validation_levels": [
+          "structural",
+          "semantic",
+          "runtime_executable"
+        ],
+        "runtime_profile": "android-power-v1",
+        "note": "v1.2 workout with cadence hints on steady and ramp segments."
+      }
+    },
+    {
+      "id": "threshold-builder",
+      "file": "../examples/threshold-builder.ewo.json",
+      "expected": {
+        "parser_result": "success",
+        "validation_levels": [
+          "structural",
+          "semantic",
+          "runtime_executable"
+        ],
+        "runtime_profile": "android-power-v1",
+        "note": "v1.3 workout with difficulty and tags metadata."
+      }
+    },
+    {
+      "id": "free-ride-metadata-v1-5",
+      "file": "../examples/free-ride-metadata-v1-5.ewo.json",
+      "expected": {
+        "parser_result": "success",
+        "validation_levels": [
+          "structural",
+          "semantic",
+          "runtime_executable"
+        ],
+        "runtime_profile": "android-power-v1",
+        "note": "v1.5 workout with uid/revision metadata, free_ride, segment label/note, and structured message timing."
+      }
+    },
+    {
+      "id": "root-localized-metadata-v1-6",
+      "file": "../examples/root-localized-metadata-v1-6.ewo.json",
+      "expected": {
+        "parser_result": "success",
+        "validation_levels": [
+          "structural",
+          "semantic",
+          "runtime_executable"
+        ],
+        "runtime_profile": "android-power-v1",
+        "note": "v1.6 workout with additive localized root title/description companions plus unchanged string fallbacks."
+      }
+    },
+    {
+      "id": "invalid-cadence-in-v1-0",
+      "file": "fixtures/invalid-cadence-in-v1-0.ewo.json",
+      "expected": {
+        "parser_result": "failure",
+        "error_code": "unknown_field",
+        "field_path": "$.segments[0].cadence"
+      }
+    },
+    {
+      "id": "invalid-difficulty-in-v1-0",
+      "file": "fixtures/invalid-difficulty-in-v1-0.ewo.json",
+      "expected": {
+        "parser_result": "failure",
+        "error_code": "unknown_field",
+        "field_path": "$.difficulty"
+      }
+    },
+    {
+      "id": "invalid-tags-in-v1-0",
+      "file": "fixtures/invalid-tags-in-v1-0.ewo.json",
+      "expected": {
+        "parser_result": "failure",
+        "error_code": "unknown_field",
+        "field_path": "$.tags"
+      }
+    },
+    {
+      "id": "invalid-difficulty-unknown",
+      "file": "fixtures/invalid-difficulty-unknown.ewo.json",
+      "expected": {
+        "parser_result": "failure",
+        "error_code": "invalid_difficulty",
+        "field_path": "$.difficulty"
+      }
+    },
+    {
+      "id": "invalid-tag-pattern",
+      "file": "fixtures/invalid-tag-pattern.ewo.json",
+      "expected": {
+        "parser_result": "failure",
+        "error_code": "invalid_tag",
+        "field_path": "$.tags[1]"
+      }
+    },
+    {
+      "id": "invalid-tags-too-many",
+      "file": "fixtures/invalid-tags-too-many.ewo.json",
+      "expected": {
+        "parser_result": "failure",
+        "error_code": "too_many_tags",
+        "field_path": "$.tags"
+      }
+    },
+    {
+      "id": "invalid-cadence-range-low-gt-high",
+      "file": "fixtures/invalid-cadence-range-low-gt-high.ewo.json",
+      "expected": {
+        "parser_result": "failure",
+        "error_code": "invalid_cadence_range",
+        "field_path": "$.segments[0].cadence"
+      }
+    },
+    {
+      "id": "invalid-cadence-range-exceeds-max",
+      "file": "fixtures/invalid-cadence-range-exceeds-max.ewo.json",
+      "expected": {
+        "parser_result": "failure",
+        "error_code": "invalid_cadence_range",
+        "field_path": "$.segments[0].cadence"
+      }
+    },
+    {
+      "id": "invalid-cadence-on-repeat",
+      "file": "fixtures/invalid-cadence-on-repeat.ewo.json",
+      "expected": {
+        "parser_result": "failure",
+        "error_code": "unknown_field",
+        "field_path": "$.segments[0].cadence"
+      }
+    },
+    {
+      "id": "invalid-ftp-percent-value-out-of-range",
+      "file": "fixtures/invalid-ftp-percent-value-out-of-range.ewo.json",
+      "expected": {
+        "parser_result": "failure",
+        "error_code": "invalid_ftp_percent_value",
+        "field_path": "$.segments[0].target.value"
+      }
+    },
+    {
+      "id": "invalid-ftp-percent-in-v1-0",
+      "file": "fixtures/invalid-ftp-percent-in-v1-0.ewo.json",
+      "expected": {
+        "parser_result": "failure",
+        "error_code": "invalid_target_metric",
+        "field_path": "$.segments[0].target.metric"
+      }
+    },
+    {
+      "id": "invalid-ramp-mixed-metrics",
+      "file": "fixtures/invalid-ramp-mixed-metrics.ewo.json",
+      "expected": {
+        "parser_result": "failure",
+        "error_code": "ramp_mixed_target_metrics",
+        "field_path": "$.segments[0].to_target"
+      }
+    },
+    {
+      "id": "invalid-unsupported-minor-version",
+      "file": "fixtures/invalid-unsupported-minor-version.ewo.json",
+      "expected": {
+        "parser_result": "failure",
+        "error_code": "unsupported_version",
+        "field_path": "$.version"
+      }
+    },
+    {
+      "id": "invalid-title-localized-default-mismatch",
+      "file": "fixtures/invalid-title-localized-default-mismatch.ewo.json",
+      "expected": {
+        "parser_result": "failure",
+        "error_code": "invalid_localized_text",
+        "field_path": "$.title_localized.default"
+      }
+    },
+    {
+      "id": "invalid-description-localized-without-description",
+      "file": "fixtures/invalid-description-localized-without-description.ewo.json",
+      "expected": {
+        "parser_result": "failure",
+        "error_code": "invalid_localized_text",
+        "field_path": "$.description_localized"
+      }
+    },
+    {
+      "id": "invalid-unknown-vendor-field",
+      "file": "fixtures/invalid-unknown-vendor-field.ewo.json",
+      "expected": {
+        "parser_result": "failure",
+        "error_code": "unknown_field",
+        "field_path": "$.vendor_acme"
+      }
+    },
+    {
+      "id": "invalid-missing-segment-id",
+      "file": "fixtures/invalid-missing-segment-id.ewo.json",
+      "expected": {
+        "parser_result": "failure",
+        "error_code": "missing_required_field",
+        "field_path": "$.segments[0].id"
+      }
+    },
+    {
+      "id": "invalid-repeat-count-one",
+      "file": "fixtures/invalid-repeat-count-one.ewo.json",
+      "expected": {
+        "parser_result": "failure",
+        "error_code": "invalid_repeat_count",
+        "field_path": "$.segments[0].count"
+      }
+    },
+    {
+      "id": "invalid-repeat-ramp-child",
+      "file": "fixtures/invalid-repeat-ramp-child.ewo.json",
+      "expected": {
+        "parser_result": "failure",
+        "error_code": "repeat_child_type_not_allowed",
+        "field_path": "$.segments[0].segments[0].type"
+      }
+    },
+    {
+      "id": "invalid-duplicate-segment-id",
+      "file": "fixtures/invalid-duplicate-segment-id.ewo.json",
+      "expected": {
+        "parser_result": "failure",
+        "error_code": "duplicate_segment_id",
+        "field_path": "$.segments[1].segments[0].id"
+      }
+    },
+    {
+      "id": "invalid-control-bounds",
+      "file": "fixtures/invalid-control-bounds.ewo.json",
+      "expected": {
+        "parser_result": "failure",
+        "error_code": "invalid_control_bounds",
+        "field_path": "$.control"
+      }
+    },
+    {
+      "id": "invalid-control-initial-power-out-of-bounds",
+      "file": "fixtures/invalid-control-initial-power-out-of-bounds.ewo.json",
+      "expected": {
+        "parser_result": "failure",
+        "error_code": "control_value_out_of_bounds",
+        "field_path": "$.control.initial_power_watts"
+      }
+    },
+    {
+      "id": "invalid-message-blank-default",
+      "file": "fixtures/invalid-message-blank-default.ewo.json",
+      "expected": {
+        "parser_result": "failure",
+        "error_code": "invalid_localized_text",
+        "field_path": "$.messages[0].text.default"
+      }
+    },
+    {
+      "id": "invalid-message-blank-translation",
+      "file": "fixtures/invalid-message-blank-translation.ewo.json",
+      "expected": {
+        "parser_result": "failure",
+        "error_code": "invalid_localized_text",
+        "field_path": "$.segments[0].messages[0].text.translations"
+      }
+    },
+    {
+      "id": "invalid-message-empty-locale-key",
+      "file": "fixtures/invalid-message-empty-locale-key.ewo.json",
+      "expected": {
+        "parser_result": "failure",
+        "error_code": "invalid_localized_text",
+        "field_path": "$.messages[0].text.translations"
+      }
+    },
+    {
+      "id": "hr-relative-hrmax",
+      "file": "../examples/hr-relative-hrmax.ewo.json",
+      "expected": {
+        "parser_result": "success",
+        "validation_levels": [
+          "structural",
+          "semantic"
+        ],
+        "runtime_profile": "android-power-v1",
+        "note": "v1.4 workout with heart_rate_relative target using hr_max reference."
+      }
+    },
+    {
+      "id": "invalid-hr-relative-in-v1-3",
+      "file": "fixtures/invalid-hr-relative-in-v1-3.ewo.json",
+      "expected": {
+        "parser_result": "failure",
+        "error_code": "invalid_target_metric",
+        "field_path": "$.segments[0].target.metric"
+      }
+    },
+    {
+      "id": "invalid-hr-relative-bad-reference",
+      "file": "fixtures/invalid-hr-relative-bad-reference.ewo.json",
+      "expected": {
+        "parser_result": "failure",
+        "error_code": "invalid_hr_relative_reference",
+        "field_path": "$.segments[0].target.reference"
+      }
+    },
+    {
+      "id": "invalid-hr-relative-range",
+      "file": "fixtures/invalid-hr-relative-range.ewo.json",
+      "expected": {
+        "parser_result": "failure",
+        "error_code": "invalid_hr_relative_range",
+        "field_path": "$.segments[0].target.range"
+      }
+    }
+  ]
+}

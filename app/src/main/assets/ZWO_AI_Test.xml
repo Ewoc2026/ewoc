@@ -1,0 +1,14 @@
+<workout_file>
+  <author>mywhoosh</author>
+  <name>AI Integration test</name>
+  <description/>
+  <sportType>bike</sportType>
+  <durationType>time</durationType>
+  <tags/>
+  <workout>
+    <Warmup Duration="60" PowerLow="0.486" PowerHigh="0.59" Cadence="75"/>
+    <IntervalsT Repeat="2" OnDuration="10" OffDuration="25" OnPower="1.0" OffPower="0.50" Cadence="80"/>
+    <SteadyState Duration="30" Power="0.65" Cadence="60"/>
+    <FreeRide Duration="20" Power="0.65" Cadence="65"/>
+  </workout>
+</workout_file>

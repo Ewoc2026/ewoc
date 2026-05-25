@@ -1,0 +1,27 @@
+{
+  "format": "ewo",
+  "version": "1.2",
+  "title": "Cadence on repeat segment",
+  "segments": [
+    {
+      "id": "repeat-block",
+      "type": "repeat",
+      "count": 3,
+      "cadence": { "low": 90, "high": 100 },
+      "segments": [
+        {
+          "id": "on",
+          "type": "steady",
+          "duration_sec": 60,
+          "target": { "metric": "power", "value": 250 }
+        },
+        {
+          "id": "off",
+          "type": "steady",
+          "duration_sec": 60,
+          "target": { "metric": "power", "value": 120 }
+        }
+      ]
+    }
+  ]
+}

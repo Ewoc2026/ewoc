@@ -1,0 +1,223 @@
+{
+  "format": "ewo",
+  "version": "1.5",
+  "title": "60 min Endurance Progression",
+  "description": "Longer aerobic ride that gradually progresses from easy endurance to a firmer but controlled finish.",
+  "difficulty": "moderate",
+  "tags": ["endurance", "progression", "aerobic", "ftp_percent", "60min"],
+  "messages": [
+    {
+      "kind": "intro",
+      "when": "start",
+      "text": {
+        "default": "This longer ride introduces progression without sharp spikes. The effort starts comfortably, rises in steps, and finishes with steady aerobic pressure.",
+        "translations": {
+          "fi": "Tämä pidempi harjoitus esittelee progression ilman jyrkkiä piikkejä. Kuorma alkaa mukavana, nousee portaittain ja päättyy tasaiseen aerobiseen paineeseen.",
+          "de": "Diese längere Einheit zeigt Progression ohne scharfe Spitzen. Die Belastung beginnt bequem, steigt in Stufen und endet mit gleichmäßigem aerobem Druck.",
+          "es": "Esta sesión más larga introduce la progresión sin picos bruscos. El esfuerzo empieza cómodo, sube por escalones y termina con una presión aeróbica estable.",
+          "fr": "Cette séance plus longue présente une progression sans pics brusques. L'effort commence confortablement, monte par étapes et se termine avec une pression aérobie régulière.",
+          "ja": "この長めのライドは、急なスパイクなしで強度を段階的に上げる構成を示します。快適に始まり、少しずつ上がり、最後は安定した有酸素負荷で締めます。",
+          "nl": "Deze langere rit laat progressie zien zonder scherpe pieken. De inspanning begint comfortabel, stijgt in stappen en eindigt met stabiele aerobe druk."
+        }
+      }
+    }
+  ],
+  "segments": [
+    {
+      "id": "warmup_ramp",
+      "label": "Warm-up",
+      "type": "ramp",
+      "duration_sec": 420,
+      "from_target": { "metric": "ftp_percent", "value": 0.45 },
+      "to_target": { "metric": "ftp_percent", "value": 0.65 },
+      "messages": [
+        {
+          "kind": "instruction",
+          "when": "start",
+          "text": {
+            "default": "Build steadily.",
+            "translations": {
+              "fi": "Nosta tasaisesti.",
+              "de": "Ruhig aufbauen.",
+              "es": "Sube de forma constante.",
+              "fr": "Monte régulièrement.",
+              "ja": "一定に上げる。",
+              "nl": "Bouw gestaag op."
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "endurance_block_one",
+      "label": "Endurance One",
+      "type": "steady",
+      "duration_sec": 900,
+      "target": { "metric": "ftp_percent", "value": 0.68 },
+      "messages": [
+        {
+          "kind": "instruction",
+          "when": "start",
+          "text": {
+            "default": "Find easy rhythm.",
+            "translations": {
+              "fi": "Löydä helppo rytmi.",
+              "de": "Finde einen leichten Rhythmus.",
+              "es": "Encuentra un ritmo fácil.",
+              "fr": "Trouve un rythme facile.",
+              "ja": "楽なリズムを作る。",
+              "nl": "Vind een makkelijk ritme."
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "progression_ramp_one",
+      "label": "Lift One",
+      "type": "ramp",
+      "duration_sec": 300,
+      "from_target": { "metric": "ftp_percent", "value": 0.68 },
+      "to_target": { "metric": "ftp_percent", "value": 0.75 },
+      "messages": [
+        {
+          "kind": "instruction",
+          "when": "start",
+          "text": {
+            "default": "Lift a little.",
+            "translations": {
+              "fi": "Nosta hieman.",
+              "de": "Etwas anheben.",
+              "es": "Sube un poco.",
+              "fr": "Monte un peu.",
+              "ja": "少し上げる。",
+              "nl": "Til iets op."
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "endurance_block_two",
+      "label": "Endurance Two",
+      "type": "steady",
+      "duration_sec": 900,
+      "target": { "metric": "ftp_percent", "value": 0.75 },
+      "messages": [
+        {
+          "kind": "instruction",
+          "when": "start",
+          "text": {
+            "default": "This middle block adds pressure while staying clearly aerobic, showing a simple progression without abrupt jumps.",
+            "translations": {
+              "fi": "Tämä keskimmäinen blokki lisää painetta mutta pysyy selvästi aerobisena ja näyttää yksinkertaisen progression ilman äkkinäisiä hyppyjä.",
+              "de": "Dieser Mittelteil erhöht den Druck, bleibt aber klar aerob und zeigt eine einfache Progression ohne abrupte Sprünge.",
+              "es": "Este bloque central añade presión pero sigue siendo claramente aeróbico, mostrando una progresión simple sin saltos bruscos.",
+              "fr": "Ce bloc central ajoute de la pression tout en restant clairement aérobie, montrant une progression simple sans sauts brusques.",
+              "ja": "この中盤ブロックは負荷を少し上げつつ、はっきり有酸素の範囲に保ちます。急な変化のないシンプルな進行例です。",
+              "nl": "Dit middenblok verhoogt de druk maar blijft duidelijk aeroob en laat een eenvoudige progressie zien zonder abrupte sprongen."
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "reset_steady",
+      "label": "Reset",
+      "type": "steady",
+      "duration_sec": 180,
+      "target": { "metric": "ftp_percent", "value": 0.65 },
+      "messages": [
+        {
+          "kind": "transition",
+          "when": "start",
+          "text": {
+            "default": "Back off and reset.",
+            "translations": {
+              "fi": "Kevennä ja nollaa.",
+              "de": "Zurücknehmen und sammeln.",
+              "es": "Afloja y reajusta.",
+              "fr": "Relâche et réinitialise.",
+              "ja": "少し落として整える。",
+              "nl": "Neem terug en reset."
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "progression_ramp_two",
+      "label": "Lift Two",
+      "type": "ramp",
+      "duration_sec": 300,
+      "from_target": { "metric": "ftp_percent", "value": 0.65 },
+      "to_target": { "metric": "ftp_percent", "value": 0.8 },
+      "messages": [
+        {
+          "kind": "instruction",
+          "when": "start",
+          "text": {
+            "default": "Finish a little stronger.",
+            "translations": {
+              "fi": "Lopeta hieman vahvempana.",
+              "de": "Etwas stärker abschließen.",
+              "es": "Termina un poco más fuerte.",
+              "fr": "Termine un peu plus fort.",
+              "ja": "少し強めに仕上げる。",
+              "nl": "Rond iets sterker af."
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "endurance_block_three",
+      "label": "Aerobic Finish",
+      "type": "steady",
+      "duration_sec": 420,
+      "target": { "metric": "ftp_percent", "value": 0.8 },
+      "messages": [
+        {
+          "kind": "instruction",
+          "when": "start",
+          "text": {
+            "default": "Finish steady and smooth.",
+            "translations": {
+              "fi": "Vie loppu tasaisesti ja pehmeästi.",
+              "de": "Gleichmäßig und ruhig beenden.",
+              "es": "Termina estable y fluido.",
+              "fr": "Termine de façon stable et fluide.",
+              "ja": "安定してなめらかに終える。",
+              "nl": "Rond stabiel en soepel af."
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "cooldown_ramp",
+      "label": "Cool-down",
+      "type": "ramp",
+      "duration_sec": 180,
+      "from_target": { "metric": "ftp_percent", "value": 0.8 },
+      "to_target": { "metric": "ftp_percent", "value": 0.45 },
+      "messages": [
+        {
+          "kind": "transition",
+          "when": "start",
+          "text": {
+            "default": "Ease all the way down.",
+            "translations": {
+              "fi": "Kevennä loppuun asti.",
+              "de": "Ganz herunterfahren.",
+              "es": "Baja del todo con calma.",
+              "fr": "Redescends complètement en douceur.",
+              "ja": "最後までゆるめる。",
+              "nl": "Laat het helemaal zakken."
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

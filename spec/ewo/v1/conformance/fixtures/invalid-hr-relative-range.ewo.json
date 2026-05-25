@@ -1,0 +1,27 @@
+{
+  "format": "ewo",
+  "version": "1.4",
+  "title": "Bad HR relative range",
+  "control": {
+    "initial_power_watts": 110,
+    "min_power_watts": 90,
+    "max_power_watts": 220,
+    "signal_loss_power_watts": 100,
+    "hr_upper_cap_bpm": 160
+  },
+  "segments": [
+    {
+      "id": "zone",
+      "type": "steady",
+      "duration_sec": 600,
+      "target": {
+        "metric": "heart_rate_relative",
+        "reference": "hr_max",
+        "range": {
+          "low": 0.80,
+          "high": 0.72
+        }
+      }
+    }
+  ]
+}
