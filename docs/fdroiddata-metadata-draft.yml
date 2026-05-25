@@ -6,8 +6,7 @@
 #
 #   metadata/io.github.ewoc2026.ewoc.yml
 #
-# The `commit` value assumes the first public F-Droid submission will use a
-# `v1.0.0` tag that points at the release-ready public repository commit.
+# The `commit` value uses the first public F-Droid source tag for version 1.0.0.
 
 Categories:
   - Sports & Health

@@ -42,6 +42,7 @@ file.
 - F-Droid screenshot metadata now includes a real trainer-backed live-session
   capture.
 - A local fdroiddata metadata draft is added for the first F-Droid submission.
+- The first F-Droid source tag is selected as `v1.0.0` for `versionCode=4`.
 
 ### Removed
 

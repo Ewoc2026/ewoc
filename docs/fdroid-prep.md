@@ -13,6 +13,7 @@ fdroiddata metadata merge request.
 - Source: `https://github.com/Ewoc2026/ewoc`
 - Issue tracker: `https://github.com/Ewoc2026/ewoc/issues`
 - Current version: `versionName = "1.0.0"`, `versionCode = 4`
+- First F-Droid source tag: `v1.0.0`
 
 ## Initial Readiness Audit
 
@@ -34,9 +35,8 @@ fdroiddata metadata merge request.
 
 ## Submission Work Remaining
 
-- Decide the first public release tag. F-Droid expects a release commit/tag
-  matching the published `versionName`.
 - Run a fresh public snapshot private-marker check before submission.
+- Open the fdroiddata merge request with `v1.0.0` as the first build commit.
 - Prefer auto-update metadata once the first F-Droid build works, so future
   releases only need a version bump and tag.
 - Attempt reproducible-build setup after the basic F-Droid build path is proven.
@@ -70,7 +70,7 @@ fdroiddata metadata merge request.
 
 The local draft lives at `docs/fdroiddata-metadata-draft.yml`. It assumes:
 
-- the first public F-Droid tag will be `v1.0.0`
+- the first public F-Droid tag is `v1.0.0`
 - `versionName = "1.0.0"` and `versionCode = 4`
 - F-Droid builds from subdirectory `app`
 - future updates can use tag-based auto-update metadata
