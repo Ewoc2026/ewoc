@@ -34,7 +34,6 @@ fdroiddata metadata merge request.
 
 ## Submission Work Remaining
 
-- Add upstream Fastlane-style screenshots from a real public build.
 - Decide the first public release tag. F-Droid expects a release commit/tag
   matching the published `versionName`.
 - Run a fresh public snapshot private-marker check before submission.
@@ -48,6 +47,11 @@ fdroiddata metadata merge request.
 - `./scripts/gradle-safe.sh :app:compileDebugKotlin --no-daemon --rerun-tasks --no-configuration-cache -Dkotlin.incremental=false`
 - `env -u ERGOMETER_RELEASE_STORE_FILE -u ERGOMETER_RELEASE_STORE_PASSWORD -u ERGOMETER_RELEASE_KEY_ALIAS -u ERGOMETER_RELEASE_KEY_PASSWORD ./scripts/gradle-safe.sh :app:assembleRelease --no-daemon --rerun-tasks --no-configuration-cache -Dkotlin.incremental=false`
 - `wc -c fastlane/metadata/android/en-US/short_description.txt fastlane/metadata/android/en-US/changelogs/4.txt`
+- Captured `fastlane/metadata/android/en-US/images/tenInchScreenshots/`
+  from Samsung tablet `SM-X210` with app locale `en-US`. The selected images
+  cover setup flow, rider profile, workout file import/editor entry, and the
+  Android workout editor. A live-session mock-trainer capture was intentionally
+  excluded because it contained debug-only copy.
 
 ## Known F-Droid Review Notes
 
