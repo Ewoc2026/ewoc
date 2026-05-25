@@ -66,3 +66,5 @@ file.
 - Upstream Fastlane-style F-Droid metadata is started with title, short
   description, full description, icon, and `versionCode=4` changelog.
 - F-Droid tablet screenshots are added from a real Samsung tablet capture.
+- F-Droid screenshot metadata now includes a real trainer-backed live-session
+  capture.

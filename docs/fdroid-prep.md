@@ -52,6 +52,10 @@ fdroiddata metadata merge request.
   cover setup flow, rider profile, workout file import/editor entry, and the
   Android workout editor. A live-session mock-trainer capture was intentionally
   excluded because it contained debug-only copy.
+- Added a fifth `tenInchScreenshots/5.png` capture from a real trainer-backed
+  live session. The original device screenshot is retained locally under
+  `.local/fdroid-screenshots/originals/` and the metadata copy is cropped to
+  remove the Android status bar.
 
 ## Known F-Droid Review Notes
 
