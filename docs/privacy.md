@@ -2,9 +2,9 @@
 
 Updated: 2026-05-25
 
-Ewoc is being prepared as a free public-source app. The current public-release
-branch removes Play Billing, AI workout generation, support-bundle upload/export
-flows, and Health Connect.
+Ewoc is a free public-source app. This public version does not include Play
+Billing, AI workout generation, support-bundle upload/export flows, or Health
+Connect.
 
 ## Data Stored On The Device
 
@@ -32,9 +32,8 @@ created or selected through Android storage flows chosen by the user.
 
 ## Health Connect
 
-Health Connect is not part of the first free public-release branch. Ewoc does
-not request Health Connect permissions or read Health Connect records in this
-branch.
+Health Connect is not part of this public version. Ewoc does not request Health
+Connect permissions or read Health Connect records.
 
 ## Contact And Issues
 

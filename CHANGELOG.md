@@ -7,7 +7,7 @@ file.
 
 ### Changed
 
-- Ewoc is being prepared as a free public-source Android and desktop project.
+- Ewoc is published as a free public-source Android and desktop project.
 - The public app repository license is `GPL-3.0-or-later`.
 - Android now uses the public application id `io.github.ewoc2026.ewoc`.
 - Public-facing docs now describe the free app, desktop editor, build flow,
@@ -30,8 +30,8 @@ file.
   and obsolete onboarding/planning notes.
 - The regenerated public snapshot keeps only the focused public docs set and
   still passes the private-marker check after the documentation trim.
-- A local history-free public snapshot repository is prepared at
-  `/tmp/ewoc-public-snapshot` for the first public GitHub push.
+- The first public snapshot is published at
+  `https://github.com/Ewoc2026/ewoc`.
 
 ### Removed
 
@@ -59,3 +59,5 @@ file.
 - The generated `/tmp/ewoc-public-snapshot` rehearsal passes Android debug
   Kotlin/unit-test compilation, desktop Kotlin compilation, and
   `:modules:ewo-core:jvmTest`.
+- The public GitHub Actions Android Build workflow passes after the bundled
+  workout expectation refresh.

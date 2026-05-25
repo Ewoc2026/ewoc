@@ -13,6 +13,6 @@ Briefly describe what changed and why.
 - [ ] Dark theme screenshot(s)
 - [ ] Light theme screenshot(s)
 
-## Handoff
+## Public Docs
 
-- [ ] `docs/next-session.md` updated
+- [ ] Public docs and `CHANGELOG.md` updated when the change affects user-visible behavior, build flow, privacy, or release notes

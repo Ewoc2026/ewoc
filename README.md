@@ -1,19 +1,21 @@
 # Ewoc
 
+[![Android Build](https://github.com/Ewoc2026/ewoc/actions/workflows/android-build.yml/badge.svg)](https://github.com/Ewoc2026/ewoc/actions/workflows/android-build.yml)
+
 Ewoc is a free, public-source indoor cycling app for Android, plus a desktop
 workout editor. It focuses on structured workouts, FTMS-compatible trainers,
-local workout files, and practical ride telemetry without paid feature gates.
-
-This public-release branch removes the former Google Play Billing paywall, AI
-workout generation backend, support-bundle upload/export flows, and Health
-Connect integration.
+local workout files, practical ride telemetry, and a local-first workflow
+without paid feature gates.
 
 ## Status
 
-Ewoc is being prepared for a new public GitHub repository at
-`Ewoc2026/ewoc`. The code builds locally, but the first public snapshot is still
-being cleaned so private validation artifacts, old rollout notes, and Play
-Store material do not ship in the public repository by accident.
+Ewoc is now published as a public repository at
+[`Ewoc2026/ewoc`](https://github.com/Ewoc2026/ewoc). The GitHub Actions
+Android Build workflow is the current shared validation gate.
+
+The first public app release, APK distribution path, and F-Droid packaging are
+still pending. Trainer-sensitive behavior should still be validated on real
+hardware before a release is tagged.
 
 ## Features
 
@@ -86,7 +88,7 @@ with the debug mock trainer.
 
 - Build and validation: [docs/building.md](docs/building.md)
 - Privacy: [docs/privacy.md](docs/privacy.md)
-- User guide drafts: [docs/user-guide/](docs/user-guide/)
+- User guide: [docs/user-guide/](docs/user-guide/)
 - EWO format spec: [spec/ewo/](spec/ewo/)
 - Changelog: [CHANGELOG.md](CHANGELOG.md)
 
