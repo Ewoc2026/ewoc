@@ -48,6 +48,8 @@ file.
 - Release workflow documentation now records the repeatable GitHub/F-Droid
   path, reproducible-build reference APK process, and fdroiddata follow-up
   checks.
+- GitHub Actions dependencies are updated to Node 24-compatible versions before
+  GitHub's Node 20 runner deprecation reaches the default cutoff.
 
 ### Removed
 

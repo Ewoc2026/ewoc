@@ -33,7 +33,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
@@ -138,17 +138,17 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Set up Java
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: "21"
           cache: gradle
 
       - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
+        uses: android-actions/setup-android@v4
 
       - name: Accept licenses and install SDK packages
         run: |
@@ -210,7 +210,7 @@ jobs:
 
       - name: Upload JaCoCo debug unit test artifacts
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: jacoco-debug-unit-test-${{ github.run_id }}
           if-no-files-found: warn
@@ -243,7 +243,7 @@ jobs:
 
       - name: Upload release AAB artifact
         if: ${{ success() && hashFiles('app/build/outputs/bundle/release/app-release.aab') != '' }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: release-aab-${{ github.run_id }}
           if-no-files-found: error
@@ -271,10 +271,10 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Set up Java
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: "21"
@@ -284,7 +284,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
+        uses: android-actions/setup-android@v4
 
       - name: Resolve smoke policy
         id: smoke-policy
@@ -309,7 +309,7 @@ jobs:
         id: smoke-include-flaky
         if: ${{ steps.smoke-policy.outputs.include_flaky == 'true' }}
         continue-on-error: ${{ github.event_name == 'schedule' }}
-        uses: reactivecircus/android-emulator-runner@v2
+        uses: reactivecircus/android-emulator-runner@v2.37.0
         with:
           api-level: 33
           target: default
@@ -356,7 +356,7 @@ jobs:
 
       - name: Run instrumentation smoke on emulator (exclude flaky)
         if: ${{ steps.smoke-policy.outputs.include_flaky != 'true' }}
-        uses: reactivecircus/android-emulator-runner@v2
+        uses: reactivecircus/android-emulator-runner@v2.37.0
         with:
           api-level: 33
           target: default
@@ -370,7 +370,7 @@ jobs:
 
       - name: Upload instrumentation smoke artifacts
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: android-instrumentation-smoke-${{ github.run_id }}
           if-no-files-found: warn
@@ -392,10 +392,10 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.11"
 
@@ -407,7 +407,7 @@ jobs:
 
       - name: Upload weekly flake metrics artifact
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: weekly-flake-metrics-${{ github.run_id }}
           if-no-files-found: error
