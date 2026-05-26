@@ -1,9 +1,9 @@
 # F-Droid Preparation
 
-Updated: 2026-05-25
+Updated: 2026-05-26
 
 Ewoc targets the main F-Droid repository for its first public Android
-distribution path. This note tracks local readiness before opening the
+distribution path. This note tracks readiness and review follow-up for the
 fdroiddata metadata merge request.
 
 ## Current App Identity
@@ -27,19 +27,26 @@ fdroiddata metadata merge request.
 - The Android app still declares `INTERNET` and `ACCESS_NETWORK_STATE`.
   Current intended use is opening documentation, changelog, privacy, and issue
   links in a browser; there is no app backend.
-- Release signing is configured outside the repository, but F-Droid can build
-  and sign its own APK unless reproducible builds are pursued for the first
-  submission.
+- Release signing is configured outside the repository. The first submission now
+  also has a reproducible-build reference APK on GitHub Release `v1.0.0`.
 - `:app:assembleRelease` succeeds without private signing environment
   variables and produces `app-release-unsigned.apk`.
 
 ## Submission Work Remaining
 
-- Run a fresh public snapshot private-marker check before submission.
-- Open the fdroiddata merge request with `v1.0.0` as the first build commit.
+- Monitor fdroiddata merge request
+  `https://gitlab.com/fdroid/fdroiddata/-/merge_requests/39065`.
 - Prefer auto-update metadata once the first F-Droid build works, so future
   releases only need a version bump and tag.
-- Attempt reproducible-build setup after the basic F-Droid build path is proven.
+- Monitor the merge request for maintainer follow-up after pipeline
+  `2552156766` passed.
+
+## GitLab Access
+
+Authenticated GitLab access may be needed for fdroiddata pushes or reviewer
+follow-up. Keep any token in an ignored local secret file or password manager,
+read it only into a temporary shell variable when needed, and never print it,
+commit it, paste it into chat, or leave it embedded in git remotes.
 
 ## Validation
 
@@ -77,9 +84,24 @@ The local draft lives at `docs/fdroiddata-metadata-draft.yml`. It assumes:
 - F-Droid's metadata lint expects file links against the default branch to use
   `/HEAD/`, so the draft changelog URL intentionally avoids `/main/`
 
-The draft is not yet submitted to fdroiddata. Local testing uses a temporary
-fdroiddata-style workspace under `/tmp` with the current fdroiddata category
-config copied in for lint parity.
+The fdroiddata merge request is open at
+`https://gitlab.com/fdroid/fdroiddata/-/merge_requests/39065`. Local testing
+uses a temporary fdroiddata-style workspace under `/tmp` with the current
+fdroiddata category config copied in for lint parity.
+
+Reviewer feedback from `linsui` is addressed in fdroiddata commit `690e778b`
+(`Address Ewoc review feedback`) on branch `add-ewoc`:
+
+- category `Workout`
+- source commit `8776ff55a72cd5caa7efb465c7770e9f2a358a32`
+- `AutoUpdateMode: Version`
+- `Binaries: https://github.com/Ewoc2026/ewoc/releases/download/v%v/ewoc-%v-rb.apk`
+- `AllowedAPKSigningKeys: 4c916c9c69984f8aa9313838ca8cd7f8938af62500b6e85afb5e1afba5451e63`
+
+GitHub Release `v1.0.0` now hosts `ewoc-1.0.0-rb.apk`, which was produced by
+signing the F-Droid-built unsigned APK with the external release key. This keeps
+the reference binary aligned with F-Droid's cleaned build environment instead of
+the local Gradle worktree build.
 
 Validated locally:
 
@@ -89,3 +111,8 @@ Validated locally:
 - `fdroid build -v -t --no-tarball io.github.ewoc2026.ewoc:4` passed from a
   committed local fdroiddata branch after adding a local Gradle 9.3.1 hash to
   the workstation `gradlew-fdroid` helper.
+- The same `fdroid build` path also passed reproducible-build comparison after
+  adding `Binaries` and `AllowedAPKSigningKeys`; F-Droid downloaded
+  `ewoc-1.0.0-rb.apk`, copied its signature to the locally built APK, verified
+  it, and reported
+  `compared built binary to supplied reference binary successfully`.

@@ -45,6 +45,9 @@ file.
 - The first F-Droid source tag is selected as `v1.0.0` for `versionCode=4`.
 - The fdroiddata metadata draft now uses F-Droid's expected Gradle marker and
   has a successful local fdroiddata build proof.
+- Release workflow documentation now records the repeatable GitHub/F-Droid
+  path, reproducible-build reference APK process, and fdroiddata follow-up
+  checks.
 
 ### Removed
 
