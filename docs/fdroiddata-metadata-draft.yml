@@ -6,7 +6,7 @@
 #
 #   metadata/io.github.ewoc2026.ewoc.yml
 #
-# The `commit` value uses the first public F-Droid source tag for version 1.0.0.
+# The `commit` value uses the current public F-Droid review tag.
 
 Categories:
   - Sports & Health
@@ -22,14 +22,14 @@ RepoType: git
 Repo: https://github.com/Ewoc2026/ewoc.git
 
 Builds:
-  - versionName: 1.0.0
-    versionCode: 4
-    commit: v1.0.0
+  - versionName: 1.0.1
+    versionCode: 5
+    commit: v1.0.1
     subdir: app
     gradle:
       - yes
 
 AutoUpdateMode: Version v%v
 UpdateCheckMode: Tags
-CurrentVersion: 1.0.0
-CurrentVersionCode: 4
+CurrentVersion: 1.0.1
+CurrentVersionCode: 5

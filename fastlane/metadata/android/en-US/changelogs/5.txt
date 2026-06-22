@@ -1,0 +1,3 @@
+F-Droid review follow-up:
+- removes Android network permissions from the release manifest
+- keeps external documentation and issue links opening in the user's browser

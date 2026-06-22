@@ -12,8 +12,9 @@ fdroiddata metadata merge request.
 - License: `GPL-3.0-or-later`
 - Source: `https://github.com/Ewoc2026/ewoc`
 - Issue tracker: `https://github.com/Ewoc2026/ewoc/issues`
-- Current version: `versionName = "1.0.0"`, `versionCode = 4`
-- First F-Droid source tag: `v1.0.0`
+- Current version: `versionName = "1.0.1"`, `versionCode = 5`
+- First F-Droid source tag: `v1.0.0`; current F-Droid review update tag:
+  `v1.0.1`
 
 ## Initial Readiness Audit
 
@@ -24,11 +25,13 @@ fdroiddata metadata merge request.
   in the Android app dependency graph.
 - The stale Play Billing version-catalog alias has been removed so dependency
   scans do not report a retired library as part of the current source.
-- The Android app still declares `INTERNET` and `ACCESS_NETWORK_STATE`.
-  Current intended use is opening documentation, changelog, privacy, and issue
-  links in a browser; there is no app backend.
+- The Android app does not declare `INTERNET` or `ACCESS_NETWORK_STATE`.
+  Documentation, changelog, privacy, and issue links open in the user's browser;
+  there is no in-app network client or app backend.
 - Release signing is configured outside the repository. The first submission now
-  also has a reproducible-build reference APK on GitHub Release `v1.0.0`.
+  also has a reproducible-build reference APK on GitHub Release `v1.0.0`; the
+  review follow-up needs a matching `v1.0.1` reference APK before fdroiddata can
+  move to `versionCode=5`.
 - `:app:assembleRelease` succeeds without private signing environment
   variables and produces `app-release-unsigned.apk`.
 
@@ -36,6 +39,8 @@ fdroiddata metadata merge request.
 
 - Monitor fdroiddata merge request
   `https://gitlab.com/fdroid/fdroiddata/-/merge_requests/39065`.
+- Update the open MR to `versionCode=5` / `v1.0.1` after the public release tag
+  and reproducible-build reference APK are available.
 - Prefer auto-update metadata once the first F-Droid build works, so future
   releases only need a version bump and tag.
 - Monitor the merge request for maintainer follow-up after pipeline
@@ -67,9 +72,9 @@ commit it, paste it into chat, or leave it embedded in git remotes.
 
 - The app uses Bluetooth permissions for FTMS trainer and heart-rate sensor
   communication.
-- The app stores workout/session/export state locally and opens external links
-  only when the user chooses documentation, changelog, privacy, or issue
-  actions.
+- The app stores workout/session/export state locally. It has no Android
+  network permission and only opens external links when the user chooses
+  documentation, changelog, privacy, or issue actions.
 - Health Connect and Play Billing were intentionally removed from the first
   public build to simplify F-Droid and privacy review.
 
@@ -77,8 +82,8 @@ commit it, paste it into chat, or leave it embedded in git remotes.
 
 The local draft lives at `docs/fdroiddata-metadata-draft.yml`. It assumes:
 
-- the first public F-Droid tag is `v1.0.0`
-- `versionName = "1.0.0"` and `versionCode = 4`
+- the current F-Droid review tag is `v1.0.1`
+- `versionName = "1.0.1"` and `versionCode = 5`
 - F-Droid builds from subdirectory `app`
 - future updates can use tag-based auto-update metadata
 - F-Droid's metadata lint expects file links against the default branch to use
@@ -89,7 +94,12 @@ The fdroiddata merge request is open at
 uses a temporary fdroiddata-style workspace under `/tmp` with the current
 fdroiddata category config copied in for lint parity.
 
-Reviewer feedback from `linsui` is addressed in fdroiddata commit `690e778b`
+The review follow-up for maintainer questions about the `INTERNET` permission is
+to move the MR to `v1.0.1` / `versionCode=5`, whose release manifest removes
+both `INTERNET` and WorkManager's inherited `ACCESS_NETWORK_STATE` permission.
+
+Initial reviewer feedback from `linsui` is addressed in fdroiddata commit
+`690e778b`
 (`Address Ewoc review feedback`) on branch `add-ewoc`:
 
 - category `Workout`

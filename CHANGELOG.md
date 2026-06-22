@@ -50,6 +50,9 @@ file.
   checks.
 - GitHub Actions dependencies are updated to Node 24-compatible versions before
   GitHub's Node 20 runner deprecation reaches the default cutoff.
+- Android build tooling is updated to AGP 9.2.1 and Gradle 9.4.1.
+- Android version `1.0.1` / `versionCode=5` removes inherited network
+  permissions from the release manifest.
 
 ### Removed
 
@@ -63,6 +66,7 @@ file.
   adapter wiring, and permission callback path.
 - Former private-brand domains, contacts, package identifiers, and desktop
   packaging metadata from app and packaging surfaces.
+- Android `INTERNET` and `ACCESS_NETWORK_STATE` permissions.
 
 ### Validation
 
