@@ -9,7 +9,8 @@ file.
 
 - FIT export now writes lap and session HR, cadence, and power summaries to
   the correct FIT profile field numbers, using the exported record stream as
-  the summary source when timeline samples are available.
+  the summary source when timeline samples are available. The final fix is in
+  Android `1.0.3`; `1.0.2` was superseded before F-Droid publication.
 
 ### Changed
 

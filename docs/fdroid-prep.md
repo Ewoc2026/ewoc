@@ -12,11 +12,11 @@ fdroiddata metadata merge request and follow-up updates.
 - License: `GPL-3.0-or-later`
 - Source: `https://github.com/Ewoc2026/ewoc`
 - Issue tracker: `https://github.com/Ewoc2026/ewoc/issues`
-- Current planned update: `versionName = "1.0.2"`, `versionCode = 6`
+- Current prepared update: `versionName = "1.0.2"`, `versionCode = 6`
 - Current published F-Droid version: `versionName = "1.0.1"`,
   `versionCode = 5`
 - First F-Droid source tag: `v1.0.0`; current F-Droid review update tag:
-  `v1.0.1`; next planned update tag: `v1.0.2`
+  `v1.0.1`; prepared update tag: `v1.0.2`
 
 ## Initial Readiness Audit
 
@@ -37,10 +37,9 @@ fdroiddata metadata merge request and follow-up updates.
 
 ## Update Work Remaining
 
-- Publish the `v1.0.2` source tag and reproducible-build reference APK after
-  the FIT summary-field fix is validated.
-- Let F-Droid's tag-based auto-update metadata pick up `versionCode=6`, then
-  verify the resulting F-Droid build.
+- Submit or wait for the F-Droid metadata update for `versionCode=6`; local
+  fdroiddata commit `ab618d0a3` (`Update Ewoc to 1.0.2`) is prepared.
+- Verify the resulting F-Droid build after the update lands in fdroiddata.
 
 ## GitLab Access
 
@@ -78,8 +77,10 @@ commit it, paste it into chat, or leave it embedded in git remotes.
 
 The local draft lives at `docs/fdroiddata-metadata-draft.yml`. It assumes:
 
-- the next planned F-Droid update tag is `v1.0.2`
+- the prepared F-Droid update tag is `v1.0.2`
 - `versionName = "1.0.2"` and `versionCode = 6`
+- source commit
+  `d413502f6ae34924fa075efcdc22c580210b729a`
 - F-Droid builds from subdirectory `app`
 - future updates can use tag-based auto-update metadata
 - F-Droid's metadata lint expects file links against the default branch to use
@@ -132,3 +133,9 @@ Validated locally:
   `apksigner --alignment-preserved true`; without that option, recent
   `apksigner` versions can create a normally valid APK whose signature block
   fails F-Droid's signature-copy reproducible-build comparison.
+- The `v1.0.2` FIT export fix is prepared in public commit
+  `d413502f6ae34924fa075efcdc22c580210b729a`, tag `v1.0.2`, and GitHub
+  Release `v1.0.2`. The release asset `ewoc-1.0.2-rb.apk` has SHA-256
+  `11a0dc8f0f89fea3e6b8c242df1c446ab028daf03f6d01d393184017ea3fd04f`.
+  Local fdroidserver validation passed for `io.github.ewoc2026.ewoc:6`,
+  including reproducible-build comparison against the uploaded reference APK.

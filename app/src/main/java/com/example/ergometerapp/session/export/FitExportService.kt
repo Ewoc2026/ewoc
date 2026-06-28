@@ -164,12 +164,12 @@ object FitExportService {
             FitField(number = 8, size = 4, baseType = BaseType.UINT32, value = activeMillis),
             FitField(number = 9, size = 4, baseType = BaseType.UINT32, value = totalDistanceCm),
             FitField(number = 11, size = 2, baseType = BaseType.UINT16, value = totalCalories),
-            FitField(number = 13, size = 1, baseType = BaseType.UINT8, value = exportSummary.avgHeartRate),
-            FitField(number = 14, size = 1, baseType = BaseType.UINT8, value = exportSummary.maxHeartRate),
-            FitField(number = 15, size = 1, baseType = BaseType.UINT8, value = exportSummary.avgCadence),
-            FitField(number = 16, size = 1, baseType = BaseType.UINT8, value = exportSummary.maxCadence),
-            FitField(number = 17, size = 2, baseType = BaseType.UINT16, value = exportSummary.avgPower),
-            FitField(number = 18, size = 2, baseType = BaseType.UINT16, value = exportSummary.maxPower),
+            FitField(number = 15, size = 1, baseType = BaseType.UINT8, value = exportSummary.avgHeartRate),
+            FitField(number = 16, size = 1, baseType = BaseType.UINT8, value = exportSummary.maxHeartRate),
+            FitField(number = 17, size = 1, baseType = BaseType.UINT8, value = exportSummary.avgCadence),
+            FitField(number = 18, size = 1, baseType = BaseType.UINT8, value = exportSummary.maxCadence),
+            FitField(number = 19, size = 2, baseType = BaseType.UINT16, value = exportSummary.avgPower),
+            FitField(number = 20, size = 2, baseType = BaseType.UINT16, value = exportSummary.maxPower),
         )
         fitWriter.writeDefinition(localMessage = 2, globalMessage = 19, fields = lapFields)
         fitWriter.writeData(localMessage = 2, fields = lapFields)
@@ -183,12 +183,12 @@ object FitExportService {
             add(FitField(number = 8, size = 4, baseType = BaseType.UINT32, value = activeMillis))
             add(FitField(number = 9, size = 4, baseType = BaseType.UINT32, value = totalDistanceCm))
             add(FitField(number = 11, size = 2, baseType = BaseType.UINT16, value = totalCalories))
-            add(FitField(number = 15, size = 1, baseType = BaseType.UINT8, value = exportSummary.avgHeartRate))
-            add(FitField(number = 16, size = 1, baseType = BaseType.UINT8, value = exportSummary.maxHeartRate))
-            add(FitField(number = 17, size = 1, baseType = BaseType.UINT8, value = exportSummary.avgCadence))
-            add(FitField(number = 18, size = 1, baseType = BaseType.UINT8, value = exportSummary.maxCadence))
-            add(FitField(number = 19, size = 2, baseType = BaseType.UINT16, value = exportSummary.avgPower))
-            add(FitField(number = 20, size = 2, baseType = BaseType.UINT16, value = exportSummary.maxPower))
+            add(FitField(number = 16, size = 1, baseType = BaseType.UINT8, value = exportSummary.avgHeartRate))
+            add(FitField(number = 17, size = 1, baseType = BaseType.UINT8, value = exportSummary.maxHeartRate))
+            add(FitField(number = 18, size = 1, baseType = BaseType.UINT8, value = exportSummary.avgCadence))
+            add(FitField(number = 19, size = 1, baseType = BaseType.UINT8, value = exportSummary.maxCadence))
+            add(FitField(number = 20, size = 2, baseType = BaseType.UINT16, value = exportSummary.avgPower))
+            add(FitField(number = 21, size = 2, baseType = BaseType.UINT16, value = exportSummary.maxPower))
             add(FitField(number = 26, size = 2, baseType = BaseType.UINT16, value = 1L))
             if (tssScaled != null) {
                 add(FitField(number = 35, size = 2, baseType = BaseType.UINT16, value = tssScaled))
@@ -281,7 +281,7 @@ private data class FitSummaryMetrics(
 private fun List<FitRecordSample>.averageNullableOf(selector: (FitRecordSample) -> Long?): Long? {
     val values = mapNotNull(selector)
     if (values.isEmpty()) return null
-    return values.sum() / values.size.toLong()
+    return values.average().roundToLong()
 }
 
 private fun List<FitRecordSample>.maxNullableOf(selector: (FitRecordSample) -> Long?): Long? {

@@ -1,3 +1,3 @@
-FIT export fix:
-- writes lap and session HR, cadence, and power summaries to the correct FIT fields
-- keeps exported summaries aligned with the record data used by ride-analysis tools
+FIT export update:
+- superseded by 1.0.3 before F-Droid publication
+- use 1.0.3 for corrected lap and session FIT summary fields
