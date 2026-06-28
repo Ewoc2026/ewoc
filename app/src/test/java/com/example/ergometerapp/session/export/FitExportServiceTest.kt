@@ -175,6 +175,77 @@ class FitExportServiceTest {
     }
 
     @Test
+    fun buildFitBytes_writesLapAndSessionSummariesWithFitProfileFieldNumbers() {
+        val summary = SessionSummary(
+            startTimestampMillis = 1_705_000_000_000L,
+            stopTimestampMillis = 1_705_000_030_000L,
+            durationSeconds = 30,
+            actualTss = null,
+            avgPower = 1,
+            maxPower = 2,
+            avgCadence = 3,
+            maxCadence = 4,
+            avgHeartRate = 5,
+            maxHeartRate = 6,
+            distanceMeters = 900,
+            totalEnergyKcal = 20,
+        )
+        val snapshot = SessionExportSnapshot(
+            summary = summary,
+            timeline = listOf(
+                SessionSample(
+                    timestampMillis = 1_705_000_010_000L,
+                    powerWatts = 120,
+                    cadenceRpm = 80,
+                    heartRateBpm = 100,
+                    distanceMeters = 300,
+                    totalEnergyKcal = 7,
+                ),
+                SessionSample(
+                    timestampMillis = 1_705_000_011_000L,
+                    powerWatts = 128,
+                    cadenceRpm = 84,
+                    heartRateBpm = 112,
+                    distanceMeters = 600,
+                    totalEnergyKcal = 14,
+                ),
+                SessionSample(
+                    timestampMillis = 1_705_000_012_000L,
+                    powerWatts = 124,
+                    cadenceRpm = 82,
+                    heartRateBpm = 109,
+                    distanceMeters = 900,
+                    totalEnergyKcal = 20,
+                ),
+            ),
+        )
+
+        val bytes = FitExportService.buildFitBytes(snapshot)
+
+        val lapFields = parseFirstDataFieldDetails(bytes, globalMessageNumber = 19)
+        assertField(lapFields, fieldNumber = 13, baseType = 0x02, value = 107)
+        assertField(lapFields, fieldNumber = 14, baseType = 0x02, value = 112)
+        assertField(lapFields, fieldNumber = 15, baseType = 0x02, value = 82)
+        assertField(lapFields, fieldNumber = 16, baseType = 0x02, value = 84)
+        assertField(lapFields, fieldNumber = 17, baseType = 0x84, value = 124)
+        assertField(lapFields, fieldNumber = 18, baseType = 0x84, value = 128)
+
+        val sessionFields = parseFirstDataFieldDetails(bytes, globalMessageNumber = 18)
+        assertField(sessionFields, fieldNumber = 15, baseType = 0x02, value = 107)
+        assertField(sessionFields, fieldNumber = 16, baseType = 0x02, value = 112)
+        assertField(sessionFields, fieldNumber = 17, baseType = 0x02, value = 82)
+        assertField(sessionFields, fieldNumber = 18, baseType = 0x02, value = 84)
+        assertField(sessionFields, fieldNumber = 19, baseType = 0x84, value = 124)
+        assertField(sessionFields, fieldNumber = 20, baseType = 0x84, value = 128)
+
+        val recordFields = parseAllDataFieldDetails(bytes, globalMessageNumber = 20)
+        assertEquals(3, recordFields.size)
+        assertEquals(112L, recordFields.maxOf { it[3]?.value ?: 0L })
+        assertEquals(84L, recordFields.maxOf { it[4]?.value ?: 0L })
+        assertEquals(128L, recordFields.maxOf { it[7]?.value ?: 0L })
+    }
+
+    @Test
     fun buildFitBytes_usesElapsedAndActiveTimersSeparately() {
         val summary = SessionSummary(
             startTimestampMillis = 1_705_000_000_000L,
@@ -207,6 +278,17 @@ class FitExportServiceTest {
         assertEquals(240_000L, sessionFields[7])
         assertEquals(180_000L, sessionFields[8])
         assertEquals(180_000L, activityFields[0])
+    }
+
+    private fun assertField(
+        fields: Map<Int, ParsedField>,
+        fieldNumber: Int,
+        baseType: Int,
+        value: Long,
+    ) {
+        val field = fields[fieldNumber] ?: error("Missing field $fieldNumber")
+        assertEquals(baseType, field.baseType)
+        assertEquals(value, field.value)
     }
 
     private fun parseDefinitionMesgNums(buffer: ByteArray): Set<Int> {
@@ -314,10 +396,26 @@ class FitExportServiceTest {
         buffer: ByteArray,
         globalMessageNumber: Int,
     ): Map<Int, Long> {
+        return parseFirstDataFieldDetails(buffer, globalMessageNumber).mapValues { it.value.value }
+    }
+
+    private fun parseFirstDataFieldDetails(
+        buffer: ByteArray,
+        globalMessageNumber: Int,
+    ): Map<Int, ParsedField> {
+        return parseAllDataFieldDetails(buffer, globalMessageNumber).firstOrNull()
+            ?: error("No data message found for global message $globalMessageNumber")
+    }
+
+    private fun parseAllDataFieldDetails(
+        buffer: ByteArray,
+        globalMessageNumber: Int,
+    ): List<Map<Int, ParsedField>> {
         val dataSize = readUInt32LittleEndian(buffer, 4)
         val dataStart = 14
         val dataEnd = dataStart + dataSize
         val definitionsByLocal = HashMap<Int, Definition>()
+        val messages = ArrayList<Map<Int, ParsedField>>()
 
         var offset = dataStart
         while (offset < dataEnd) {
@@ -341,8 +439,8 @@ class FitExportServiceTest {
                     repeat(fieldCount) {
                         val fieldNumber = buffer[offset++].toInt() and 0xFF
                         val fieldSize = buffer[offset++].toInt() and 0xFF
-                        offset += 1
-                        add(DefinitionField(number = fieldNumber, size = fieldSize))
+                        val baseType = buffer[offset++].toInt() and 0xFF
+                        add(DefinitionField(number = fieldNumber, size = fieldSize, baseType = baseType))
                     }
                 }
                 if ((header and 0x20) != 0) {
@@ -362,23 +460,27 @@ class FitExportServiceTest {
             val payloadStart = offset
             val payloadSize = definition.fields.sumOf { it.size }
             if (definition.globalMessageNumber == globalMessageNumber) {
-                val values = LinkedHashMap<Int, Long>()
+                val values = LinkedHashMap<Int, ParsedField>()
                 var fieldOffset = payloadStart
                 definition.fields.forEach { field ->
-                    values[field.number] = readUnsigned(
-                        buffer = buffer,
-                        offset = fieldOffset,
-                        size = field.size,
-                        architecture = definition.architecture,
+                    values[field.number] = ParsedField(
+                        baseType = field.baseType,
+                        value = readUnsigned(
+                            buffer = buffer,
+                            offset = fieldOffset,
+                            size = field.size,
+                            architecture = definition.architecture,
+                        ),
                     )
                     fieldOffset += field.size
                 }
-                return values
+                messages += values
             }
             offset += payloadSize
         }
 
-        error("No data message found for global message $globalMessageNumber")
+        require(offset == dataEnd) { "Data section parse ended at unexpected offset" }
+        return messages
     }
 
     private fun readUnsigned(
@@ -444,5 +546,11 @@ class FitExportServiceTest {
     private data class DefinitionField(
         val number: Int,
         val size: Int,
+        val baseType: Int,
+    )
+
+    private data class ParsedField(
+        val baseType: Int,
+        val value: Long,
     )
 }

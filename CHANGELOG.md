@@ -5,6 +5,12 @@ file.
 
 ## [Unreleased]
 
+### Fixed
+
+- FIT export now writes lap and session HR, cadence, and power summaries to
+  the correct FIT profile field numbers, using the exported record stream as
+  the summary source when timeline samples are available.
+
 ### Changed
 
 - Ewoc is published as a free public-source Android and desktop project.

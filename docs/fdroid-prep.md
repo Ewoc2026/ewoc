@@ -1,10 +1,10 @@
 # F-Droid Preparation
 
-Updated: 2026-05-26
+Updated: 2026-06-28
 
 Ewoc targets the main F-Droid repository for its first public Android
 distribution path. This note tracks readiness and review follow-up for the
-fdroiddata metadata merge request.
+fdroiddata metadata merge request and follow-up updates.
 
 ## Current App Identity
 
@@ -12,9 +12,11 @@ fdroiddata metadata merge request.
 - License: `GPL-3.0-or-later`
 - Source: `https://github.com/Ewoc2026/ewoc`
 - Issue tracker: `https://github.com/Ewoc2026/ewoc/issues`
-- Current version: `versionName = "1.0.1"`, `versionCode = 5`
+- Current planned update: `versionName = "1.0.2"`, `versionCode = 6`
+- Current published F-Droid version: `versionName = "1.0.1"`,
+  `versionCode = 5`
 - First F-Droid source tag: `v1.0.0`; current F-Droid review update tag:
-  `v1.0.1`
+  `v1.0.1`; next planned update tag: `v1.0.2`
 
 ## Initial Readiness Audit
 
@@ -28,23 +30,17 @@ fdroiddata metadata merge request.
 - The Android app does not declare `INTERNET` or `ACCESS_NETWORK_STATE`.
   Documentation, changelog, privacy, and issue links open in the user's browser;
   there is no in-app network client or app backend.
-- Release signing is configured outside the repository. The first submission now
-  also has a reproducible-build reference APK on GitHub Release `v1.0.0`; the
-  review follow-up needs a matching `v1.0.1` reference APK before fdroiddata can
-  move to `versionCode=5`.
+- Release signing is configured outside the repository. GitHub Releases host
+  reproducible-build reference APKs for published F-Droid versions.
 - `:app:assembleRelease` succeeds without private signing environment
   variables and produces `app-release-unsigned.apk`.
 
-## Submission Work Remaining
+## Update Work Remaining
 
-- Monitor fdroiddata merge request
-  `https://gitlab.com/fdroid/fdroiddata/-/merge_requests/39065`.
-- Update the open MR to `versionCode=5` / `v1.0.1` after the public release tag
-  and reproducible-build reference APK are available.
-- Prefer auto-update metadata once the first F-Droid build works, so future
-  releases only need a version bump and tag.
-- Monitor the merge request for maintainer follow-up after pipeline
-  `2552156766` passed.
+- Publish the `v1.0.2` source tag and reproducible-build reference APK after
+  the FIT summary-field fix is validated.
+- Let F-Droid's tag-based auto-update metadata pick up `versionCode=6`, then
+  verify the resulting F-Droid build.
 
 ## GitLab Access
 
@@ -82,8 +78,8 @@ commit it, paste it into chat, or leave it embedded in git remotes.
 
 The local draft lives at `docs/fdroiddata-metadata-draft.yml`. It assumes:
 
-- the current F-Droid review tag is `v1.0.1`
-- `versionName = "1.0.1"` and `versionCode = 5`
+- the next planned F-Droid update tag is `v1.0.2`
+- `versionName = "1.0.2"` and `versionCode = 6`
 - F-Droid builds from subdirectory `app`
 - future updates can use tag-based auto-update metadata
 - F-Droid's metadata lint expects file links against the default branch to use
@@ -97,6 +93,8 @@ fdroiddata category config copied in for lint parity.
 The review follow-up for maintainer questions about the `INTERNET` permission is
 to move the MR to `v1.0.1` / `versionCode=5`, whose release manifest removes
 both `INTERNET` and WorkManager's inherited `ACCESS_NETWORK_STATE` permission.
+Public GitHub commit `071377379c510b8a3fef3ffe4f2e3ff2975f19cd` is tagged as
+`v1.0.1`, and GitHub Release `v1.0.1` hosts `ewoc-1.0.1-rb.apk`.
 
 Initial reviewer feedback from `linsui` is addressed in fdroiddata commit
 `690e778b`
@@ -126,3 +124,11 @@ Validated locally:
   `ewoc-1.0.0-rb.apk`, copied its signature to the locally built APK, verified
   it, and reported
   `compared built binary to supplied reference binary successfully`.
+- `fdroid build -v -t --no-tarball io.github.ewoc2026.ewoc:5` passed after the
+  `v1.0.1` update; F-Droid downloaded `ewoc-1.0.1-rb.apk`, copied its signature
+  to the locally built APK, verified it, and reported
+  `compared built binary to supplied reference binary successfully`.
+- The `v1.0.1` reference APK must be signed with
+  `apksigner --alignment-preserved true`; without that option, recent
+  `apksigner` versions can create a normally valid APK whose signature block
+  fails F-Droid's signature-copy reproducible-build comparison.

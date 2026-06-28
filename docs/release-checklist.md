@@ -32,6 +32,12 @@ without reconstructing the path from memory.
   `docs/fdroiddata-metadata-draft.yml`
 - F-Droid merge request:
   `https://gitlab.com/fdroid/fdroiddata/-/merge_requests/39065`
+- Published F-Droid package:
+  `https://f-droid.org/packages/io.github.ewoc2026.ewoc/`
+
+The initial inclusion MR merged on June 22, 2026. Keep the MR link as release
+history; normal future versions should use tag-based auto updates unless
+fdroiddata needs a manual correction.
 
 Maintainer token files, signing keystores, and signing environment files belong
 outside this repository. Private handoff notes may record their local paths, but
@@ -147,6 +153,26 @@ Then:
 Use this path when F-Droid metadata has a `Binaries` entry. The reference APK
 must match the fdroidserver-built source output.
 
+Preferred helper path:
+
+```bash
+scripts/fdroid-reference-apk.sh \
+  --version-name X.Y.Z \
+  --version-code <versionCode> \
+  --source-commit <public-source-commit> \
+  --signing-env /path/to/signing-env-file \
+  --create-release \
+  --upload \
+  --verify-reference
+```
+
+The helper temporarily disables `Binaries` in the local fdroiddata metadata to
+produce the unsigned APK, restores the metadata, signs the fdroidserver-built
+APK with `--alignment-preserved true`, optionally uploads it to GitHub Releases,
+and can run the final reproducible-build comparison.
+
+Manual path:
+
 Build through fdroiddata first:
 
 ```bash
@@ -166,6 +192,7 @@ cp /tmp/fdroiddata-ewoc-submission/tmp/io.github.ewoc2026.ewoc_<versionCode>.apk
   /tmp/ewoc-X.Y.Z-fdroid-unsigned.apk
 
 apksigner sign \
+  --alignment-preserved true \
   --ks "$ERGOMETER_RELEASE_STORE_FILE" \
   --ks-key-alias "$ERGOMETER_RELEASE_KEY_ALIAS" \
   --ks-pass env:ERGOMETER_RELEASE_STORE_PASSWORD \
@@ -175,6 +202,11 @@ apksigner sign \
 
 apksigner verify --print-certs /tmp/ewoc-X.Y.Z-rb.apk
 ```
+
+Keep `--alignment-preserved true` for the reference APK. Without it, recent
+`apksigner` versions may realign the APK while signing; the APK can still
+verify normally, but F-Droid's signature-copy reproducible-build comparison can
+fail with an APK Signature Scheme digest mismatch.
 
 Upload `/tmp/ewoc-X.Y.Z-rb.apk` to the matching GitHub Release as
 `ewoc-X.Y.Z-rb.apk`.

@@ -9,13 +9,14 @@ without paid feature gates.
 
 ## Status
 
-Ewoc is now published as a public repository at
-[`Ewoc2026/ewoc`](https://github.com/Ewoc2026/ewoc). The GitHub Actions
-Android Build workflow is the current shared validation gate.
+Ewoc is published as a public repository at
+[`Ewoc2026/ewoc`](https://github.com/Ewoc2026/ewoc), and Android release builds
+are distributed through
+[F-Droid](https://f-droid.org/packages/io.github.ewoc2026.ewoc/).
 
-The first public app release, APK distribution path, and F-Droid packaging are
-still pending. Trainer-sensitive behavior should still be validated on real
-hardware before a release is tagged.
+The GitHub Actions Android Build workflow is the current shared validation
+gate. Trainer-sensitive behavior should still be validated on real hardware
+before each release is tagged.
 
 ## Features
 

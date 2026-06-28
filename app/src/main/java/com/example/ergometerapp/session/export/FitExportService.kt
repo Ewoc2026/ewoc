@@ -88,12 +88,6 @@ object FitExportService {
             .coerceAtMost(maxUInt32)
         val totalCalories = ((summary.totalEnergyKcal ?: 0).coerceAtLeast(0).toLong())
             .coerceAtMost(maxUInt16)
-        val avgPower = ((summary.avgPower ?: 0).coerceAtLeast(0).toLong()).coerceAtMost(maxUInt16)
-        val maxPower = ((summary.maxPower ?: 0).coerceAtLeast(0).toLong()).coerceAtMost(maxUInt16)
-        val avgHr = ((summary.avgHeartRate ?: 0).coerceAtLeast(0).toLong()).coerceAtMost(0xFF)
-        val maxHr = ((summary.maxHeartRate ?: 0).coerceAtLeast(0).toLong()).coerceAtMost(0xFF)
-        val avgCadence = ((summary.avgCadence ?: 0).coerceAtLeast(0).toLong()).coerceAtMost(0xFF)
-        val maxCadence = ((summary.maxCadence ?: 0).coerceAtLeast(0).toLong()).coerceAtMost(0xFF)
         val tssScaled = summary.actualTss
             ?.coerceAtLeast(0.0)
             ?.times(10.0)
@@ -149,6 +143,7 @@ object FitExportService {
         )
         fitWriter.writeDefinition(localMessage = 1, globalMessage = 20, fields = recordDefinition)
         val recordSamples = timelineOrFallback(snapshot)
+        val exportSummary = summaryFromRecords(recordSamples)
         recordSamples.forEach { sample ->
             fitWriter.writeData(
                 localMessage = 1,
@@ -169,12 +164,12 @@ object FitExportService {
             FitField(number = 8, size = 4, baseType = BaseType.UINT32, value = activeMillis),
             FitField(number = 9, size = 4, baseType = BaseType.UINT32, value = totalDistanceCm),
             FitField(number = 11, size = 2, baseType = BaseType.UINT16, value = totalCalories),
-            FitField(number = 19, size = 2, baseType = BaseType.UINT16, value = avgPower),
-            FitField(number = 20, size = 2, baseType = BaseType.UINT16, value = maxPower),
-            FitField(number = 15, size = 1, baseType = BaseType.UINT8, value = avgHr),
-            FitField(number = 16, size = 1, baseType = BaseType.UINT8, value = maxHr),
-            FitField(number = 17, size = 1, baseType = BaseType.UINT8, value = avgCadence),
-            FitField(number = 18, size = 1, baseType = BaseType.UINT8, value = maxCadence),
+            FitField(number = 13, size = 1, baseType = BaseType.UINT8, value = exportSummary.avgHeartRate),
+            FitField(number = 14, size = 1, baseType = BaseType.UINT8, value = exportSummary.maxHeartRate),
+            FitField(number = 15, size = 1, baseType = BaseType.UINT8, value = exportSummary.avgCadence),
+            FitField(number = 16, size = 1, baseType = BaseType.UINT8, value = exportSummary.maxCadence),
+            FitField(number = 17, size = 2, baseType = BaseType.UINT16, value = exportSummary.avgPower),
+            FitField(number = 18, size = 2, baseType = BaseType.UINT16, value = exportSummary.maxPower),
         )
         fitWriter.writeDefinition(localMessage = 2, globalMessage = 19, fields = lapFields)
         fitWriter.writeData(localMessage = 2, fields = lapFields)
@@ -188,12 +183,12 @@ object FitExportService {
             add(FitField(number = 8, size = 4, baseType = BaseType.UINT32, value = activeMillis))
             add(FitField(number = 9, size = 4, baseType = BaseType.UINT32, value = totalDistanceCm))
             add(FitField(number = 11, size = 2, baseType = BaseType.UINT16, value = totalCalories))
-            add(FitField(number = 20, size = 2, baseType = BaseType.UINT16, value = avgPower))
-            add(FitField(number = 21, size = 2, baseType = BaseType.UINT16, value = maxPower))
-            add(FitField(number = 16, size = 1, baseType = BaseType.UINT8, value = avgHr))
-            add(FitField(number = 17, size = 1, baseType = BaseType.UINT8, value = maxHr))
-            add(FitField(number = 18, size = 1, baseType = BaseType.UINT8, value = avgCadence))
-            add(FitField(number = 19, size = 1, baseType = BaseType.UINT8, value = maxCadence))
+            add(FitField(number = 15, size = 1, baseType = BaseType.UINT8, value = exportSummary.avgHeartRate))
+            add(FitField(number = 16, size = 1, baseType = BaseType.UINT8, value = exportSummary.maxHeartRate))
+            add(FitField(number = 17, size = 1, baseType = BaseType.UINT8, value = exportSummary.avgCadence))
+            add(FitField(number = 18, size = 1, baseType = BaseType.UINT8, value = exportSummary.maxCadence))
+            add(FitField(number = 19, size = 2, baseType = BaseType.UINT16, value = exportSummary.avgPower))
+            add(FitField(number = 20, size = 2, baseType = BaseType.UINT16, value = exportSummary.maxPower))
             add(FitField(number = 26, size = 2, baseType = BaseType.UINT16, value = 1L))
             if (tssScaled != null) {
                 add(FitField(number = 35, size = 2, baseType = BaseType.UINT16, value = tssScaled))
@@ -253,6 +248,17 @@ object FitExportService {
             ),
         )
     }
+
+    private fun summaryFromRecords(samples: List<FitRecordSample>): FitSummaryMetrics {
+        return FitSummaryMetrics(
+            avgPower = samples.averageNullableOf { it.powerWatts }?.coerceAtMost(maxUInt16),
+            maxPower = samples.maxNullableOf { it.powerWatts }?.coerceAtMost(maxUInt16),
+            avgCadence = samples.averageNullableOf { it.cadenceRpm }?.coerceAtMost(0xFFL),
+            maxCadence = samples.maxNullableOf { it.cadenceRpm }?.coerceAtMost(0xFFL),
+            avgHeartRate = samples.averageNullableOf { it.heartRateBpm }?.coerceAtMost(0xFFL),
+            maxHeartRate = samples.maxNullableOf { it.heartRateBpm }?.coerceAtMost(0xFFL),
+        )
+    }
 }
 
 private data class FitRecordSample(
@@ -262,6 +268,25 @@ private data class FitRecordSample(
     val heartRateBpm: Long?,
     val distanceCm: Long?,
 )
+
+private data class FitSummaryMetrics(
+    val avgPower: Long?,
+    val maxPower: Long?,
+    val avgCadence: Long?,
+    val maxCadence: Long?,
+    val avgHeartRate: Long?,
+    val maxHeartRate: Long?,
+)
+
+private fun List<FitRecordSample>.averageNullableOf(selector: (FitRecordSample) -> Long?): Long? {
+    val values = mapNotNull(selector)
+    if (values.isEmpty()) return null
+    return values.sum() / values.size.toLong()
+}
+
+private fun List<FitRecordSample>.maxNullableOf(selector: (FitRecordSample) -> Long?): Long? {
+    return mapNotNull(selector).maxOrNull()
+}
 
 private data class FitField(
     val number: Int,

@@ -1,0 +1,3 @@
+FIT export fix:
+- writes lap and session HR, cadence, and power summaries to the correct FIT fields
+- keeps exported summaries aligned with the record data used by ride-analysis tools
