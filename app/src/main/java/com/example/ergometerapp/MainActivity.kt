@@ -228,7 +228,7 @@ class MainActivity : ComponentActivity() {
                 },
                 onQuitApp = {
                     viewModel.stopAndClose()
-                    finishAffinity()
+                    finishAndRemoveTask()
                 },
                 onStartSession = { viewModel.onStartSession() },
                 onEndSession = { viewModel.onEndSessionAndGoToSummary() },

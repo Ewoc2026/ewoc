@@ -5,6 +5,11 @@ file.
 
 ## [Unreleased]
 
+### Fixed
+
+- Main menu Quit now removes the app task from Android recents instead of
+  leaving it available to resume.
+
 ### Changed
 
 - Android CI change detection now treats the Android-consumed shared EWO/editor
