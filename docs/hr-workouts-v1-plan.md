@@ -15,8 +15,8 @@ This is a scope-and-semantics plan, not a full implementation spec.
 ## Relationship To Existing HR Docs
 
 - `docs/HR_CONTROL_RULES.md` remains the safety doctrine and invariant source
-- this document is the active product and delivery plan for the next
-  implementation slice
+- this document records the current product scope, implementation status, and
+  remaining follow-ups for the V1 imported-HR path
 
 If there is a conflict:
 
@@ -24,6 +24,20 @@ If there is a conflict:
 2. this document defines the intended V1 product scope
 3. lower-level runtime details can be refined later as long as they stay
    within those two boundaries
+
+## Current Implementation Status
+
+| Area | Status | Notes |
+| --- | --- | --- |
+| Canonical HR targets and control metadata | Implemented | Canonical parsing/import preserves HR-targeted workouts and workout-level control metadata. |
+| `heart_rate_relative` profile resolution | Implemented | Android import and editor preview resolve HR% targets through the rider-profile compile context. |
+| Imported steady HR runtime path | Implemented | Imported HR steady segments run through explicit preflight, bounded power adjustment, fallback, cap throttle, and stop behavior. |
+| Public app availability | Enabled through imported workouts | The current app supports the imported-HR path; this document does not expand the authored-workout surface beyond the implemented flows. |
+| Mock/unit validation | Implemented | Focused tests cover the imported-HR controller and session orchestration paths; see continuity docs for the latest exact commands. |
+| Documented live validation | Partially complete | Existing continuity notes record `SM-X210` imported-HR live validation for duplicate-callback removal, hard-cap behavior, chart target display, and later ordinary decrease pacing. |
+| Real HR sensor coverage | Documented through existing imported-HR validation only | Do not infer broader sensor-matrix coverage beyond the recorded validation notes. |
+| Minimum-power recovery | Open product decision | Current behavior remains one-way conservative until HR drops below the target band again. |
+| Fast interval or aggressive ramp HR-primary control | Out of scope | These remain explicitly outside V1 HR-primary execution. |
 
 ## V1 Product Decision
 
@@ -198,11 +212,11 @@ runtime into a corner. Keep these constraints in place while implementing V1:
 These are future-enabling constraints, not new requirements for the current
 implementation scope.
 
-## Delivery Shape For Next Week
+## Remaining Delivery Shape
 
-### Phase A: Lock semantics in code-facing language
+### Phase A: Keep semantics aligned
 
-Before feature implementation expands, align:
+Before feature implementation expands further, keep these surfaces aligned:
 
 - `ImportedErgoWorkoutExecutionPolicy`
 - `ImportedHrRuntimeStateMachineV1`
@@ -211,11 +225,9 @@ Before feature implementation expands, align:
 
 around the same explicit V1 behavior.
 
-### Phase B: Enable one complete HR execution path
+### Phase B: Preserve one complete HR execution path
 
-The first implementation goal is not “all HR ideas.”
-
-It is one coherent path:
+The V1 goal remains one coherent path, not all HR ideas:
 
 - authored/imported HR steady segment
 - explicit start preflight
@@ -225,7 +237,7 @@ It is one coherent path:
 
 ### Phase C: Real-device validation
 
-Before treating the feature as public-test ready, validate on:
+Before broadening the feature or changing safety policy, keep validating on:
 
 - real trainer
 - real HR sensor
@@ -261,9 +273,10 @@ changing it. The most valuable carry-forwards were:
 - avoid coupling future AI wording/style layers to control decisions
 - leave room for replay and shadow-mode validation
 
-The main missing piece is not vocabulary anymore. The main missing piece is
-hooking one conservative HR runtime path into the real runner/session flow
-without violating the safety rules.
+The main missing piece is no longer vocabulary or initial runner/session
+hookup. The remaining risk is policy confidence: longer real rides must decide
+whether the one-way minimum-power behavior remains acceptable or needs a
+cautious, explicitly approved recovery rule.
 
 ## Working Rule
 

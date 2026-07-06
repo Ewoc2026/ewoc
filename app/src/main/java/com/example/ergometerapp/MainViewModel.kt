@@ -2409,7 +2409,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
      *
      * File-based selections are re-imported from the stored URI. If the URI is no longer
      * readable (expired SAF permission), the restore is silently skipped.
-     * The bundled Free-tier workout is re-created from the packaged provider.
+     * The bundled guided workout is re-created from the packaged provider.
      * Telemetry-only mode is restored directly.
      * Editor mode cannot be restored without serialized workout payload and is skipped.
      */

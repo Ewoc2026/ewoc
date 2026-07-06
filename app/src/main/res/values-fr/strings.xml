@@ -46,9 +46,9 @@
         <string name="menu_connection_hint">En attente de la connexion au home trainer</string>
         <string name="menu_select_workout_file_short">Importer un entraînement</string>
         <string name="menu_open_workout_editor">Ouvrir l\'éditeur d\'entraînement</string>
-        <string name="menu_starter_workout_title">Seance guidee gratuite</string>
-        <string name="menu_starter_workout_hint">La seance guidee incluse dans Free. Charge-la comme seance pour cette sortie.</string>
-        <string name="menu_starter_workout_button">Charger la seance gratuite</string>
+        <string name="menu_starter_workout_title">Seance guidee integree</string>
+        <string name="menu_starter_workout_hint">Une seance guidee incluse dans l\'app. Charge-la comme seance pour cette sortie.</string>
+        <string name="menu_starter_workout_button">Charger la seance integree</string>
         <string name="menu_quit_app_button">QUIT</string>
         <string name="menu_setup_flow_title">Assistant de configuration</string>
         <string name="menu_setup_progress_value">Étape %1$d sur %2$d</string>
@@ -56,15 +56,12 @@
         <string name="menu_setup_step_devices_title">2. Configuration des appareils</string>
         <string name="menu_setup_step_mode_title">3. Mode d\'entraînement</string>
         <string name="menu_setup_step_file_mode_title">3A. Source de l\'entraînement</string>
-        <string name="menu_setup_step_ai_mode_title">3B. Mode IA</string>
         <string name="menu_setup_step_file_mode_title_compact">3A. Source</string>
-        <string name="menu_setup_step_ai_mode_title_compact">3B. IA</string>
         <string name="menu_setup_step_summary_title">Résumé de l\'entraînement et démarrage</string>
         <string name="menu_setup_step_ready_title">4. Prêt à rouler</string>
         <string name="menu_setup_step_profile_heading">Profil du cycliste</string>
         <string name="menu_setup_step_devices_heading">Configuration des appareils</string>
         <string name="menu_setup_step_file_mode_heading">Fichier d\'entraînement</string>
-        <string name="menu_setup_step_ai_mode_heading">Mode IA</string>
         <string name="menu_setup_step_summary_heading">Résumé</string>
         <string name="menu_setup_step_ready_heading">Prêt à rouler</string>
         <string name="menu_setup_profile_hint">Définissez la FTP et le profil FC de base avant de connecter les appareils.</string>
@@ -73,8 +70,6 @@
         <string name="menu_setup_mode_selected_value">Mode sélectionné : %1$s</string>
         <string name="menu_setup_file_mode_hint">Chargez un entraînement ou utilisez l\'éditeur pour en créer ou en modifier un.</string>
         <string name="menu_setup_file_mode_selected_value">Source d\'entraînement sélectionnée : %1$s</string>
-        <string name="menu_setup_ai_modes_title">Modes IA</string>
-        <string name="menu_setup_ai_modes_hint">Les modes d\'entraînement pilotés par l\'IA sont listés pour les phases à venir.</string>
         <string name="menu_setup_mode_file_title">Fichier d\'entraînement</string>
         <string name="menu_setup_mode_structured_title">Entraînement structuré</string>
         <string name="menu_setup_mode_editor_title">Éditeur d\'entraînement</string>
@@ -666,11 +661,5 @@
         <string name="menu_file_help_folder_optional">Un dossier par défaut est facultatif, mais il accélère les imports et exports répétés.</string>
         <string name="menu_file_error_unsupported_next_step">Ouvrez-le dans l\'éditeur et remplacez les parties non prises en charge par des étapes structurées.</string>
         <string name="menu_file_help_review_after_import">Vérifiez l\'aperçu avant de commencer, surtout si le fichier vient d\'une autre application.</string>
-        <string name="ai_generated_workout_message_intro">L\'entraînement commence maintenant. Installez-vous et laissez les premières minutes venir à vous.</string>
-        <string name="ai_generated_workout_message_interval_block">Le bloc d\'intervalles principal commence maintenant. Contrôlez les répétitions intenses et utilisez les étapes plus faciles pour récupérer.</string>
-        <string name="ai_generated_workout_message_steady_block">Le bloc suivant commence maintenant. Installez-vous dans la cible et maintenez un effort régulier.</string>
-        <string name="ai_generated_workout_message_build_block">Le bloc progressif commence maintenant. Laissez l\'effort monter en douceur sans forcer.</string>
-        <string name="ai_generated_workout_message_recovery_block">Le bloc de récupération commence maintenant. Réduisez l\'effort et préparez-vous pour le prochain changement.</string>
-        <string name="ai_generated_workout_message_cooldown_block">Le retour au calme commence maintenant. Laissez l\'effort redescendre progressivement jusqu\'à la fin.</string>
 
 </resources>

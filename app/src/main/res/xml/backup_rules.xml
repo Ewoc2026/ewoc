@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <full-backup-content>
-    <!-- Mirror data-extraction policy for consistency. -->
+    <!-- Mirror data-extraction policy for consistency. Keep the old backend auth file excluded
+         so historical installs cannot back it up or transfer it to another device. -->
     <exclude domain="sharedpref" path="ergometer_app_settings.xml" />
     <exclude domain="sharedpref" path="backend_installation_auth.xml" />
     <exclude domain="file" path="." />

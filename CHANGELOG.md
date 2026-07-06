@@ -5,61 +5,71 @@ file.
 
 ## [Unreleased]
 
+### Changed
+
+- Android CI change detection now treats the Android-consumed shared EWO/editor
+  modules as Android-impacting inputs.
+- The Android Build workflow now declares the scheduled triggers used by its
+  instrumentation-smoke and weekly flake-metrics jobs.
+- Instrumentation-smoke change detection now covers critical startup,
+  lifecycle, BLE/FTMS, setup, workout import/runner, baseline, UI assembly, and
+  shared EWO/editor model paths.
+
+## [1.0.3] - 2026-06-28
+
 ### Fixed
 
-- FIT export now writes lap and session HR, cadence, and power summaries to
-  the correct FIT profile field numbers, using the exported record stream as
-  the summary source when timeline samples are available. The final fix is in
-  Android `1.0.3`; `1.0.2` was superseded before F-Droid publication.
+- FIT export writes lap and session HR, cadence, and power summaries to the
+  correct FIT profile field numbers, using the exported record stream as the
+  summary source when timeline samples are available.
+
+### Validation
+
+- The FIT export regression test parses the produced FIT bytes back and checks
+  field numbers, base types, and record-derived summary values.
+
+## [1.0.2] - 2026-06-28
 
 ### Changed
 
-- Ewoc is published as a free public-source Android and desktop project.
+- Superseded by `1.0.3` before F-Droid publication. Use `1.0.3` for the
+  corrected FIT lap/session summary field mapping.
+
+## [1.0.1] - 2026-06-22
+
+### Changed
+
+- F-Droid review follow-up release.
+
+### Removed
+
+- Android `INTERNET` and `ACCESS_NETWORK_STATE` permissions were removed from
+  the release manifest while keeping external documentation and issue links
+  opening in the user's browser.
+
+## [1.0.0] - 2026-05-26
+
+### Changed
+
+- Ewoc was published as a free public-source Android and desktop project.
 - The public app repository license is `GPL-3.0-or-later`.
-- Android now uses the public application id `io.github.ewoc2026.ewoc`.
-- Public-facing docs now describe the free app, desktop editor, build flow,
+- Android uses the public application id `io.github.ewoc2026.ewoc`.
+- Public-facing docs describe the free app, desktop editor, build flow,
   contribution path, and privacy posture.
-- The first public snapshot pruning pass removed private validation artifacts,
-  store-listing material, backend rollout notes, support-bundle examples,
-  AI-generation planning packs, internal reports, superseded historical notes,
-  and stale draft docs.
-- Public-candidate docs now avoid describing retired AI workout generation,
-  Play Billing, support-bundle export/upload, Health Connect ingestion, and
-  private backend flows as active product features.
-- Public snapshot rehearsal tooling now renders a history-free candidate tree
-  from `HEAD`, excludes migration-only handoff/planning files, checks for
-  private identity/backend/signing markers, and builds successfully from the
-  generated snapshot.
-- Android build metadata now falls back cleanly when a source snapshot does not
+- Public snapshot rehearsal tooling renders a history-free candidate tree from
+  `HEAD`, excludes migration-only handoff/planning files, checks for private
+  identity/backend/signing markers, and builds successfully from the generated
+  snapshot.
+- Android build metadata falls back cleanly when a source snapshot does not
   contain a `.git` directory.
-- Public docs are trimmed further to remove internal collaboration/operator,
-  release-process, beta-readiness, local-hardware, EWO extraction rehearsal,
-  and obsolete onboarding/planning notes.
-- The regenerated public snapshot keeps only the focused public docs set and
-  still passes the private-marker check after the documentation trim.
-- The first public snapshot is published at
+- The first public snapshot was published at
   `https://github.com/Ewoc2026/ewoc`.
-- The first public GitHub Actions Android Build is fixed and now validates
-  debug unit tests, JaCoCo, lint, and release bundle generation.
-- F-Droid preparation is started with an initial readiness note and the stale
-  Play Billing version-catalog alias removed.
-- Upstream Fastlane-style F-Droid metadata is started with title, short
-  description, full description, icon, and `versionCode=4` changelog.
-- F-Droid tablet screenshots are added from a real Samsung tablet capture.
-- F-Droid screenshot metadata now includes a real trainer-backed live-session
-  capture.
-- A local fdroiddata metadata draft is added for the first F-Droid submission.
-- The first F-Droid source tag is selected as `v1.0.0` for `versionCode=4`.
-- The fdroiddata metadata draft now uses F-Droid's expected Gradle marker and
-  has a successful local fdroiddata build proof.
-- Release workflow documentation now records the repeatable GitHub/F-Droid
-  path, reproducible-build reference APK process, and fdroiddata follow-up
-  checks.
-- GitHub Actions dependencies are updated to Node 24-compatible versions before
-  GitHub's Node 20 runner deprecation reaches the default cutoff.
-- Android build tooling is updated to AGP 9.2.1 and Gradle 9.4.1.
-- Android version `1.0.1` / `versionCode=5` removes inherited network
-  permissions from the release manifest.
+- The first public GitHub Actions Android Build validates debug unit tests,
+  JaCoCo, lint, and release bundle generation.
+- F-Droid preparation started with upstream Fastlane-style metadata, icon,
+  changelog, and tablet screenshots.
+- Release workflow documentation records the repeatable GitHub/F-Droid path,
+  reproducible-build reference APK process, and fdroiddata follow-up checks.
 
 ### Removed
 
@@ -73,7 +83,10 @@ file.
   adapter wiring, and permission callback path.
 - Former private-brand domains, contacts, package identifiers, and desktop
   packaging metadata from app and packaging surfaces.
-- Android `INTERNET` and `ACCESS_NETWORK_STATE` permissions.
+- Private validation artifacts, store-listing material, backend rollout notes,
+  support-bundle examples, AI-generation planning packs, internal reports,
+  superseded historical notes, and stale draft docs were removed from the
+  public snapshot.
 
 ### Validation
 
@@ -84,7 +97,7 @@ file.
   AI-generation removal, support-bundle removal, Health Connect removal, and
   public identity/link changes.
 - Desktop Kotlin compilation passed after the public identity change.
-- Documentation whitespace validation passes with `git diff --check`.
-- The generated `/tmp/ewoc-public-snapshot` rehearsal passes Android debug
+- Documentation whitespace validation passed with `git diff --check`.
+- The generated `/tmp/ewoc-public-snapshot` rehearsal passed Android debug
   Kotlin/unit-test compilation, desktop Kotlin compilation, and
   `:modules:ewo-core:jvmTest`.

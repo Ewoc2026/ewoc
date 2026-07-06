@@ -25,7 +25,7 @@ Binaries: https://github.com/Ewoc2026/ewoc/releases/download/v%v/ewoc-%v-rb.apk
 Builds:
   - versionName: 1.0.3
     versionCode: 7
-    commit: TO_BE_FILLED_AFTER_PUBLIC_SNAPSHOT
+    commit: 0f2b36cb35b676de8ccb70a2eb6e4996f4fed81f
     subdir: app
     gradle:
       - yes

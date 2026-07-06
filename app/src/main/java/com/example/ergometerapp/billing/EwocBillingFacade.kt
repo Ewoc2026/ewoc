@@ -67,7 +67,7 @@ internal fun resolveEntitlementSnapshot(
 
 /**
  * Keeps the old billing seam temporarily while the free public release removes
- * Play Billing in small compileable steps.
+ * paid feature gating in small compileable steps.
  */
 internal class EwocBillingFacade(
     context: Context,

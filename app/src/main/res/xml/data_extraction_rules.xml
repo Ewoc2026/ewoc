@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <data-extraction-rules>
     <cloud-backup>
-        <!-- Keep device identifiers and session logs local-only. -->
+        <!-- Keep device identifiers, session logs, and any historical backend auth local-only. -->
         <exclude domain="sharedpref" path="ergometer_app_settings.xml" />
         <exclude domain="sharedpref" path="backend_installation_auth.xml" />
         <exclude domain="file" path="." />

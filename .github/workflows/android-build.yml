@@ -3,6 +3,9 @@ name: Android Build
 on:
   pull_request:
   push:
+  schedule:
+    - cron: "30 4 * * *"
+    - cron: "0 5 * * 1"
   workflow_dispatch:
     inputs:
       run_instrumentation_smoke:
@@ -47,6 +50,8 @@ jobs:
           smoke_changes=""
           base_sha=""
           head_sha=""
+          android_relevant_pattern='^(app/|modules/(ewo-core|ewo-editor-model|ewo-editor-commands)/|build\.gradle$|build\.gradle\.kts$|settings\.gradle$|settings\.gradle\.kts$|gradle\.properties$|gradle/|gradlew$|gradlew\.bat$|scripts/|\.github/workflows/android-build\.yml$)'
+          smoke_relevant_pattern='^(app/src/main/java/com/example/ergometerapp/(EwocApplication|MainActivity|MainViewModel|ActivityCallbackBridge|SessionSetupMode|WorkoutSelectionUiState|SessionStartEligibilityUiState)\.kt$|app/src/main/java/com/example/ergometerapp/(baseline|ble|ftms|session|workout|ui)/|modules/(ewo-core|ewo-editor-model|ewo-editor-commands)/|app/src/main/res/|app/src/main/AndroidManifest\.xml$|app/src/androidTest/|\.github/workflows/android-build\.yml$)'
 
           if [[ "${GITHUB_EVENT_NAME}" == "schedule" && "${{ github.event.schedule }}" == "30 4 * * *" ]]; then
             run_instrumentation_smoke="true"
@@ -81,10 +86,11 @@ jobs:
           fi
 
           changed_files="$(git diff --name-only "${base_sha}" "${head_sha}")"
+          # Android consumes the shared EWO/editor modules directly through
+          # Gradle project dependencies, so changes there must not skip the app
+          # compile/test lane.
           relevant_changes="$(
-            printf '%s\n' "${changed_files}" | grep -E \
-              '^(app/|build\.gradle$|build\.gradle\.kts$|settings\.gradle$|settings\.gradle\.kts$|gradle\.properties$|gradle/|gradlew$|gradlew\.bat$|scripts/|\.github/workflows/android-build\.yml$)' \
-              || true
+            printf '%s\n' "${changed_files}" | grep -E "${android_relevant_pattern}" || true
           )"
 
           if [[ -z "${relevant_changes}" ]]; then
@@ -92,10 +98,12 @@ jobs:
           fi
 
           if [[ "${GITHUB_EVENT_NAME}" == "pull_request" ]]; then
+            # Smoke tests are reserved for critical app-flow surfaces rather
+            # than every Android source edit: startup/lifecycle, setup, BLE and
+            # FTMS control, workout import/runner, baseline flow, UI assembly,
+            # resources, Android tests, and shared workout/editor modules.
             smoke_changes="$(
-              printf '%s\n' "${changed_files}" | grep -E \
-                '^(app/src/main/java/.*/(ui|session)/|app/src/main/res/|app/src/main/AndroidManifest\.xml$|app/src/androidTest/|\.github/workflows/android-build\.yml$)' \
-                || true
+              printf '%s\n' "${changed_files}" | grep -E "${smoke_relevant_pattern}" || true
             )"
             if [[ -n "${smoke_changes}" ]]; then
               run_instrumentation_smoke="true"

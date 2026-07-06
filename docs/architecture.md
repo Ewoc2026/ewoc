@@ -276,13 +276,6 @@ Responsibilities:
 - `app/src/main/java/com/example/ergometerapp/WorkoutEditorDraftCoordinator.kt`
 - `app/src/main/java/com/example/ergometerapp/WorkoutEditorPersistenceCoordinator.kt`
 - `app/src/main/java/com/example/ergometerapp/WorkoutEditorSaveCoordinator.kt`
-- `app/src/main/java/com/example/ergometerapp/CompatibilitySupportBundleFacade.kt`
-- `app/src/main/java/com/example/ergometerapp/PreparedSupportBundleExportFacade.kt`
-- `app/src/main/java/com/example/ergometerapp/SessionDiagnosticsSupportBundleFacade.kt`
-- `app/src/main/java/com/example/ergometerapp/SessionDiagnosticsSupportBundleCoordinator.kt`
-- `app/src/main/java/com/example/ergometerapp/CompatibilitySupportBundlePreparationCoordinator.kt`
-- `app/src/main/java/com/example/ergometerapp/SupportBundleIngestCoordinator.kt`
-- `app/src/main/java/com/example/ergometerapp/SupportBundleStatusText.kt`
 - `app/src/main/java/com/example/ergometerapp/AiAssistantFacade.kt`
 - `app/src/main/java/com/example/ergometerapp/AiAssistantIntegration.kt`
 - `app/src/main/java/com/example/ergometerapp/billing/EwocBillingFacade.kt`
@@ -301,9 +294,10 @@ Responsibilities:
 - Hold user-selected device/workout/FTP state.
 - Keep Activity-bound permission launchers and screen-on hooks in
   `ActivityCallbackBridge` so configuration-change rebinding does not drift back into
-  another loose `MainViewModel` callback cluster. The same bridge now also exposes the
-  current Activity for Play Billing so purchase launch remains Activity-bound without
-  leaking that dependency into composables.
+  another loose `MainViewModel` callback cluster. The bridge still exposes a
+  legacy current-Activity callback only for the temporary no-op billing shim;
+  remove that callback with the shim instead of treating it as active Play
+  Billing architecture.
 - Keep the product-facing `Continue ride` hard-cutover in `MainViewModel` as a
   polling coordinator over existing summary/menu navigation instead of pushing
   restart timing heuristics into Compose. The current branch now waits until
@@ -827,13 +821,7 @@ Current continuation note:
 28. `WorkoutEditorDraftCoordinator.kt`
 29. `WorkoutEditorPersistenceCoordinator.kt`
 30. `WorkoutEditorSaveCoordinator.kt`
-31. `CompatibilitySupportBundleFacade.kt`
-32. `SessionDiagnosticsSupportBundleFacade.kt`
-33. `SessionDiagnosticsSupportBundleCoordinator.kt`
-34. `CompatibilitySupportBundlePreparationCoordinator.kt`
-35. `SupportBundleIngestCoordinator.kt`
-36. `SupportBundleStatusText.kt`
-37. `SessionOrchestrator.kt`
-38. `FtmsBleClient.kt` and `FtmsController.kt`
-39. `WorkoutImportService.kt` and `ExecutionWorkoutMapper.kt`
-40. `SessionManager.kt`
+31. `SessionOrchestrator.kt`
+32. `FtmsBleClient.kt` and `FtmsController.kt`
+33. `WorkoutImportService.kt` and `ExecutionWorkoutMapper.kt`
+34. `SessionManager.kt`

@@ -227,6 +227,9 @@ Expected metadata shape for Ewoc:
 - `AllowedAPKSigningKeys` set to
   `4c916c9c69984f8aa9313838ca8cd7f8938af62500b6e85afb5e1afba5451e63`
 - Build `commit` set to the full public source commit hash.
+- Add new releases as additional `Builds:` entries instead of replacing
+  already-published build blocks. Keep `CurrentVersion` and
+  `CurrentVersionCode` pointed at the newest submitted release.
 - `subdir: app`
 - `gradle: [yes]`
 - `AutoUpdateMode: Version`

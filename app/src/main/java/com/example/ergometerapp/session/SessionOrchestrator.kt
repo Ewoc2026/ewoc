@@ -617,9 +617,9 @@ class SessionOrchestrator internal constructor(
     }
 
     /**
-     * Applies the bundled Free-tier workout asset as the active selection.
+     * Applies the bundled guided workout asset as the active selection.
      *
-     * This keeps the Free-tier guided path on the canonical `.ewo` import seam
+     * This keeps the built-in guided path on the canonical `.ewo` import seam
      * without allowing arbitrary user-selected file import.
      */
     fun onStarterWorkoutSelected() {
