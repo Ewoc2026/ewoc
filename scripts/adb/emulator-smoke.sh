@@ -2,7 +2,7 @@
 set -euo pipefail
 
 PACKAGE="io.github.ewoc2026.ewoc"
-DEFAULT_TEST_CLASS="com.example.ergometerapp.ui.MainActivityContentFlowTest,com.example.ergometerapp.MainActivityRecreationRotationTest"
+DEFAULT_TEST_CLASS="io.github.ewoc2026.ewoc.ui.MainActivityContentFlowTest,io.github.ewoc2026.ewoc.MainActivityRecreationRotationTest"
 FILTER_REGEX='io\.github\.ewoc2026\.ewoc|com\.example\.ergometerapp|FTMS|SESSION|WORKOUT|BluetoothGatt|BluetoothLeScanner'
 
 OUT_BASE=".local/emulator-test-runs"

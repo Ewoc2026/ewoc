@@ -51,7 +51,7 @@ jobs:
           base_sha=""
           head_sha=""
           android_relevant_pattern='^(app/|modules/(ewo-core|ewo-editor-model|ewo-editor-commands)/|build\.gradle$|build\.gradle\.kts$|settings\.gradle$|settings\.gradle\.kts$|gradle\.properties$|gradle/|gradlew$|gradlew\.bat$|scripts/|\.github/workflows/android-build\.yml$)'
-          smoke_relevant_pattern='^(app/src/main/java/com/example/ergometerapp/(EwocApplication|MainActivity|MainViewModel|ActivityCallbackBridge|SessionSetupMode|WorkoutSelectionUiState|SessionStartEligibilityUiState)\.kt$|app/src/main/java/com/example/ergometerapp/(baseline|ble|ftms|session|workout|ui)/|modules/(ewo-core|ewo-editor-model|ewo-editor-commands)/|app/src/main/res/|app/src/main/AndroidManifest\.xml$|app/src/androidTest/|\.github/workflows/android-build\.yml$)'
+          smoke_relevant_pattern='^(app/src/main/java/io/github/ewoc2026/ewoc/(EwocApplication|MainActivity|MainViewModel|ActivityCallbackBridge|SessionSetupMode|WorkoutSelectionUiState|SessionStartEligibilityUiState)\.kt$|app/src/main/java/io/github/ewoc2026/ewoc/(baseline|ble|ftms|session|workout|ui)/|modules/(ewo-core|ewo-editor-model|ewo-editor-commands)/|app/src/main/res/|app/src/main/AndroidManifest\.xml$|app/src/androidTest/|\.github/workflows/android-build\.yml$)'
 
           if [[ "${GITHUB_EVENT_NAME}" == "schedule" && "${{ github.event.schedule }}" == "30 4 * * *" ]]; then
             run_instrumentation_smoke="true"
@@ -271,7 +271,7 @@ jobs:
     timeout-minutes: 45
     continue-on-error: ${{ github.event_name == 'pull_request' }}
     env:
-      SMOKE_TEST_CLASSES: com.example.ergometerapp.ui.MainActivityContentFlowTest,com.example.ergometerapp.MainActivityRecreationRotationTest,com.example.ergometerapp.MainActivityLifecycleContinuityTest
+      SMOKE_TEST_CLASSES: io.github.ewoc2026.ewoc.ui.MainActivityContentFlowTest,io.github.ewoc2026.ewoc.MainActivityRecreationRotationTest,io.github.ewoc2026.ewoc.MainActivityLifecycleContinuityTest
       SMOKE_ATTEMPT_TIMEOUT_SECONDS: 1200
     concurrency:
       group: ${{ github.workflow }}-smoke-${{ github.ref_name || github.ref }}

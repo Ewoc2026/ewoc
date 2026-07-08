@@ -3,7 +3,7 @@ set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 APP_ID="io.github.ewoc2026.ewoc"
-ACTIVITY="${APP_ID}/com.example.ergometerapp.MainActivity"
+ACTIVITY="${APP_ID}/io.github.ewoc2026.ewoc.MainActivity"
 APK_PATH="${REPO_ROOT}/app/build/outputs/apk/debug/app-debug.apk"
 APP_BUILD_FILE="${REPO_ROOT}/app/build.gradle.kts"
 DEBUG_AUTOMATION_ACTION="io.github.ewoc2026.ewoc.action.DEBUG_AUTOMATION"

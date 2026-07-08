@@ -36,7 +36,7 @@ Default behavior:
 
 Examples:
   ./scripts/gradle-safe.sh :app:compileDebugKotlin
-  ./scripts/gradle-safe.sh :app:testDebugUnitTest --tests com.example.ergometerapp.session.SessionOrchestratorFlowTest
+  ./scripts/gradle-safe.sh :app:testDebugUnitTest --tests io.github.ewoc2026.ewoc.session.SessionOrchestratorFlowTest
   ./scripts/gradle-safe.sh --stop-first :app:lintDebug
 EOF
 }

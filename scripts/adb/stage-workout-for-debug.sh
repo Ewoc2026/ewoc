@@ -2,7 +2,7 @@
 set -euo pipefail
 
 PACKAGE="io.github.ewoc2026.ewoc"
-COMPONENT="io.github.ewoc2026.ewoc/com.example.ergometerapp.MainActivity"
+COMPONENT="io.github.ewoc2026.ewoc/io.github.ewoc2026.ewoc.MainActivity"
 ACTION="io.github.ewoc2026.ewoc.action.DEBUG_AUTOMATION"
 REMOTE_DIR="/sdcard/Android/data/$PACKAGE/files/debug-workouts"
 

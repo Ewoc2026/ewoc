@@ -77,7 +77,7 @@ val buildWorktreeDirty = gitOutputOr("", "status", "--porcelain")
     .toString()
 
 android {
-    namespace = "com.example.ergometerapp"
+    namespace = "io.github.ewoc2026.ewoc"
     compileSdk {
         version = release(36)
     }

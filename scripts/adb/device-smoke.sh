@@ -2,7 +2,7 @@
 set -euo pipefail
 
 PACKAGE="io.github.ewoc2026.ewoc"
-DEFAULT_TEST_CLASS="com.example.ergometerapp.ui.MainActivityContentFlowTest,com.example.ergometerapp.MainActivityRecreationRotationTest"
+DEFAULT_TEST_CLASS="io.github.ewoc2026.ewoc.ui.MainActivityContentFlowTest,io.github.ewoc2026.ewoc.MainActivityRecreationRotationTest"
 FILTER_REGEX='io\.github\.ewoc2026\.ewoc|com\.example\.ergometerapp|FTMS|SESSION|WORKOUT|BluetoothGatt|BluetoothLeScanner'
 
 SERIAL=""
@@ -48,7 +48,7 @@ Options:
 Examples:
   ./scripts/adb/device-smoke.sh
   ./scripts/adb/device-smoke.sh --serial R92Y40YAZPB --all-tests
-  ./scripts/adb/device-smoke.sh --test-class com.example.ergometerapp.ui.MainActivityContentFlowTest,com.example.ergometerapp.MainActivityRecreationRotationTest
+  ./scripts/adb/device-smoke.sh --test-class io.github.ewoc2026.ewoc.ui.MainActivityContentFlowTest,io.github.ewoc2026.ewoc.MainActivityRecreationRotationTest
   ./scripts/adb/device-smoke.sh --record-seconds 20
 EOF
 }

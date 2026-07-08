@@ -12,11 +12,10 @@ fdroiddata metadata merge request and follow-up updates.
 - License: `GPL-3.0-or-later`
 - Source: `https://github.com/Ewoc2026/ewoc`
 - Issue tracker: `https://github.com/Ewoc2026/ewoc/issues`
-- Current prepared update: `versionName = "1.0.3"`, `versionCode = 7`
-- Current published F-Droid version: `versionName = "1.0.1"`,
-  `versionCode = 5`
+- Current published F-Droid version: `versionName = "1.0.3"`,
+  `versionCode = 7`
 - First F-Droid source tag: `v1.0.0`; current F-Droid review update tag:
-  `v1.0.1`; prepared update tag: `v1.0.3`
+  `v1.0.1`; current published FIT fix tag: `v1.0.3`
 
 ## Initial Readiness Audit
 
@@ -37,12 +36,11 @@ fdroiddata metadata merge request and follow-up updates.
 
 ## Update Work Remaining
 
-- Monitor fdroiddata MR `!41492` for `versionCode=7`; local fdroiddata commit
-  `9c3fb18032` (`Update Ewoc to 1.0.3`) is pushed to branch
-  `Jyriwee/fdroiddata:update-ewoc-1.0.3`. It addresses reviewer feedback by
-  keeping the existing `1.0.1` build block, adding a new `1.0.3` build block,
-  and updating `CurrentVersion*`.
-- Verify the resulting F-Droid build after the update lands in fdroiddata.
+- fdroiddata MR `!41492` for `versionCode=7` has landed, and F-Droid now
+  publishes Ewoc `1.0.3`. Local fdroiddata commit `9c3fb18032`
+  (`Update Ewoc to 1.0.3`) addressed reviewer feedback by keeping the existing
+  `1.0.1` build block, adding a new `1.0.3` build block, and updating
+  `CurrentVersion*`.
 
 ## GitLab Access
 
@@ -80,7 +78,7 @@ commit it, paste it into chat, or leave it embedded in git remotes.
 
 The local draft lives at `docs/fdroiddata-metadata-draft.yml`. It assumes:
 
-- the prepared F-Droid update tag is `v1.0.3`
+- the current F-Droid update tag is `v1.0.3`
 - `versionName = "1.0.3"` and `versionCode = 7`
 - source commit
   `0f2b36cb35b676de8ccb70a2eb6e4996f4fed81f`
@@ -138,13 +136,12 @@ Validated locally:
   fails F-Droid's signature-copy reproducible-build comparison.
 - The initial `v1.0.2` FIT export follow-up was superseded before F-Droid
   publication after rechecking Garmin FIT profile field numbers.
-- The `v1.0.3` FIT export fix is prepared in public commit
+- The `v1.0.3` FIT export fix is published in public commit
   `0f2b36cb35b676de8ccb70a2eb6e4996f4fed81f`, tag `v1.0.3`, and GitHub
   Release `v1.0.3`. The release asset `ewoc-1.0.3-rb.apk` has SHA-256
   `95bc13047ef9942246c6bb80607627529aa5d1474222b79c6095df213fdfd84e`.
   Local fdroidserver validation passed for `io.github.ewoc2026.ewoc:7`,
   including reproducible-build comparison against the uploaded reference APK.
-  fdroiddata MR `!41492` is open at
-  `https://gitlab.com/fdroid/fdroiddata/-/merge_requests/41492`; refreshed
-  pipeline `2634905827` completed successfully after the metadata was updated
-  to add the new build block instead of replacing the old one.
+  fdroiddata MR `!41492` landed after the metadata was updated to add the new
+  build block instead of replacing the old one, and F-Droid now publishes Ewoc
+  `1.0.3` / `versionCode=7`.

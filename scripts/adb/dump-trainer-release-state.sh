@@ -5,7 +5,7 @@ SERIAL=""
 TAIL_LINES=12
 
 ACTION="io.github.ewoc2026.ewoc.action.DEBUG_AUTOMATION"
-COMPONENT="io.github.ewoc2026.ewoc/com.example.ergometerapp.MainActivity"
+COMPONENT="io.github.ewoc2026.ewoc/io.github.ewoc2026.ewoc.MainActivity"
 
 print_help() {
   cat <<'EOF'

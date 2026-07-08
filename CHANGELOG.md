@@ -12,6 +12,10 @@ file.
 
 ### Changed
 
+- Android Gradle namespace, Kotlin package declarations, CI smoke selectors,
+  and adb helper activity components now align with the public app identity
+  `io.github.ewoc2026.ewoc`.
+- Removed the temporary no-op billing shim left from the free/public migration.
 - Android CI change detection now treats the Android-consumed shared EWO/editor
   modules as Android-impacting inputs.
 - The Android Build workflow now declares the scheduled triggers used by its
@@ -19,6 +23,13 @@ file.
 - Instrumentation-smoke change detection now covers critical startup,
   lifecycle, BLE/FTMS, setup, workout import/runner, baseline, UI assembly, and
   shared EWO/editor model paths.
+
+### Validation
+
+- Package migration validation passed with debug Kotlin, unit-test Kotlin, and
+  androidTest Kotlin compilation, full debug unit tests, debug lint, debug APK
+  assembly, Samsung A36 install/startup build proof, and a short A36 trainer
+  smoke including the first 23 seconds of a bundled workout.
 
 ## [1.0.3] - 2026-06-28
 

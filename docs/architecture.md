@@ -278,7 +278,6 @@ Responsibilities:
 - `app/src/main/java/com/example/ergometerapp/WorkoutEditorSaveCoordinator.kt`
 - `app/src/main/java/com/example/ergometerapp/AiAssistantFacade.kt`
 - `app/src/main/java/com/example/ergometerapp/AiAssistantIntegration.kt`
-- `app/src/main/java/com/example/ergometerapp/billing/EwocBillingFacade.kt`
 - `app/src/main/java/com/example/ergometerapp/baseline/BaselineFitnessTestModels.kt`
 - `app/src/main/java/com/example/ergometerapp/baseline/BaselineFitnessTestProtocol.kt`
 - `app/src/main/java/com/example/ergometerapp/baseline/BaselineFitnessTestStateMachine.kt`
@@ -294,10 +293,9 @@ Responsibilities:
 - Hold user-selected device/workout/FTP state.
 - Keep Activity-bound permission launchers and screen-on hooks in
   `ActivityCallbackBridge` so configuration-change rebinding does not drift back into
-  another loose `MainViewModel` callback cluster. The bridge still exposes a
-  legacy current-Activity callback only for the temporary no-op billing shim;
-  remove that callback with the shim instead of treating it as active Play
-  Billing architecture.
+  another loose `MainViewModel` callback cluster. The bridge no longer exposes
+  a current-Activity callback because the free/public branch has removed the
+  temporary billing shim as well as active Play Billing architecture.
 - Keep the product-facing `Continue ride` hard-cutover in `MainViewModel` as a
   polling coordinator over existing summary/menu navigation instead of pushing
   restart timing heuristics into Compose. The current branch now waits until
@@ -319,10 +317,10 @@ Responsibilities:
   separation lets the rider's decision time double as the trainer's required
   stop/disconnect dwell window and gives `Continue ride` a faster in-place
   continuation path when the trainer is already prepared.
-- The free/public migration branch currently keeps `billing/EwocBillingFacade.kt` as a
-  temporary no-Play shim so existing call sites stay compileable while all app features
-  resolve as entitled. Play Billing dependency, paywall UI, paywall analytics, paywall
-  strings, and the debug entitlement override are removed from Android.
+- The free/public migration branch has removed the Play Billing dependency,
+  paywall UI, paywall analytics, paywall strings, debug entitlement override,
+  and temporary no-Play billing shim from Android. App features now resolve
+  directly as available in the free/public product model.
 - Keep FTP and HR-profile input, validation, and persisted selection state in
   `ProfileSettingsUiState` so menu profile-setting callbacks, restore logic, and session/AI
   consumers reuse one owner instead of scattering profile fields back across `MainViewModel`.

@@ -10,7 +10,7 @@ VERIFY=true
 VERIFY_TIMEOUT_SEC=5
 
 ACTION="io.github.ewoc2026.ewoc.action.DEBUG_AUTOMATION"
-COMPONENT="io.github.ewoc2026.ewoc/com.example.ergometerapp.MainActivity"
+COMPONENT="io.github.ewoc2026.ewoc/io.github.ewoc2026.ewoc.MainActivity"
 PACKAGE_NAME="io.github.ewoc2026.ewoc"
 REMOTE_PROBE_EVENT_PATH="files/debug/session-debug-probe-events.jsonl"
 
