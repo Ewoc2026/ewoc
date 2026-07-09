@@ -1,13 +1,14 @@
 # Ewoc V1 Baseline Fitness Test Repo Spec
 
-Status: proposed implementation slice
+Status: implementation design record
 
-This document is the repo-native implementation spec for the first shippable baseline fitness test. It replaces any conflicting V1 decisions in:
+This document records the design used for the first shippable baseline fitness
+test. The implemented Kotlin sources and tests are authoritative where later
+runtime details differ from this record.
 
-- `docs/fitness-test/baseline_fitness_test.pdf`
-- `docs/fitness-test/ewoc_v1_baseline_fitness_test_engineering_spec.pdf`
-
-The goal is not to preserve every earlier idea. The goal is to define the smallest slice that fits the current Ewoc codebase and can be implemented without inventing a second app architecture around it.
+The earlier Finnish draft PDF was removed from the active tree. This record
+keeps the durable scope, protocol, and safety decisions without retaining that
+duplicate implementation brief.
 
 ## 1. Scope
 
@@ -36,7 +37,7 @@ Out of scope:
 
 This slice must fit the current app structure instead of assuming a separate settings or onboarding system already exists.
 
-- Navigation is currently limited to `MENU`, `EWO_EDITOR`, `CONNECTING`, `STOPPING`, `SESSION`, and `SUMMARY` in `app/src/main/java/com/example/ergometerapp/AppScreen.kt`.
+- Navigation is currently limited to `MENU`, `EWO_EDITOR`, `CONNECTING`, `STOPPING`, `SESSION`, and `SUMMARY` in `app/src/main/java/io/github/ewoc2026/ewoc/AppScreen.kt`.
 - FTP is currently the only persisted training anchor. It is stored in `FtpSettingsStorage`, mirrored in `ProfileSettingsUiState`, and saved through `ProfileSettingsCoordinator`.
 - `MainViewModel` already propagates FTP changes through `sessionOrchestrator.onFtpWattsChanged()`, and workout mapping/preview logic already reads the active FTP from the same source.
 - FTMS control infrastructure already exists through `SessionOrchestrator`, `FtmsController`, and the compatibility gateway.

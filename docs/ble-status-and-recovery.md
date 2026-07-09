@@ -84,6 +84,6 @@ For connection/start issues, capture:
 - Device state timeline: when powered on/off, when app screen changed.
 
 ## Related Files
-- `app/src/main/java/com/example/ergometerapp/MainViewModel.kt`
-- `app/src/main/java/com/example/ergometerapp/ui/Screens.kt`
-- `app/src/main/java/com/example/ergometerapp/session/SessionOrchestrator.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/MainViewModel.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/ui/Screens.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/session/SessionOrchestrator.kt`

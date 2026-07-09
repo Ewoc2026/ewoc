@@ -286,5 +286,6 @@ When implementation choices are ambiguous, prefer:
 - conservative bounded behavior over smarter-looking control
 - one fully testable steady-HR path over broader but partially reliable scope
 
-For the concrete next coding slice, see
-`docs/hr-workouts-v1-implementation-checklist.md`.
+Use the current implementation status above and focused runtime findings to
+choose future work. The completed implementation checklist now lives in Git
+history rather than in the active documentation tree.

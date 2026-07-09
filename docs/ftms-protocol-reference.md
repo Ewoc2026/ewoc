@@ -158,5 +158,5 @@ Bluetooth SIG public references:
   - https://www.bluetooth.com/wp-content/uploads/Files/Specification/Assigned_Numbers.pdf?v=1704165718337
 
 Implementation references in this repository:
-- `app/src/main/java/com/example/ergometerapp/ble/FtmsBleClient.kt`
-- `app/src/main/java/com/example/ergometerapp/ble/FtmsController.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/ble/FtmsBleClient.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/ble/FtmsController.kt`

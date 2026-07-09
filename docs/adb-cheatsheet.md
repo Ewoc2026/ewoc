@@ -15,7 +15,7 @@ Expected: device listed with state `device`.
 
 ## Project Constants
 - App package: `io.github.ewoc2026.ewoc`
-- Main activity component: `io.github.ewoc2026.ewoc/com.example.ergometerapp.MainActivity`
+- Main activity component: `io.github.ewoc2026.ewoc/io.github.ewoc2026.ewoc.MainActivity`
 
 ## Build + Install
 
@@ -42,7 +42,7 @@ adb install -r -d app/build/outputs/apk/debug/app-debug.apk
 Start app:
 
 ```bash
-adb shell am start -n io.github.ewoc2026.ewoc/com.example.ergometerapp.MainActivity
+adb shell am start -n io.github.ewoc2026.ewoc/io.github.ewoc2026.ewoc.MainActivity
 ```
 
 Force-stop app:
@@ -162,7 +162,7 @@ Run one instrumentation test class:
 
 ```bash
 ./gradlew :app:connectedDebugAndroidTest \
-  -Pandroid.testInstrumentationRunnerArguments.class=com.example.ergometerapp.ui.MainActivityContentFlowTest,com.example.ergometerapp.MainActivityRecreationRotationTest \
+  -Pandroid.testInstrumentationRunnerArguments.class=io.github.ewoc2026.ewoc.ui.MainActivityContentFlowTest,io.github.ewoc2026.ewoc.MainActivityRecreationRotationTest \
   --no-daemon
 ```
 

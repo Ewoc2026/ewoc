@@ -40,25 +40,25 @@ trainer behavior profiles.
 ## Runtime Layers
 
 ### 1) UI and Navigation Layer
-- `app/src/main/java/com/example/ergometerapp/EwocApplication.kt`
-- `app/src/main/java/com/example/ergometerapp/MainActivity.kt`
-- `app/src/main/java/com/example/ergometerapp/MainActivityDocumentPickerLaunchGate.kt`
-- `app/src/main/java/com/example/ergometerapp/MainActivityDocumentFlowCoordinator.kt`
-- `app/src/main/java/com/example/ergometerapp/MainActivityEwoDocumentCoordinator.kt`
-- `app/src/main/java/com/example/ergometerapp/DebugAutomationCommand.kt`
-- `app/src/main/java/com/example/ergometerapp/MainActivityDebugIntentCoordinator.kt`
-- `app/src/main/java/com/example/ergometerapp/MainActivityLifecycleCoordinator.kt`
-- `app/src/main/java/com/example/ergometerapp/MainActivityPermissionCoordinator.kt`
-- `app/src/main/java/com/example/ergometerapp/MainActivityScreenWakeCoordinator.kt`
-- `app/src/main/java/com/example/ergometerapp/MainActivitySummaryFitShareCoordinator.kt`
-- `app/src/main/java/com/example/ergometerapp/MainActivitySystemUiCoordinator.kt`
-- `app/src/main/java/com/example/ergometerapp/PrivacyPolicyLinkLauncher.kt`
-- `app/src/main/java/com/example/ergometerapp/ewoeditor/EwoEditorCoordinator.kt`
-- `app/src/main/java/com/example/ergometerapp/ui/MainActivityUiModelFactory.kt`
-- `app/src/main/java/com/example/ergometerapp/ui/MainActivityContent.kt`
-- `app/src/main/java/com/example/ergometerapp/ui/EwoEditorScreen.kt`
-- `app/src/main/java/com/example/ergometerapp/ui/EwoEditorScreenPreviews.kt`
-- `app/src/main/java/com/example/ergometerapp/ui/Screens.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/EwocApplication.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/MainActivity.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/MainActivityDocumentPickerLaunchGate.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/MainActivityDocumentFlowCoordinator.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/MainActivityEwoDocumentCoordinator.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/DebugAutomationCommand.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/MainActivityDebugIntentCoordinator.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/MainActivityLifecycleCoordinator.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/MainActivityPermissionCoordinator.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/MainActivityScreenWakeCoordinator.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/MainActivitySummaryFitShareCoordinator.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/MainActivitySystemUiCoordinator.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/PrivacyPolicyLinkLauncher.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/ewoeditor/EwoEditorCoordinator.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/ui/MainActivityUiModelFactory.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/ui/MainActivityContent.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/ui/EwoEditorScreen.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/ui/EwoEditorScreenPreviews.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/ui/Screens.kt`
 
 Responsibilities:
 - Provide the app-level Android startup contract, including the release/minified
@@ -243,50 +243,44 @@ Responsibilities:
   mode, so the rider must be able to read probe instructions at a glance.
 
 ### 2) ViewModel and App State Layer
-- `app/src/main/java/com/example/ergometerapp/MainViewModel.kt`
-- `app/src/main/java/com/example/ergometerapp/DocumentsFolderUiState.kt`
-- `app/src/main/java/com/example/ergometerapp/DebugAutomationUiState.kt`
-- `app/src/main/java/com/example/ergometerapp/ActivityCallbackBridge.kt`
-- `app/src/main/java/com/example/ergometerapp/AiAssistantUiState.kt`
-- `app/src/main/java/com/example/ergometerapp/ConnectionRecoveryUiState.kt`
-- `app/src/main/java/com/example/ergometerapp/ProfileSettingsUiState.kt`
-- `app/src/main/java/com/example/ergometerapp/SessionRuntimeUiState.kt`
-- `app/src/main/java/com/example/ergometerapp/SessionStartEligibilityUiState.kt`
-- `app/src/main/java/com/example/ergometerapp/SummaryFitUiState.kt`
-- `app/src/main/java/com/example/ergometerapp/WorkoutSelectionUiState.kt`
-- `app/src/main/java/com/example/ergometerapp/WorkoutEditorSessionUiState.kt`
-- `app/src/main/java/com/example/ergometerapp/DeviceScanUiStateAdapter.kt`
-- `app/src/main/java/com/example/ergometerapp/DeviceSelectionFacade.kt`
-- `app/src/main/java/com/example/ergometerapp/MenuStatusProbeFacade.kt`
-- `app/src/main/java/com/example/ergometerapp/MenuStatusProbeStateAdapter.kt`
-- `app/src/main/java/com/example/ergometerapp/DocumentsFolderImportCoordinator.kt`
-- `app/src/main/java/com/example/ergometerapp/SafUtf8TextWriter.kt`
-- `app/src/main/java/com/example/ergometerapp/CompatibilityCheckLaunchCoordinator.kt`
-- `app/src/main/java/com/example/ergometerapp/CompatibilityCheckCoordinator.kt`
-- `app/src/main/java/com/example/ergometerapp/CompatibilityCheckRunFacade.kt`
-- `app/src/main/java/com/example/ergometerapp/CompatibilityModeUiState.kt`
-- `app/src/main/java/com/example/ergometerapp/SummaryExitStateAdapter.kt`
-- `app/src/main/java/com/example/ergometerapp/SummaryFitAutoExportCoordinator.kt`
-- `app/src/main/java/com/example/ergometerapp/SummaryExitCoordinator.kt`
-- `app/src/main/java/com/example/ergometerapp/SummaryFitExportCoordinator.kt`
-- `app/src/main/java/com/example/ergometerapp/SummaryFitExportPreferenceCoordinator.kt`
-- `app/src/main/java/com/example/ergometerapp/SummaryFitShareCoordinator.kt`
-- `app/src/main/java/com/example/ergometerapp/WorkoutEditorHydrationCoordinator.kt`
-- `app/src/main/java/com/example/ergometerapp/WorkoutEditorFlowCoordinator.kt`
-- `app/src/main/java/com/example/ergometerapp/WorkoutEditorDraftCoordinator.kt`
-- `app/src/main/java/com/example/ergometerapp/WorkoutEditorPersistenceCoordinator.kt`
-- `app/src/main/java/com/example/ergometerapp/WorkoutEditorSaveCoordinator.kt`
-- `app/src/main/java/com/example/ergometerapp/AiAssistantFacade.kt`
-- `app/src/main/java/com/example/ergometerapp/AiAssistantIntegration.kt`
-- `app/src/main/java/com/example/ergometerapp/baseline/BaselineFitnessTestModels.kt`
-- `app/src/main/java/com/example/ergometerapp/baseline/BaselineFitnessTestProtocol.kt`
-- `app/src/main/java/com/example/ergometerapp/baseline/BaselineFitnessTestStateMachine.kt`
-- `app/src/main/java/com/example/ergometerapp/baseline/BaselineFitnessTestResultCalculator.kt`
-- `app/src/main/java/com/example/ergometerapp/baseline/BaselineFitnessTestCoordinator.kt`
-- `app/src/main/java/com/example/ergometerapp/baseline/BaselineFitnessTestSettingsStorage.kt`
-- `app/src/main/java/com/example/ergometerapp/baseline/BaselineFitnessTestResultPromotionCoordinator.kt`
-- `app/src/main/java/com/example/ergometerapp/baseline/BaselineFitnessZoneCalculator.kt`
-- `app/src/main/java/com/example/ergometerapp/AppUiState.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/MainViewModel.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/DocumentsFolderUiState.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/DebugAutomationUiState.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/ActivityCallbackBridge.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/AiAssistantUiState.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/ConnectionRecoveryUiState.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/ProfileSettingsUiState.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/SessionRuntimeUiState.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/SessionStartEligibilityUiState.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/SummaryFitUiState.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/WorkoutSelectionUiState.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/DeviceScanUiStateAdapter.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/DeviceSelectionFacade.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/MenuStatusProbeFacade.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/MenuStatusProbeStateAdapter.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/DocumentsFolderImportCoordinator.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/SafUtf8TextWriter.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/CompatibilityCheckLaunchCoordinator.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/CompatibilityCheckCoordinator.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/CompatibilityCheckRunFacade.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/CompatibilityModeUiState.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/SummaryExitStateAdapter.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/SummaryFitAutoExportCoordinator.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/SummaryExitCoordinator.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/SummaryFitExportCoordinator.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/SummaryFitExportPreferenceCoordinator.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/SummaryFitShareCoordinator.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/AiAssistantFacade.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/AiAssistantIntegration.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/baseline/BaselineFitnessTestModels.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/baseline/BaselineFitnessTestProtocol.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/baseline/BaselineFitnessTestStateMachine.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/baseline/BaselineFitnessTestResultCalculator.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/baseline/BaselineFitnessTestCoordinator.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/baseline/BaselineFitnessTestSettingsStorage.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/baseline/BaselineFitnessTestResultPromotionCoordinator.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/baseline/BaselineFitnessZoneCalculator.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/AppUiState.kt`
 
 Responsibilities:
 - Own long-lived app/session services across configuration changes.
@@ -507,9 +501,9 @@ Responsibilities:
   generation route or wearable-data permission flow.
 
 ### 3) Session Orchestration Layer
-- `app/src/main/java/com/example/ergometerapp/session/SessionIntentDiagnostics.kt`
-- `app/src/main/java/com/example/ergometerapp/session/SessionOrchestrator.kt`
-- `app/src/main/java/com/example/ergometerapp/session/release/ReleaseRampDecider.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/session/SessionIntentDiagnostics.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/session/SessionOrchestrator.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/session/release/ReleaseRampDecider.kt`
 
 Responsibilities:
 - Coordinate FTMS lifecycle, workout lifecycle, and UI navigation.
@@ -608,11 +602,11 @@ Responsibilities:
   before `soft_stop_started`.
 
 ### 4) BLE Transport and FTMS Control Layer
-- `app/src/main/java/com/example/ergometerapp/ble/FtmsBleClient.kt`
-- `app/src/main/java/com/example/ergometerapp/ble/FtmsController.kt`
-- `app/src/main/java/com/example/ergometerapp/ble/HrBleClient.kt`
-- `app/src/main/java/com/example/ergometerapp/ble/HrReconnectCoordinator.kt`
-- `app/src/main/java/com/example/ergometerapp/ble/BleDeviceScanner.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/ble/FtmsBleClient.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/ble/FtmsController.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/ble/HrBleClient.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/ble/HrReconnectCoordinator.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/ble/BleDeviceScanner.kt`
 
 Responsibilities:
 - Manage BLE link setup/teardown and service discovery.
@@ -621,11 +615,11 @@ Responsibilities:
 - Provide bounded HR reconnect behavior.
 
 ### 5) Workout Import and Execution Layer
-- `app/src/main/java/com/example/ergometerapp/workout/WorkoutImportService.kt`
-- `app/src/main/java/com/example/ergometerapp/workout/ZwoParser.kt`
-- `app/src/main/java/com/example/ergometerapp/workout/ExecutionWorkoutMapper.kt`
-- `app/src/main/java/com/example/ergometerapp/workout/runner/WorkoutStepper.kt`
-- `app/src/main/java/com/example/ergometerapp/workout/runner/WorkoutRunner.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/workout/WorkoutImportService.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/workout/ZwoParser.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/workout/ExecutionWorkoutMapper.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/workout/runner/WorkoutStepper.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/workout/runner/WorkoutRunner.kt`
 
 Responsibilities:
 - Parse imported workout files.
@@ -716,9 +710,9 @@ Responsibilities:
   two-card top row so the ownership change stays legible.
 
 ### 6) Session Metrics and Persistence Layer
-- `app/src/main/java/com/example/ergometerapp/session/SessionManager.kt`
-- `app/src/main/java/com/example/ergometerapp/session/ActualTssAccumulator.kt`
-- `app/src/main/java/com/example/ergometerapp/session/SessionStorage.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/session/SessionManager.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/session/ActualTssAccumulator.kt`
+- `app/src/main/java/io/github/ewoc2026/ewoc/session/SessionStorage.kt`
 
 Responsibilities:
 - Aggregate power/cadence/HR/session duration data.
