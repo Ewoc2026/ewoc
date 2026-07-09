@@ -9,6 +9,9 @@ file.
 
 - Main menu Quit now removes the app task from Android recents instead of
   leaving it available to resume.
+- Selecting a workout after a completed session now clears the previous
+  runner's terminal elapsed time, so the same workout no longer opens as
+  already completed before the new session starts.
 
 ### Changed
 
@@ -30,6 +33,10 @@ file.
   androidTest Kotlin compilation, full debug unit tests, debug lint, debug APK
   assembly, Samsung A36 install/startup build proof, and a short A36 trainer
   smoke including the first 23 seconds of a bundled workout.
+- Workout-reselection validation passed with the full
+  `SessionOrchestratorFlowTest` class, debug main/unit-test Kotlin compilation,
+  debug APK assembly, and Samsung `SM-X210` install/startup proof. The restored
+  bundled workout reported `workoutElapsedSec=none` and remained startable.
 
 ## [1.0.3] - 2026-06-28
 

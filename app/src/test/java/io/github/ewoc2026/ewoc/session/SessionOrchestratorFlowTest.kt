@@ -3790,6 +3790,25 @@ class SessionOrchestratorFlowTest {
     }
 
     @Test
+    fun selectingWorkoutClearsCompletedRunnerProgressBeforeNextSessionStarts() {
+        val harness = createHarness()
+        harness.orchestrator.initialize()
+        harness.uiState.runner.value =
+            io.github.ewoc2026.ewoc.workout.runner.RunnerState.stopped(
+                workoutElapsedSec = 180,
+            )
+
+        harness.orchestrator.onWorkoutEdited(
+            workout = readyWorkout(),
+            sourceName = "same-workout.ewo",
+        )
+
+        assertFalse(harness.uiState.runner.value.running)
+        assertTrue(harness.uiState.runner.value.done)
+        assertNull(harness.uiState.runner.value.workoutElapsedSec)
+    }
+
+    @Test
     fun telemetryOnlySession_waitsForCleanDisconnectEpochAfterAppControlledTargetHistory() {
         val manualHandler = ManualHandler()
         var connectFtmsTransportCalls = 0

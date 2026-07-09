@@ -57,12 +57,13 @@ import io.github.ewoc2026.ewoc.workout.runner.ImportedHrRuntimeEvent
 import io.github.ewoc2026.ewoc.workout.runner.ImportedHrRuntimeState
 import io.github.ewoc2026.ewoc.workout.runner.ImportedHrRuntimeUnreachableTargetStatus
 import io.github.ewoc2026.ewoc.workout.runner.ImportedHrRuntimeTransition
-import java.io.File
-import java.io.FileInputStream
+import io.github.ewoc2026.ewoc.workout.runner.RunnerState
 import io.github.ewoc2026.ewoc.workout.runner.RunnerSegmentType
 import io.github.ewoc2026.ewoc.workout.runner.WorkoutRunner
 import io.github.ewoc2026.ewoc.workout.runner.WorkoutStepper
 import io.github.ewoc2026.ewoc.session.export.SessionExportSnapshot
+import java.io.File
+import java.io.FileInputStream
 import java.util.UUID
 import kotlin.math.roundToInt
 
@@ -668,7 +669,7 @@ class SessionOrchestrator internal constructor(
                     uiState.selectedSessionSetupMode.value = SessionSetupMode.FILE
                     uiState.selectedWorkout.value = workoutFile
                     uiState.selectedImportedWorkout.value = null
-                    workoutRunner = null
+                    resetRunnerForWorkoutSelection()
                     uiState.selectedWorkoutFileName.value = sourceName
                     uiState.selectedWorkoutImportError.value = null
                     recalculateSelectedWorkoutDerivedMetrics(workoutFile)
@@ -696,7 +697,7 @@ class SessionOrchestrator internal constructor(
                     uiState.selectedSessionSetupMode.value = SessionSetupMode.FILE
                     uiState.selectedWorkout.value = null
                     uiState.selectedImportedWorkout.value = bundledWorkout
-                    workoutRunner = null
+                    resetRunnerForWorkoutSelection()
                     uiState.selectedWorkoutFileName.value = sourceName
                     uiState.selectedWorkoutImportError.value = null
                     recalculateSelectedImportedWorkoutDerivedMetrics(bundledWorkout)
@@ -722,7 +723,7 @@ class SessionOrchestrator internal constructor(
         uiState.selectedSessionSetupMode.value = SessionSetupMode.EDITOR
         uiState.selectedWorkout.value = workout
         uiState.selectedImportedWorkout.value = null
-        workoutRunner = null
+        resetRunnerForWorkoutSelection()
         uiState.selectedWorkoutFileName.value = sourceName
         uiState.selectedWorkoutImportError.value = null
         recalculateSelectedWorkoutDerivedMetrics(workout)
@@ -1699,7 +1700,7 @@ class SessionOrchestrator internal constructor(
             val failure = AppFailureFactory.workoutImportReadFailed(readFailureDetails)
             uiState.selectedWorkout.value = null
             uiState.selectedImportedWorkout.value = null
-            workoutRunner = null
+            resetRunnerForWorkoutSelection()
             uiState.selectedWorkoutFileName.value = sourceName
             uiState.selectedWorkoutStepCount.value = null
             uiState.selectedWorkoutPlannedTss.value = null
@@ -1723,7 +1724,7 @@ class SessionOrchestrator internal constructor(
                     uiState.selectedSessionSetupMode.value = SessionSetupMode.FILE
                     uiState.selectedWorkout.value = workoutFile
                     uiState.selectedImportedWorkout.value = null
-                    workoutRunner = null
+                    resetRunnerForWorkoutSelection()
                     uiState.selectedWorkoutFileName.value = sourceName
                     uiState.selectedWorkoutImportError.value = null
                     recalculateSelectedWorkoutDerivedMetrics(workoutFile)
@@ -1736,7 +1737,7 @@ class SessionOrchestrator internal constructor(
                     uiState.selectedSessionSetupMode.value = SessionSetupMode.FILE
                     uiState.selectedWorkout.value = null
                     uiState.selectedImportedWorkout.value = requireNotNull(result.ergoWorkout)
-                    workoutRunner = null
+                    resetRunnerForWorkoutSelection()
                     uiState.selectedWorkoutFileName.value = sourceName
                     uiState.selectedWorkoutImportError.value = null
                     recalculateSelectedImportedWorkoutDerivedMetrics(
@@ -1755,7 +1756,7 @@ class SessionOrchestrator internal constructor(
                 uiState.selectedSessionSetupMode.value = SessionSetupMode.FILE
                 uiState.selectedWorkout.value = null
                 uiState.selectedImportedWorkout.value = null
-                workoutRunner = null
+                resetRunnerForWorkoutSelection()
                 uiState.selectedWorkoutFileName.value = sourceName
                 uiState.selectedWorkoutStepCount.value = null
                 uiState.selectedWorkoutPlannedTss.value = null
@@ -1780,7 +1781,7 @@ class SessionOrchestrator internal constructor(
         uiState.selectedSessionSetupMode.value = SessionSetupMode.FILE
         uiState.selectedWorkout.value = null
         uiState.selectedImportedWorkout.value = null
-        workoutRunner = null
+        resetRunnerForWorkoutSelection()
         uiState.selectedWorkoutFileName.value = sourceName
         uiState.selectedWorkoutStepCount.value = null
         uiState.selectedWorkoutPlannedTss.value = null
@@ -1797,6 +1798,18 @@ class SessionOrchestrator internal constructor(
             failure = failure,
             strings = failureStrings,
         )
+    }
+
+    /**
+     * Starts every newly selected workout from a neutral runner state.
+     *
+     * A completed runner retains its terminal elapsed time for the summary UI. Selection must
+     * clear that value before the session screen evaluates the new workout duration, otherwise
+     * selecting the same workout can be mistaken for another completed session.
+     */
+    private fun resetRunnerForWorkoutSelection() {
+        workoutRunner = null
+        uiState.runner.value = RunnerState.stopped()
     }
 
     private fun recalculateSelectedWorkoutDerivedMetrics(workout: WorkoutFile) {
