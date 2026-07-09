@@ -12,6 +12,9 @@ file.
 - Selecting a workout after a completed session now clears the previous
   runner's terminal elapsed time, so the same workout no longer opens as
   already completed before the new session starts.
+- A short side-by-side session window now uses compact header controls and
+  adaptive chart labels, keeping the workout profile readable in tablet split
+  screen.
 
 ### Changed
 
@@ -37,6 +40,10 @@ file.
   `SessionOrchestratorFlowTest` class, debug main/unit-test Kotlin compilation,
   debug APK assembly, and Samsung `SM-X210` install/startup proof. The restored
   bundled workout reported `workoutElapsedSec=none` and remained startable.
+- Split-screen session validation passed on Samsung `SM-X210` at a
+  `952 x 1104 px` side-by-side window, full-screen landscape, and full-screen
+  portrait. Focused layout and chart-label unit tests plus debug APK assembly
+  passed.
 
 ## [1.0.3] - 2026-06-28
 

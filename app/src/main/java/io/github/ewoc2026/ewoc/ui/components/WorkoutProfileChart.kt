@@ -39,6 +39,7 @@ import io.github.ewoc2026.ewoc.workout.ExecutionSegment
 import io.github.ewoc2026.ewoc.workout.ExecutionWorkout
 import io.github.ewoc2026.ewoc.workout.Step
 import io.github.ewoc2026.ewoc.workout.WorkoutFile
+import kotlin.math.abs
 import kotlin.math.roundToInt
 
 private const val CHART_HEIGHT_DP = 160
@@ -54,6 +55,7 @@ private val BASE_GUIDE_RELATIVE_POWERS = listOf(0.5, 0.75, 1.0, 1.25, 1.5)
 private val CHART_HEADER_TOP_PADDING = 2.dp
 private val CHART_HEADER_BAND_HEIGHT = 18.dp
 private val CHART_HEADER_TO_TELEMETRY_GAP = 4.dp
+private val CHART_MINIMUM_PLOT_HEIGHT = 48.dp
 private const val CURSOR_TELEMETRY_SCALE = 1.2f
 private val TELEMETRY_TEXT_SIZE = 12.dp * CURSOR_TELEMETRY_SCALE
 private val TELEMETRY_HORIZONTAL_PADDING = 6.dp * CURSOR_TELEMETRY_SCALE
@@ -214,14 +216,30 @@ internal fun WorkoutProfileChart(
             val chartHeaderBandHeight = if (topCenterLabel.isNullOrBlank()) 0f else {
                 CHART_HEADER_BAND_HEIGHT.toPx() + CHART_HEADER_TO_TELEMETRY_GAP.toPx()
             }
-            val telemetryBandHeight = cursorTelemetryPanelHeightPx(lineCount = CURSOR_TELEMETRY_LINE_COUNT)
+            val requestedTelemetryBandHeight =
+                cursorTelemetryPanelHeightPx(lineCount = CURSOR_TELEMETRY_LINE_COUNT)
             val telemetryBottomGap = TELEMETRY_BOTTOM_GAP_FROM_CURSOR_TOP.toPx()
             val telemetryEdgeInset = TELEMETRY_EDGE_INSET.toPx()
             val plotLeft = leftAxisWidth
             val plotRight = (size.width - rightAxisWidth).coerceAtLeast(plotLeft + 1f)
-            // Keep a dedicated telemetry band above the plot so moving badges never cover axis labels.
+            val requestedPlotTop =
+                chartHeaderBandHeight +
+                    requestedTelemetryBandHeight +
+                    telemetryBottomGap +
+                    telemetryEdgeInset
+            val showCursorTelemetryPanels =
+                elapsedSec != null &&
+                    elapsedSec >= 0 &&
+                    size.height - bottomPadding - requestedPlotTop >=
+                    CHART_MINIMUM_PLOT_HEIGHT.toPx()
+            val telemetryReservation = if (showCursorTelemetryPanels) {
+                requestedTelemetryBandHeight + telemetryBottomGap + telemetryEdgeInset
+            } else {
+                0f
+            }
+            // Primary cards already expose these values, so preserve the profile in short viewports.
             val maxPlotTop = (size.height - bottomPadding - 1f).coerceAtLeast(0f)
-            val plotTop = (chartHeaderBandHeight + telemetryBandHeight + telemetryBottomGap + telemetryEdgeInset)
+            val plotTop = (chartHeaderBandHeight + telemetryReservation)
                 .coerceAtMost(maxPlotTop)
             val plotBottom = (size.height - bottomPadding).coerceAtLeast(plotTop + 1f)
             val plotWidth = (plotRight - plotLeft).coerceAtLeast(1f)
@@ -335,37 +353,42 @@ internal fun WorkoutProfileChart(
                     strokeWidth = 3.dp.toPx(),
                 )
 
-                val leftTelemetryLabels = listOf(
-                    instantCadenceValue?.trim()?.takeIf { it.isNotEmpty() } ?: "--",
-                    heartRateValue?.trim()?.takeIf { it.isNotEmpty() } ?: "--",
-                )
-                drawCursorTelemetryPanel(
-                    labels = leftTelemetryLabels,
-                    side = TelemetryPanelSide.LEFT,
-                    textColor = telemetryTextColor,
-                    backgroundColor = telemetryBackgroundColor,
-                    cursorX = cursorX,
-                    plotTop = plotTop,
-                )
+                if (showCursorTelemetryPanels) {
+                    val leftTelemetryLabels = listOf(
+                        instantCadenceValue?.trim()?.takeIf { it.isNotEmpty() } ?: "--",
+                        heartRateValue?.trim()?.takeIf { it.isNotEmpty() } ?: "--",
+                    )
+                    drawCursorTelemetryPanel(
+                        labels = leftTelemetryLabels,
+                        side = TelemetryPanelSide.LEFT,
+                        textColor = telemetryTextColor,
+                        backgroundColor = telemetryBackgroundColor,
+                        cursorX = cursorX,
+                        plotTop = plotTop,
+                    )
 
-                val resolvedTargetWatts = targetPowerWatts ?: currentTargetWatts
-                val ftpPercentLabel = if (resolvedTargetWatts != null && resolvedTargetWatts > 0) {
-                    targetFtpPercentTelemetryLabel(targetWatts = resolvedTargetWatts, ftpWatts = ftpWatts)
-                } else {
-                    "--"
+                    val resolvedTargetWatts = targetPowerWatts ?: currentTargetWatts
+                    val ftpPercentLabel = if (resolvedTargetWatts != null && resolvedTargetWatts > 0) {
+                        targetFtpPercentTelemetryLabel(
+                            targetWatts = resolvedTargetWatts,
+                            ftpWatts = ftpWatts,
+                        )
+                    } else {
+                        "--"
+                    }
+                    val rightTelemetryLabels = listOf(
+                        ftpPercentLabel,
+                        instantPowerValue?.trim()?.takeIf { it.isNotEmpty() } ?: "--",
+                    )
+                    drawCursorTelemetryPanel(
+                        labels = rightTelemetryLabels,
+                        side = TelemetryPanelSide.RIGHT,
+                        textColor = telemetryTextColor,
+                        backgroundColor = telemetryBackgroundColor,
+                        cursorX = cursorX,
+                        plotTop = plotTop,
+                    )
                 }
-                val rightTelemetryLabels = listOf(
-                    ftpPercentLabel,
-                    instantPowerValue?.trim()?.takeIf { it.isNotEmpty() } ?: "--",
-                )
-                drawCursorTelemetryPanel(
-                    labels = rightTelemetryLabels,
-                    side = TelemetryPanelSide.RIGHT,
-                    textColor = telemetryTextColor,
-                    backgroundColor = telemetryBackgroundColor,
-                    cursorX = cursorX,
-                    plotTop = plotTop,
-                )
             }
         }
 
@@ -647,8 +670,18 @@ private fun DrawScope.drawGuideAxisLabels(
     }
     val leftBaselineOffset = -(leftPaint.fontMetrics.ascent + leftPaint.fontMetrics.descent) / 2f
     val rightBaselineOffset = -(rightPaint.fontMetrics.ascent + rightPaint.fontMetrics.descent) / 2f
+    val minimumLabelSpacingPx = maxOf(
+        leftPaint.fontMetrics.descent - leftPaint.fontMetrics.ascent,
+        rightPaint.fontMetrics.descent - rightPaint.fontMetrics.ascent,
+    ) + 2.dp.toPx()
+    val visibleGuideLabels = selectGuideAxisLabelPowers(
+        guideRelativePowers = guideRelativePowers,
+        renderMaxRelativePower = renderMaxRelativePower,
+        plotHeightPx = (plotBottom - plotTop).coerceAtLeast(0f),
+        minimumSpacingPx = minimumLabelSpacingPx,
+    )
 
-    guideRelativePowers.forEach { relativePower ->
+    visibleGuideLabels.forEach { relativePower ->
         val y = yForPower(
             relativePower = relativePower,
             renderMaxRelativePower = renderMaxRelativePower,
@@ -668,6 +701,53 @@ private fun DrawScope.drawGuideAxisLabels(
             rightPaint,
         )
     }
+}
+
+/**
+ * Keeps the FTP anchor readable while reducing axis-label density in short chart viewports.
+ */
+internal fun selectGuideAxisLabelPowers(
+    guideRelativePowers: List<Double>,
+    renderMaxRelativePower: Double,
+    plotHeightPx: Float,
+    minimumSpacingPx: Float,
+): List<Double> {
+    val sortedGuides = guideRelativePowers
+        .filter { it.isFinite() }
+        .distinct()
+        .sorted()
+    if (sortedGuides.size <= 1 ||
+        renderMaxRelativePower <= 0.0 ||
+        plotHeightPx <= 0f ||
+        minimumSpacingPx <= 0f
+    ) {
+        return sortedGuides
+    }
+
+    val ftpAnchor = sortedGuides.minByOrNull { abs(it - 1.0) } ?: return emptyList()
+    val priority = buildList {
+        add(ftpAnchor)
+        add(sortedGuides.first())
+        add(sortedGuides.last())
+        addAll(sortedGuides)
+    }.distinct()
+    val selected = mutableListOf<Double>()
+
+    priority.forEach { candidate ->
+        val hasRoom = selected.all { existing ->
+            val distancePx = (
+                abs(candidate - existing) /
+                    renderMaxRelativePower *
+                    plotHeightPx
+                ).toFloat()
+            distancePx >= minimumSpacingPx
+        }
+        if (hasRoom) {
+            selected += candidate
+        }
+    }
+
+    return selected.sorted()
 }
 
 private enum class TelemetryPanelSide {

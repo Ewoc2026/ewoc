@@ -18,6 +18,42 @@ import org.junit.Test
 class WorkoutProfileChartMappingTest {
 
     @Test
+    fun roomyChartKeepsEveryAxisLabel() {
+        val labels = selectGuideAxisLabelPowers(
+            guideRelativePowers = listOf(0.5, 0.75, 1.0, 1.25, 1.5),
+            renderMaxRelativePower = 1.5,
+            plotHeightPx = 300f,
+            minimumSpacingPx = 30f,
+        )
+
+        assertEquals(listOf(0.5, 0.75, 1.0, 1.25, 1.5), labels)
+    }
+
+    @Test
+    fun compactChartKeepsFtpAnchorAndReadableOuterLabels() {
+        val labels = selectGuideAxisLabelPowers(
+            guideRelativePowers = listOf(0.5, 0.75, 1.0, 1.25, 1.5),
+            renderMaxRelativePower = 1.5,
+            plotHeightPx = 90f,
+            minimumSpacingPx = 20f,
+        )
+
+        assertEquals(listOf(0.5, 1.0, 1.5), labels)
+    }
+
+    @Test
+    fun veryShortChartKeepsFtpAnchorInsteadOfOverlappingLabels() {
+        val labels = selectGuideAxisLabelPowers(
+            guideRelativePowers = listOf(0.5, 0.75, 1.0, 1.25, 1.5),
+            renderMaxRelativePower = 1.5,
+            plotHeightPx = 30f,
+            minimumSpacingPx = 20f,
+        )
+
+        assertEquals(listOf(1.0), labels)
+    }
+
+    @Test
     fun cooldownRampUsesPowerHighToPowerLowDirection() {
         val workout = workoutWithSteps(
             Step.Cooldown(

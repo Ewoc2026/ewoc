@@ -75,6 +75,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.core.os.ConfigurationCompat
 import io.github.ewoc2026.ewoc.AI_MENU_CONNECTIVITY_CHECK_TRAINER_ACTION
@@ -114,6 +115,19 @@ private enum class SessionDataLayoutMode {
 }
 
 private val SessionTopRailCompactHeight = 64.dp
+private val SessionShortPortraitHeightBreakpoint = 700.dp
+
+/**
+ * Uses the dense header when a portrait-shaped compact window is too short for stacked controls.
+ */
+internal fun useDenseSessionTopRail(
+    width: Dp,
+    height: Dp,
+): Boolean {
+    return resolveAdaptiveWidthClass(width) == AdaptiveWidthClass.COMPACT &&
+        width <= height &&
+        height < SessionShortPortraitHeightBreakpoint
+}
 
 private data class SessionTopMetricPresentation(
     val label: String,
@@ -476,8 +490,10 @@ internal fun SessionScreen(
         val paneWeights = layoutMode.paneWeights()
         val widthClass = resolveAdaptiveWidthClass(maxWidth)
         val phonePortraitLayout = widthClass == AdaptiveWidthClass.COMPACT && !isLandscapeBaseline
+        val shortCompactPortrait = useDenseSessionTopRail(width = maxWidth, height = maxHeight)
         val compactTopMetrics = maxWidth < SessionTopMetricsCompactWidth || phoneLandscapeDenseLayout
-        val compactSessionChrome = showTwoPaneBaseline || phoneLandscapeDenseLayout
+        val compactSessionChrome =
+            showTwoPaneBaseline || phoneLandscapeDenseLayout || shortCompactPortrait
         val sectionVerticalSpacing = if (compactSessionChrome) UiSpacing.md else UiSpacing.lg
         val sectionVerticalPadding = if (compactSessionChrome) UiSpacing.md else UiSpacing.lg
         val topRailPadding = if (compactSessionChrome) UiSpacing.sm else UiSpacing.lg
@@ -503,11 +519,12 @@ internal fun SessionScreen(
                     .widthIn(max = SessionMaxContentWidth)
                     .testTag("sessionScreenRoot"),
             ) {
-                if (phoneLandscapeDenseLayout) {
+                if (phoneLandscapeDenseLayout || shortCompactPortrait) {
                     SessionDenseTopRail(
                         sessionState = sessionState,
                         workoutTitle = workoutName,
                         workoutDescription = workoutDescription,
+                        mockTrainerModeEnabled = mockTrainerModeEnabled,
                         onOpenWorkoutInfo = { showWorkoutInfoDialog.value = true },
                         onEndSession = onEndSession,
                         endSessionEnabled = endSessionEnabled,
@@ -1316,6 +1333,7 @@ private fun SessionDenseTopRail(
     sessionState: String,
     workoutTitle: String,
     workoutDescription: String?,
+    mockTrainerModeEnabled: Boolean,
     onOpenWorkoutInfo: () -> Unit,
     onEndSession: () -> Unit,
     endSessionEnabled: Boolean,
@@ -1333,14 +1351,27 @@ private fun SessionDenseTopRail(
             horizontalArrangement = Arrangement.spacedBy(UiSpacing.sm),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Text(
-                text = workoutTitle,
+            Column(
                 modifier = Modifier.weight(1f),
-                style = MaterialTheme.typography.titleSmall,
-                fontWeight = FontWeight.SemiBold,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
+                verticalArrangement = Arrangement.spacedBy(2.dp),
+            ) {
+                Text(
+                    text = workoutTitle,
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.SemiBold,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+                if (mockTrainerModeEnabled) {
+                    Text(
+                        text = stringResource(R.string.session_mock_mode_active),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.tertiary,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                }
+            }
 
             Row(
                 horizontalArrangement = Arrangement.spacedBy(6.dp),
