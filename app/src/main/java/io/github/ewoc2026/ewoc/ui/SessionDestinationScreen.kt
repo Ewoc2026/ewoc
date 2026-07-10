@@ -116,17 +116,32 @@ private enum class SessionDataLayoutMode {
 
 private val SessionTopRailCompactHeight = 64.dp
 private val SessionShortPortraitHeightBreakpoint = 700.dp
+private val SessionShortSplitHeightBreakpoint = 620.dp
 
 /**
- * Uses the dense header when a portrait-shaped compact window is too short for stacked controls.
+ * Uses the dense header when a compact window is too short for stacked controls.
  */
 internal fun useDenseSessionTopRail(
     width: Dp,
     height: Dp,
 ): Boolean {
+    return useShortSplitSessionViewport(width = width, height = height) ||
+        (
+            resolveAdaptiveWidthClass(width) == AdaptiveWidthClass.COMPACT &&
+                width <= height &&
+                height < SessionShortPortraitHeightBreakpoint
+            )
+}
+
+/**
+ * Prioritizes the chart in phone split-screen windows where stacked content clips it.
+ */
+internal fun useShortSplitSessionViewport(
+    width: Dp,
+    height: Dp,
+): Boolean {
     return resolveAdaptiveWidthClass(width) == AdaptiveWidthClass.COMPACT &&
-        width <= height &&
-        height < SessionShortPortraitHeightBreakpoint
+        height < SessionShortSplitHeightBreakpoint
 }
 
 private data class SessionTopMetricPresentation(
@@ -171,6 +186,7 @@ internal fun SessionScreen(
     mockTrainerModeEnabled: Boolean,
     timelineSamples: List<io.github.ewoc2026.ewoc.session.SessionSample> = emptyList(),
     isProEntitled: Boolean = false,
+    autoPausedByZeroCadence: Boolean = false,
     postWorkoutContinuationHandoffVisible: Boolean = false,
     sessionDebugProbeVisible: Boolean = false,
     sessionDebugProbeTitle: String? = null,
@@ -473,6 +489,7 @@ internal fun SessionScreen(
         runnerState = runnerState,
         cadenceRpm = cadenceRpm,
         isTelemetryOnly = isTelemetryOnly,
+        autoPausedByZeroCadence = autoPausedByZeroCadence,
         postWorkoutFreerideModeActive = postWorkoutFreerideModeActive,
     )
 
@@ -485,15 +502,18 @@ internal fun SessionScreen(
         val layoutMode = resolveAdaptiveLayoutMode(width = maxWidth, height = maxHeight)
         val isLandscapeBaseline = maxWidth > maxHeight
         val showTwoPaneBaseline = layoutMode.isTwoPane() && isLandscapeBaseline
+        val shortSplitSessionViewport =
+            useShortSplitSessionViewport(width = maxWidth, height = maxHeight)
         val phoneLandscapeDenseLayout =
-            layoutMode == AdaptiveLayoutMode.SINGLE_PANE_DENSE && isLandscapeBaseline
+            (layoutMode == AdaptiveLayoutMode.SINGLE_PANE_DENSE && isLandscapeBaseline) ||
+                (shortSplitSessionViewport && isLandscapeBaseline)
         val paneWeights = layoutMode.paneWeights()
         val widthClass = resolveAdaptiveWidthClass(maxWidth)
         val phonePortraitLayout = widthClass == AdaptiveWidthClass.COMPACT && !isLandscapeBaseline
         val shortCompactPortrait = useDenseSessionTopRail(width = maxWidth, height = maxHeight)
         val compactTopMetrics = maxWidth < SessionTopMetricsCompactWidth || phoneLandscapeDenseLayout
         val compactSessionChrome =
-            showTwoPaneBaseline || phoneLandscapeDenseLayout || shortCompactPortrait
+            showTwoPaneBaseline || phoneLandscapeDenseLayout || shortCompactPortrait || shortSplitSessionViewport
         val sectionVerticalSpacing = if (compactSessionChrome) UiSpacing.md else UiSpacing.lg
         val sectionVerticalPadding = if (compactSessionChrome) UiSpacing.md else UiSpacing.lg
         val topRailPadding = if (compactSessionChrome) UiSpacing.sm else UiSpacing.lg
@@ -677,6 +697,7 @@ internal fun SessionScreen(
                                         primaryTopMetric = primaryTopMetric,
                                         secondaryTopMetric = secondaryTopMetric,
                                         compact = true,
+                                        minimal = shortSplitSessionViewport,
                                     )
                                     SessionMessagePanel(
                                         statusOverrideMessage = sessionTextEventMessage,
@@ -767,6 +788,7 @@ internal fun SessionScreen(
                                         secondaryTopMetric = secondaryTopMetric,
                                         compact = compactTopMetrics,
                                         phonePortraitLayout = phonePortraitLayout,
+                                        minimal = shortSplitSessionViewport,
                                     )
 
                                     WorkoutProgressSection(
@@ -788,7 +810,9 @@ internal fun SessionScreen(
                                         showTimingMetrics = false,
                                         showStepMetrics = false,
                                         phonePortraitLayout = phonePortraitLayout,
-                                        chartHeight = if (phonePortraitLayout) {
+                                        chartHeight = if (shortSplitSessionViewport) {
+                                            SessionWorkoutChartHeightDense
+                                        } else if (phonePortraitLayout) {
                                             SessionWorkoutChartHeight
                                         } else {
                                             SessionWorkoutChartHeightTabletPortrait
@@ -802,7 +826,10 @@ internal fun SessionScreen(
                                         timelineSamples = timelineSamples,
                                         isTelemetryOnly = isTelemetryOnly,
                                         isProEntitled = isProEntitled,
-                                        endButtonSlot = if (showQuitToSummaryButton) {
+                                        endButtonSlot = if (
+                                            showQuitToSummaryButton &&
+                                            !shortSplitSessionViewport
+                                        ) {
                                             {
                                                 SessionEndButton(
                                                     onClick = onEndSession,
@@ -940,6 +967,7 @@ private fun SessionDataLayoutSection(
     secondaryTopMetric: SessionTopMetricPresentation?,
     compact: Boolean,
     phonePortraitLayout: Boolean = false,
+    minimal: Boolean = false,
     modifier: Modifier = Modifier,
 ) {
     val cardBorder = sessionCardBorder()
@@ -980,7 +1008,16 @@ private fun SessionDataLayoutSection(
             }
         }
 
-        when (selectedLayout) {
+        if (minimal) {
+            SessionPortraitMetricRow(
+                startLabel = stringResource(R.string.session_elapsed_of_total),
+                startValue = elapsedOfTotalValue,
+                endLabel = stringResource(R.string.session_workout_remaining),
+                endValue = workoutRemainingValue,
+                border = cardBorder,
+                compact = true,
+            )
+        } else when (selectedLayout) {
             SessionDataLayoutMode.FITNESS -> {
                 if (phonePortraitLayout) {
                     SessionPortraitMetricRow(

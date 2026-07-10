@@ -13,12 +13,23 @@ class SessionLayoutTest {
     }
 
     @Test
-    fun regularPhonePortraitKeepsFullTopRail() {
-        assertFalse(useDenseSessionTopRail(width = 412.dp, height = 800.dp))
+    fun phonePortraitSplitUsesShortViewport() {
+        assertTrue(useShortSplitSessionViewport(width = 360.dp, height = 520.dp))
     }
 
     @Test
-    fun landscapeIsHandledByItsExistingDenseLayoutRule() {
-        assertFalse(useDenseSessionTopRail(width = 700.dp, height = 400.dp))
+    fun phoneLandscapeSplitUsesShortViewport() {
+        assertTrue(useShortSplitSessionViewport(width = 520.dp, height = 360.dp))
+    }
+
+    @Test
+    fun regularPhonePortraitKeepsFullTopRail() {
+        assertFalse(useDenseSessionTopRail(width = 412.dp, height = 800.dp))
+        assertFalse(useShortSplitSessionViewport(width = 412.dp, height = 800.dp))
+    }
+
+    @Test
+    fun regularPhoneLandscapeDoesNotUseShortViewport() {
+        assertFalse(useShortSplitSessionViewport(width = 700.dp, height = 400.dp))
     }
 }

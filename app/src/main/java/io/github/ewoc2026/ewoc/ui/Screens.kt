@@ -1711,6 +1711,7 @@ internal fun WorkoutProgressSection(
             WorkoutProfileChart(
                 segments = workoutSegments,
                 ftpWatts = ftpWatts,
+                modifier = Modifier.testTag("sessionWorkoutProfileChart"),
                 elapsedSec = runnerState.workoutElapsedSec,
                 currentTargetWatts = runnerState.targetPowerWatts ?: lastTargetPower,
                 targetPowerWatts = targetPowerWatts,
@@ -1743,7 +1744,9 @@ internal fun WorkoutProgressSection(
                 windowSeconds = effectiveWindowSeconds,
                 compact = compactChart,
                 maxHeight = telemetryChartMaxHeight,
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .testTag("sessionLiveTelemetryChart"),
             )
         }
         endButtonSlot?.invoke(this)
@@ -2320,6 +2323,7 @@ internal fun sessionStateLabel(
     runnerState: RunnerState,
     cadenceRpm: Double?,
     isTelemetryOnly: Boolean = false,
+    autoPausedByZeroCadence: Boolean = false,
     postWorkoutFreerideModeActive: Boolean = false,
 ): String {
     if (phase != SessionPhase.RUNNING) {
@@ -2330,6 +2334,9 @@ internal fun sessionStateLabel(
     }
     if (!isTelemetryOnly && isWaitingStartState(phase = phase, runnerState = runnerState, cadenceRpm = cadenceRpm)) {
         return stringResource(R.string.session_state_waiting)
+    }
+    if (isTelemetryOnly && autoPausedByZeroCadence) {
+        return stringResource(R.string.session_workout_state_paused)
     }
     if (isTelemetryOnly) {
         return phaseLabel(phase)

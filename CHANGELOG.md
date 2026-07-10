@@ -17,6 +17,9 @@ file.
 - A short side-by-side session window now uses compact header controls and
   adaptive chart labels, keeping the workout profile readable in tablet split
   screen.
+- Short phone split-screen session windows now keep the telemetry histogram or
+  workout chart visible, avoid a duplicate Quit action in the tight portrait
+  layout, and label telemetry-only cadence-zero pauses as Paused.
 
 ### Changed
 
@@ -46,6 +49,10 @@ file.
   `952 x 1104 px` side-by-side window, full-screen landscape, and full-screen
   portrait. Focused layout and chart-label unit tests plus debug APK assembly
   passed.
+- Short phone split-screen regression coverage passed with focused layout unit
+  tests, Samsung A36 instrumentation tests for `360 x 520 dp` and
+  `520 x 360 dp` constrained session viewports, debug APK assembly, and
+  Samsung A36 install/startup build proof.
 
 ## [1.0.3] - 2026-06-28
 
