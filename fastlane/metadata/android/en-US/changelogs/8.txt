@@ -1,0 +1,4 @@
+Public release polish:
+- removes the app task from Android recents when Quit is used
+- clears completed workout progress before selecting a new session
+- keeps the workout chart readable in short tablet split-screen windows

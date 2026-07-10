@@ -70,8 +70,11 @@ For an Android app release:
 - Update screenshots under
   `fastlane/metadata/android/en-US/images/tenInchScreenshots/` when the
   rider-facing experience changed materially.
-- Run the public snapshot marker checks through
+- From the maintainer private branch, run the public snapshot marker checks
+  through
   `./scripts/create-ewoc-public-snapshot.sh /tmp/ewoc-public-snapshot`.
+  The generated public repository intentionally does not carry this private
+  snapshot helper.
 
 For a documentation-only public snapshot:
 
@@ -112,7 +115,7 @@ For trainer-sensitive changes:
 
 ## Public Snapshot
 
-Generate and inspect the public tree:
+Generate and inspect the public tree from the maintainer private branch:
 
 ```bash
 ./scripts/create-ewoc-public-snapshot.sh /tmp/ewoc-public-snapshot
@@ -120,6 +123,10 @@ cd /tmp/ewoc-public-snapshot
 git status --short --branch
 git diff --stat
 ```
+
+After changing into `/tmp/ewoc-public-snapshot`, run only commands that exist
+in the generated public tree. The snapshot helper itself remains in the
+maintainer branch.
 
 Before pushing:
 

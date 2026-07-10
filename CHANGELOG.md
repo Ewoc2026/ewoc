@@ -5,6 +5,8 @@ file.
 
 ## [Unreleased]
 
+## [1.0.4] - 2026-07-10
+
 ### Fixed
 
 - Main menu Quit now removes the app task from Android recents instead of

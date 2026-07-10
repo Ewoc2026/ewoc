@@ -1,6 +1,6 @@
 # F-Droid Status
 
-Updated: 2026-07-09
+Updated: 2026-07-10
 
 Purpose:
 - Record current F-Droid-facing source truth.
@@ -52,8 +52,10 @@ Purpose:
 
 ## Current Draft
 
-`docs/fdroiddata-metadata-draft.yml` mirrors the latest known Ewoc metadata for
-local rehearsal. The authoritative published metadata is in fdroiddata.
+`docs/fdroiddata-metadata-draft.yml` mirrors the next Ewoc metadata candidate
+for local rehearsal. The authoritative published metadata is in fdroiddata.
+Replace any release-candidate commit placeholder in the fdroiddata checkout
+after the exact public source commit exists.
 
 Before the next release:
 
@@ -72,5 +74,7 @@ See `docs/release-checklist.md` for commands and recovery notes.
 - A July 9, 2026 Samsung `SM-X210` ride with a real trainer and external HR
   strap passed trainer control, telemetry, session stop/summary, and FIT export
   readability.
-- The workout-reselection runner-state finding from that smoke is fixed
-  locally but is not yet a new published F-Droid version.
+- The workout-reselection runner-state finding from that smoke and the
+  split-screen chart finding are fixed in public source, and local release prep
+  now targets `1.0.4` / `versionCode=8`. They are not yet a new published
+  F-Droid version.
