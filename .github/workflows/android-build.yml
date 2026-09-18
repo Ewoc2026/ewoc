@@ -157,6 +157,8 @@ jobs:
 
       - name: Set up Android SDK
         uses: android-actions/setup-android@v4
+        with:
+          packages: platform-tools
 
       - name: Accept licenses and install SDK packages
         run: |
@@ -293,6 +295,8 @@ jobs:
 
       - name: Set up Android SDK
         uses: android-actions/setup-android@v4
+        with:
+          packages: platform-tools
 
       - name: Resolve smoke policy
         id: smoke-policy
