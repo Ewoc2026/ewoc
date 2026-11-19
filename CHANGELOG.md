@@ -3,7 +3,7 @@
 All notable public-release changes to this project are documented in this
 file.
 
-## [1.0.5] - Unreleased
+## [1.0.5] - 2026-11-19
 
 ### Added
 
@@ -32,7 +32,7 @@ file.
 
 Codex implemented the feedback UI, translations and error-handling corrections,
 updated regression coverage, and performed the recorded JVM and Android
-validation. This version is prepared locally and has not been released.
+validation.
 
 ## [1.0.4] - 2026-07-10
 

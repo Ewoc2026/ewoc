@@ -1,8 +1,9 @@
 ---
-# Local candidate template prepared by Codex from published fdroiddata metadata.
-# Version 1.0.5 and its tag are not published or submitted. In the external
-# fdroiddata checkout, replace the candidate tag with the selected public source
-# commit before submission. Do not make this file reference its own future hash.
+# Expected release metadata prepared and checked by Codex against fdroiddata.
+# Version 1.0.5 is published on GitHub. The existing tag-based auto-update
+# generated the exact version 9 entry below during local verification.
+# This template does not itself update upstream fdroiddata or establish
+# availability in the F-Droid repository.
 
 Categories:
   - Workout
@@ -42,7 +43,7 @@ Builds:
 
   - versionName: 1.0.5
     versionCode: 9
-    commit: v1.0.5
+    commit: d7369f8d176bd3949da554f65900807a166a87a9
     subdir: app
     gradle:
       - yes

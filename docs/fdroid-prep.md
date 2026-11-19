@@ -2,43 +2,51 @@
 
 Updated: 2026-11-19
 
-Codex reconciled this release record with the public GitHub release and
-fdroiddata metadata during local preparation of the next Android version.
+Codex published the operator-approved Android release and verified its source,
+download, signature and local F-Droid build. This record distinguishes the
+GitHub release from the pending F-Droid distribution step.
 
-## Published Package
+## Published Android APK
 
 - Application ID: `io.github.ewoc2026.ewoc`.
 - License: `GPL-3.0-or-later`.
 - Source: <https://github.com/Ewoc2026/ewoc>.
 - Issues: <https://github.com/Ewoc2026/ewoc/issues>.
-- Published Android version: `1.0.4` / code `8`.
-- Package: <https://f-droid.org/packages/io.github.ewoc2026.ewoc/>.
-- Source tag: `v1.0.4`.
-- Source commit: `71c109571f43c66a200afac70a54581ea0187ae1`.
+- GitHub Android version: `1.0.5` / code `9`.
+- Release: <https://github.com/Ewoc2026/ewoc/releases/tag/v1.0.5>.
+- Reference APK: <https://github.com/Ewoc2026/ewoc/releases/download/v1.0.5/ewoc-1.0.5-rb.apk>.
+- Source tag: `v1.0.5`.
+- Source commit: `d7369f8d176bd3949da554f65900807a166a87a9`.
 - Reference APK SHA-256:
-  `97a6bcaf97036b3660d04377721ebc8a0c91d2c014b059490d7834d72baecf16`.
+  `5fd70df728bdaedccee23ac3fe80330c0cf1ad3719c531a7e21c7ce6c40a8baa`.
 
-## Local Candidate
+## Release Verification and F-Droid Progress
 
-Android `1.0.5` / code `9` prepares recovery from malformed workout-format
+Android `1.0.5` / code `9` adds recovery from malformed workout-format
 fields, FIT destination-opening failures, and inaccessible stored workout
 documents during startup. It also includes the About feedback changes already
 merged into public main. No desktop release or trainer-control change is part
-of this candidate.
+of this release. Existing screenshots remain applicable to the unchanged main
+riding experience.
 
-The candidate has not been published, tagged or submitted to F-Droid. Its app
-version, changelog and Fastlane changelog are aligned. Existing screenshots
-remain applicable to the unchanged main riding experience.
+The published download matches the prepared APK byte-for-byte and retains the
+existing release certificate. The [tag checks](https://github.com/Ewoc2026/ewoc/actions/runs/44517084367)
+passed. A local fdroidserver 2.4.5 build on Python 3.11.17 used the public source
+and published `Binaries` URL, passed source scanning, reproduced the prepared
+unsigned APK, and passed the signed-reference comparison and allowed-signer
+check. This is local build evidence, not an F-Droid production-server result.
 
-`docs/fdroiddata-metadata-draft.yml` is a source-tree rehearsal template. It
-retains all currently published build entries and adds the proposed version.
-Resolve its candidate tag to the exact public source commit in the external
-fdroiddata checkout before submission; do not make this file refer to its own
-future commit hash. Normal tag-based auto-update remains the intended route.
+F-Droid's [package catalogue](https://f-droid.org/packages/io.github.ewoc2026.ewoc/)
+and upstream metadata still list `1.0.4` / code `8` at the 19 November check.
+The existing `AutoUpdateMode: Version` / `UpdateCheckMode: Tags` configuration
+detected 1.0.5 and generated the exact expected version 9 recipe locally.
+No manual metadata correction or duplicate merge request is needed. F-Droid's
+own update, build and publication remain pending confirmation.
 
-Publication, merging, tagging and release-asset upload require a separate
-operator decision. Keep the signed reference APK tied to the exact source
-commit selected for release; a changed commit requires a matching APK.
+`docs/fdroiddata-metadata-draft.yml` records that expected recipe while preserving
+the published build history. It does not submit metadata. The immutable release
+tag stays on the verified APK source; later documentation changes do not retag
+or rebuild the already published package.
 
 ## Packaging Contract
 
