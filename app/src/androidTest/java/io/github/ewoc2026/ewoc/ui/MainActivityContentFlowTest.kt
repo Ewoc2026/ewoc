@@ -1,10 +1,12 @@
 package io.github.ewoc2026.ewoc.ui
 
+import android.app.KeyguardManager
 import android.content.ActivityNotFoundException
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.ContextWrapper
 import android.content.Intent
+import android.view.inspector.WindowInspector
 import androidx.activity.ComponentActivity
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.mutableStateOf
@@ -30,6 +32,7 @@ import io.github.ewoc2026.ewoc.session.SessionPhase
 import io.github.ewoc2026.ewoc.session.SessionSummary
 import io.github.ewoc2026.ewoc.ui.theme.EwocTheme
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Rule
 import org.junit.Test
 
@@ -764,15 +767,30 @@ class MainActivityContentFlowTest {
 
     private fun verifyFeedbackAddressCopy(copyAction: () -> Unit) {
         val clipboard = composeRule.activity.getSystemService(ClipboardManager::class.java)
+        val keyguard = composeRule.activity.getSystemService(KeyguardManager::class.java)
+        assertFalse("Clipboard tests require an unlocked device", keyguard.isDeviceLocked)
+        // Android restricts clipboard reads to an unlocked app with window focus.
+        composeRule.waitUntil(timeoutMillis = 5_000) {
+            composeRule.runOnIdle {
+                WindowInspector.getGlobalWindowViews().any { it.hasWindowFocus() }
+            }
+        }
         val previousClip = composeRule.runOnIdle { clipboard.primaryClip }
+        fun awaitClipboardText(expected: String) {
+            composeRule.waitUntil(timeoutMillis = 5_000) {
+                composeRule.runOnIdle {
+                    clipboard.primaryClip?.getItemAt(0)?.text?.toString() == expected
+                }
+            }
+        }
         try {
             composeRule.runOnIdle {
                 clipboard.setPrimaryClip(ClipData.newPlainText("test", "before-copy"))
             }
+            // Check readiness before the single app action, then await its actual result.
+            awaitClipboardText("before-copy")
             copyAction()
-            composeRule.runOnIdle {
-                assertEquals("ewoc@oikumene.works", clipboard.primaryClip?.getItemAt(0)?.text?.toString())
-            }
+            awaitClipboardText("ewoc@oikumene.works")
         } finally {
             composeRule.runOnIdle {
                 if (previousClip == null) clipboard.clearPrimaryClip() else clipboard.setPrimaryClip(previousClip)
