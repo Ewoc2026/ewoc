@@ -1,80 +1,62 @@
 # F-Droid Status
 
-Updated: 2026-07-10
+Updated: 2026-11-19
 
-Purpose:
-- Record current F-Droid-facing source truth.
-- Keep repeatable release procedure in `docs/release-checklist.md`.
-- Leave completed review chronology in Git and fdroiddata history.
+Codex reconciled this release record with the public GitHub release and
+fdroiddata metadata during local preparation of the next Android version.
 
-## Current Package
+## Published Package
 
-- Application ID: `io.github.ewoc2026.ewoc`
-- License: `GPL-3.0-or-later`
-- Source: `https://github.com/Ewoc2026/ewoc`
-- Issues: `https://github.com/Ewoc2026/ewoc/issues`
-- Published version: `1.0.3`
-- Published version code: `7`
-- Published package:
-  `https://f-droid.org/packages/io.github.ewoc2026.ewoc/`
-- Public source tag: `v1.0.3`
-- Public source commit:
-  `0f2b36cb35b676de8ccb70a2eb6e4996f4fed81f`
+- Application ID: `io.github.ewoc2026.ewoc`.
+- License: `GPL-3.0-or-later`.
+- Source: <https://github.com/Ewoc2026/ewoc>.
+- Issues: <https://github.com/Ewoc2026/ewoc/issues>.
+- Published Android version: `1.0.4` / code `8`.
+- Package: <https://f-droid.org/packages/io.github.ewoc2026.ewoc/>.
+- Source tag: `v1.0.4`.
+- Source commit: `71c109571f43c66a200afac70a54581ea0187ae1`.
+- Reference APK SHA-256:
+  `97a6bcaf97036b3660d04377721ebc8a0c91d2c014b059490d7834d72baecf16`.
 
-## Current Readiness
+## Local Candidate
+
+Android `1.0.5` / code `9` prepares recovery from malformed workout-format
+fields, FIT destination-opening failures, and inaccessible stored workout
+documents during startup. It also includes the About feedback changes already
+merged into public main. No desktop release or trainer-control change is part
+of this candidate.
+
+The candidate has not been published, tagged or submitted to F-Droid. Its app
+version, changelog and Fastlane changelog are aligned. Existing screenshots
+remain applicable to the unchanged main riding experience.
+
+`docs/fdroiddata-metadata-draft.yml` is a source-tree rehearsal template. It
+retains all currently published build entries and adds the proposed version.
+Resolve its candidate tag to the exact public source commit in the external
+fdroiddata checkout before submission; do not make this file refer to its own
+future commit hash. Normal tag-based auto-update remains the intended route.
+
+Publication, merging, tagging and release-asset upload require a separate
+operator decision. Keep the signed reference APK tied to the exact source
+commit selected for release; a changed commit requires a matching APK.
+
+## Packaging Contract
 
 - The Android app has no active Google Play Billing, Health Connect, Firebase,
-  Crashlytics, analytics, advertising, or backend-upload dependency.
-- The final Android manifest does not declare `INTERNET` or
-  `ACCESS_NETWORK_STATE`.
-- Documentation and issue links open in the user's browser only after an
-  explicit user action.
-- Bluetooth permissions support FTMS trainer and heart-rate sensor
-  communication.
-- Workout, session, settings, and FIT export data stay local to the device
-  unless the user explicitly shares a file.
-- Unsigned release APK assembly works without private signing variables.
-- GitHub Releases host developer-signed reproducible-build reference APKs.
-
-## Release Metadata Contract
-
-- Add new fdroiddata versions as additional `Builds:` entries. Do not replace
-  already published build blocks.
-- Keep `CurrentVersion` and `CurrentVersionCode` on the newest submitted
-  release.
-- Use the full public source commit hash for each build.
-- Keep `gradle: [yes]` as a YAML list.
-- Keep `AutoUpdateMode: Version` and `UpdateCheckMode: Tags`.
-- Reference APKs must be produced from the fdroidserver-built unsigned APK and
-  signed with `apksigner --alignment-preserved true`.
+  Crashlytics, analytics, advertising or backend-upload dependency.
+- The release manifest does not declare `INTERNET` or `ACCESS_NETWORK_STATE`.
+- Documentation and feedback destinations open only after a user action.
+- Bluetooth permissions support FTMS trainers and heart-rate sensors.
+- Workout, session, settings and FIT files remain local unless shared.
+- Unsigned release assembly works without private signing variables.
+- Append new fdroiddata build entries; preserve published history.
+- Use `subdir: app`, `gradle: [yes]`, `AutoUpdateMode: Version`, and
+  `UpdateCheckMode: Tags`.
+- Developer-signed reference APKs must come from the fdroidserver-built
+  unsigned output and use `apksigner --alignment-preserved true`.
+- Verify signature-copy reproducibility against a separately built output.
 - Expected signing certificate SHA-256:
   `4c916c9c69984f8aa9313838ca8cd7f8938af62500b6e85afb5e1afba5451e63`.
 
-## Current Draft
-
-`docs/fdroiddata-metadata-draft.yml` mirrors the next Ewoc metadata candidate
-for local rehearsal. The authoritative published metadata is in fdroiddata.
-Replace any release-candidate commit placeholder in the fdroiddata checkout
-after the exact public source commit exists.
-
-Before the next release:
-
-1. Update app version, changelog, and Fastlane changelog together.
-2. Generate and validate the public source snapshot.
-3. Tag the exact public source commit.
-4. Build and sign the reference APK through the repeatable helper.
-5. Validate fdroiddata lint, build, and reproducible comparison.
-6. Confirm publication, then run a real-device trainer smoke.
-
-See `docs/release-checklist.md` for commands and recovery notes.
-
-## Latest Field Evidence
-
-- F-Droid `1.0.3` is publicly available.
-- A July 9, 2026 Samsung `SM-X210` ride with a real trainer and external HR
-  strap passed trainer control, telemetry, session stop/summary, and FIT export
-  readability.
-- The workout-reselection runner-state finding from that smoke and the
-  split-screen chart finding are fixed in public source, and local release prep
-  now targets `1.0.4` / `versionCode=8`. They are not yet a new published
-  F-Droid version.
+The [release checklist](release-checklist.md) owns commands and recovery notes.
+Historical releases and device validation remain in Git and fdroiddata history.

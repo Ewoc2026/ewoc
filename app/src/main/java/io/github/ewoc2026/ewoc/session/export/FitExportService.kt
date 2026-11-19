@@ -62,10 +62,9 @@ object FitExportService {
                 )
             }
 
-        val output = context.contentResolver.openOutputStream(uri, "w")
-            ?: return FitExportResult.Failure(FitExportFailureReason.OUTPUT_STREAM_UNAVAILABLE)
-
         return runCatching {
+            val output = context.contentResolver.openOutputStream(uri, "w")
+                ?: return@runCatching FitExportResult.Failure(FitExportFailureReason.OUTPUT_STREAM_UNAVAILABLE)
             output.use { stream -> stream.write(payload) }
             FitExportResult.Success
         }.getOrElse { throwable ->

@@ -1,0 +1,4 @@
+Handles invalid workout-format fields and FIT destination-opening failures without escaping normal error handling.
+Keeps startup available when a previously selected workout has been deleted, allowing a replacement import.
+Adds email and copy-address actions in About, with improved scrolling and translations in all seven languages.
+Implemented and validated by Codex.

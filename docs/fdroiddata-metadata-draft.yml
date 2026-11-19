@@ -1,14 +1,8 @@
 ---
-# Draft fdroiddata metadata for io.github.ewoc2026.ewoc.
-#
-# This file is a local submission draft only. The final copy belongs in the
-# F-Droid fdroiddata repository as:
-#
-#   metadata/io.github.ewoc2026.ewoc.yml
-#
-# Replace the 1.0.4 `commit` placeholder in the fdroiddata checkout after the
-# exact public source commit exists. Do not try to make this source-tree draft
-# point at its own future commit hash.
+# Local candidate template prepared by Codex from published fdroiddata metadata.
+# Version 1.0.5 and its tag are not published or submitted. In the external
+# fdroiddata checkout, replace the candidate tag with the selected public source
+# commit before submission. Do not make this file reference its own future hash.
 
 Categories:
   - Workout
@@ -25,15 +19,30 @@ Repo: https://github.com/Ewoc2026/ewoc.git
 Binaries: https://github.com/Ewoc2026/ewoc/releases/download/v%v/ewoc-%v-rb.apk
 
 Builds:
+  - versionName: 1.0.1
+    versionCode: 5
+    commit: 071377379c510b8a3fef3ffe4f2e3ff2975f19cd
+    subdir: app
+    gradle:
+      - yes
+
   - versionName: 1.0.3
     versionCode: 7
     commit: 0f2b36cb35b676de8ccb70a2eb6e4996f4fed81f
     subdir: app
     gradle:
       - yes
+
   - versionName: 1.0.4
     versionCode: 8
-    commit: REPLACE_WITH_PUBLIC_1_0_4_COMMIT
+    commit: 71c109571f43c66a200afac70a54581ea0187ae1
+    subdir: app
+    gradle:
+      - yes
+
+  - versionName: 1.0.5
+    versionCode: 9
+    commit: v1.0.5
     subdir: app
     gradle:
       - yes
@@ -42,5 +51,5 @@ AllowedAPKSigningKeys: 4c916c9c69984f8aa9313838ca8cd7f8938af62500b6e85afb5e1afba
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 1.0.4
-CurrentVersionCode: 8
+CurrentVersion: 1.0.5
+CurrentVersionCode: 9

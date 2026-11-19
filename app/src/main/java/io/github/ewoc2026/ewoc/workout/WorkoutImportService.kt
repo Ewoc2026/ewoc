@@ -16,8 +16,8 @@ import com.ewo.core.SanityIssue
 import com.ewo.core.SanitySeverity
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.contentOrNull
-import kotlinx.serialization.json.jsonPrimitive
 
 /**
  * Canonical workout import formats recognized by the app.
@@ -532,7 +532,8 @@ class WorkoutImportService {
             sniffingJson.parseToJsonElement(trimmedContent) as? JsonObject
         }.getOrNull() ?: return null
 
-        return when (rootObject["format"]?.jsonPrimitive?.contentOrNull) {
+        val format = (rootObject["format"] as? JsonPrimitive)?.contentOrNull
+        return when (format) {
             "ewo" -> WorkoutImportFormat.CANONICAL_EWO_JSON
             "ergo_workout" -> WorkoutImportFormat.ERGO_WORKOUT_JSON
             else -> null

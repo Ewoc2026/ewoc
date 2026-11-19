@@ -86,8 +86,8 @@ android {
         applicationId = "io.github.ewoc2026.ewoc"
         minSdk = 33
         targetSdk = 36
-        versionCode = 8
-        versionName = "1.0.4"
+        versionCode = 9
+        versionName = "1.0.5"
         buildConfigField("int", "DEFAULT_FTP_WATTS", defaultFtpWatts.get())
         buildConfigField("boolean", "ALLOW_LEGACY_WORKOUT_FALLBACK", allowLegacyWorkoutFallbackDebug.get())
         buildConfigField("boolean", "VERBOSE_TELEMETRY_LOGGING", "false")
