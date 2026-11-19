@@ -1,7 +1,14 @@
 package io.github.ewoc2026.ewoc.ui
 
+import android.content.ActivityNotFoundException
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.ContextWrapper
+import android.content.Intent
 import androidx.activity.ComponentActivity
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotEnabled
@@ -21,6 +28,7 @@ import io.github.ewoc2026.ewoc.R
 import io.github.ewoc2026.ewoc.ScannedBleDevice
 import io.github.ewoc2026.ewoc.session.SessionPhase
 import io.github.ewoc2026.ewoc.session.SessionSummary
+import io.github.ewoc2026.ewoc.ui.theme.EwocTheme
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -28,6 +36,55 @@ import org.junit.Test
 class MainActivityContentFlowTest {
     @get:Rule
     val composeRule = createAndroidComposeRule<ComponentActivity>()
+
+    @Test
+    fun aboutCopiesFeedbackAddressAndRemainsDismissible() {
+        showAboutDialogForContactTest()
+        composeRule.onNodeWithText("ewoc@oikumene.works").assertIsDisplayed()
+        verifyFeedbackAddressCopy {
+            composeRule.onNodeWithTag("aboutCopyEmailButton")
+                .performScrollTo().assertIsDisplayed().performClick()
+        }
+        composeRule.onNodeWithTag("aboutCloseButton").assertIsDisplayed().performClick()
+        composeRule.onNodeWithTag("aboutEmailAddress").assertDoesNotExist()
+    }
+
+    @Test
+    fun aboutContactActionsOpenEmailAndGitHubDestinations() {
+        val requests = mutableListOf<Intent>()
+        showAboutDialogForContactTest { requests += it }
+        composeRule.onNodeWithTag("aboutEmailButton").performScrollTo().performClick()
+        composeRule.runOnIdle {
+            val email = requests.single()
+            assertEquals(Intent.ACTION_SENDTO, email.action)
+            assertEquals("mailto", email.data?.scheme)
+            assertEquals("ewoc@oikumene.works", email.data?.schemeSpecificPart)
+            assertEquals(null, email.extras)
+        }
+        composeRule.onNodeWithTag("aboutGitHubButton").performScrollTo().performClick()
+        composeRule.runOnIdle {
+            assertEquals(2, requests.size)
+            val github = requests.last()
+            assertEquals(Intent.ACTION_VIEW, github.action)
+            assertEquals("https", github.data?.scheme)
+            assertEquals("github.com", github.data?.host)
+            assertEquals("/Ewoc2026/ewoc/issues", github.data?.path)
+        }
+    }
+
+    @Test
+    fun aboutMissingEmailAppKeepsCopyRecoveryAvailable() {
+        showAboutDialogForContactTest { throw ActivityNotFoundException("No email handler") }
+        composeRule.onNodeWithTag("aboutEmailError").assertDoesNotExist()
+        composeRule.onNodeWithTag("aboutEmailButton").performScrollTo().performClick()
+        composeRule.onNodeWithTag("aboutEmailError").performScrollTo().assertIsDisplayed()
+        verifyFeedbackAddressCopy {
+            composeRule.onNodeWithTag("aboutCopyEmailButton")
+                .performScrollTo().assertIsEnabled().performClick()
+        }
+        composeRule.onNodeWithTag("aboutCloseButton").assertIsDisplayed().performClick()
+        composeRule.onNodeWithTag("aboutEmailError").assertDoesNotExist()
+    }
 
     @Test
     fun criticalFlowScreensRenderExpectedAnchors() {
@@ -688,6 +745,39 @@ class MainActivityContentFlowTest {
             assertEquals(1, exportClicks)
         }
         assertSummaryExportErrorVisible(exportFailedMessage)
+    }
+
+    private fun showAboutDialogForContactTest(onLaunch: (Intent) -> Unit = {}) {
+        val visible = mutableStateOf(true)
+        // Intercept handoffs so tests never open a browser or compose a real message.
+        val context = object : ContextWrapper(composeRule.activity) {
+            override fun startActivity(intent: Intent) = onLaunch(intent)
+        }
+        composeRule.setContent {
+            CompositionLocalProvider(LocalContext provides context) {
+                EwocTheme {
+                    if (visible.value) MenuAboutDialog(onDismiss = { visible.value = false })
+                }
+            }
+        }
+    }
+
+    private fun verifyFeedbackAddressCopy(copyAction: () -> Unit) {
+        val clipboard = composeRule.activity.getSystemService(ClipboardManager::class.java)
+        val previousClip = composeRule.runOnIdle { clipboard.primaryClip }
+        try {
+            composeRule.runOnIdle {
+                clipboard.setPrimaryClip(ClipData.newPlainText("test", "before-copy"))
+            }
+            copyAction()
+            composeRule.runOnIdle {
+                assertEquals("ewoc@oikumene.works", clipboard.primaryClip?.getItemAt(0)?.text?.toString())
+            }
+        } finally {
+            composeRule.runOnIdle {
+                if (previousClip == null) clipboard.clearPrimaryClip() else clipboard.setPrimaryClip(previousClip)
+            }
+        }
     }
 
     private fun normalizedWaitingStatus(resId: Int): String {

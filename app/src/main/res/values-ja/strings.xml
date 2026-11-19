@@ -35,9 +35,13 @@
         <!-- Menu -->
         <string name="menu_title">Ewoc</string>
         <string name="menu_about_title">Ewocについて</string>
+        <string name="menu_about_feedback">フィードバック</string>
+        <string name="menu_about_email">メールを作成</string>
+        <string name="menu_about_copy_email">アドレスをコピー</string>
+        <string name="menu_about_email_open_failed">メールアプリを開けませんでした。代わりにアドレスをコピーできます。</string>
         <string name="menu_about_changelog">新着情報 (English only)</string>
         <string name="menu_about_user_guide">ユーザーガイド (English only)</string>
-        <string name="menu_about_support">サポート (English only)</string>
+        <string name="menu_about_support">GitHubでフィードバック (English only)</string>
         <string name="menu_about_privacy_policy">プライバシーポリシー (English only)</string>
         <string name="menu_about_open_link_failed">リンクを開けませんでした。利用できるブラウザがあることを確認してください。</string>
         <string name="about_url_changelog">https://github.com/Ewoc2026/ewoc/blob/main/CHANGELOG.md</string>

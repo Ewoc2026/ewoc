@@ -35,9 +35,13 @@
         <!-- Menu -->
         <string name="menu_title">Ewoc</string>
         <string name="menu_about_title">Over Ewoc</string>
+        <string name="menu_about_feedback">Feedback</string>
+        <string name="menu_about_email">E-mail schrijven</string>
+        <string name="menu_about_copy_email">Adres kopiëren</string>
+        <string name="menu_about_email_open_failed">Kan geen e-mailapp openen. Je kunt in plaats daarvan het adres kopiëren.</string>
         <string name="menu_about_changelog">Wat is er nieuw (English only)</string>
         <string name="menu_about_user_guide">Gebruikershandleiding (English only)</string>
-        <string name="menu_about_support">Ondersteuning (English only)</string>
+        <string name="menu_about_support">Feedback op GitHub (English only)</string>
         <string name="menu_about_privacy_policy">Privacybeleid (English only)</string>
         <string name="menu_about_open_link_failed">De link kon niet worden geopend. Controleer of er een browser beschikbaar is.</string>
         <string name="about_url_changelog">https://github.com/Ewoc2026/ewoc/blob/main/CHANGELOG.md</string>

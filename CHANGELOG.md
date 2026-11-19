@@ -5,6 +5,15 @@ file.
 
 ## [Unreleased]
 
+### Added
+
+- About now shows `ewoc@oikumene.works`, with actions to write an email or
+  copy the address, and a clearly named GitHub feedback alternative. The new
+  text is available in all seven supported languages. Codex implemented the
+  feedback UI and translations.
+- About keeps its content, including the title, scrollable so long labels and
+  large text remain reachable in short windows. The Close action stays visible.
+
 ### Fixed
 
 - Instrumentation smoke tests now follow the current menu navigation state

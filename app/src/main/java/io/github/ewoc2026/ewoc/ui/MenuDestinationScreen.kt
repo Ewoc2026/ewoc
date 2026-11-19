@@ -1,7 +1,6 @@
 package io.github.ewoc2026.ewoc.ui
 
 import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -31,7 +30,6 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.outlined.Info
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -66,7 +64,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import io.github.ewoc2026.ewoc.BuildConfig
 import io.github.ewoc2026.ewoc.DocumentsFolderWorkoutOption
-import io.github.ewoc2026.ewoc.LocalizedWebLinkLauncher
 import io.github.ewoc2026.ewoc.R
 import io.github.ewoc2026.ewoc.DeviceSelectionKind
 import io.github.ewoc2026.ewoc.FitExportPreference
@@ -960,70 +957,6 @@ internal fun MenuScreen(
             onDismiss = { showAboutDialog = false },
         )
     }
-}
-
-@Composable
-private fun MenuAboutDialog(
-    onDismiss: () -> Unit,
-) {
-    val context = LocalContext.current
-    val openLinkFailed = stringResource(R.string.menu_about_open_link_failed)
-
-    fun openUrl(url: String) {
-        if (!LocalizedWebLinkLauncher.open(context = context, url = url)) {
-            Toast.makeText(context, openLinkFailed, Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    val changelogUrl = stringResource(R.string.about_url_changelog)
-    val userGuideUrl = stringResource(R.string.about_url_user_guide)
-    val supportUrl = stringResource(R.string.about_url_support)
-    val privacyPolicyUrl = stringResource(R.string.privacy_policy_url)
-
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = {
-            Text(
-                text = stringResource(R.string.menu_about_title) + " " + BuildConfig.VERSION_NAME,
-            )
-        },
-        text = {
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(4.dp),
-            ) {
-                TextButton(onClick = { openUrl(changelogUrl) }) {
-                    Text(
-                        text = stringResource(R.string.menu_about_changelog),
-                        modifier = Modifier.fillMaxWidth(),
-                    )
-                }
-                TextButton(onClick = { openUrl(userGuideUrl) }) {
-                    Text(
-                        text = stringResource(R.string.menu_about_user_guide),
-                        modifier = Modifier.fillMaxWidth(),
-                    )
-                }
-                TextButton(onClick = { openUrl(supportUrl) }) {
-                    Text(
-                        text = stringResource(R.string.menu_about_support),
-                        modifier = Modifier.fillMaxWidth(),
-                    )
-                }
-                TextButton(onClick = { openUrl(privacyPolicyUrl) }) {
-                    Text(
-                        text = stringResource(R.string.menu_about_privacy_policy),
-                        modifier = Modifier.fillMaxWidth(),
-                    )
-                }
-            }
-        },
-        confirmButton = {
-            TextButton(onClick = onDismiss) {
-                Text(stringResource(R.string.menu_dialog_ok))
-            }
-        },
-    )
 }
 
 private fun formatDurationMinSec(totalSec: Int): String {

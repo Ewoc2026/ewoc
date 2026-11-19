@@ -166,7 +166,7 @@ Run the two local smoke test classes:
   --no-daemon
 ```
 
-Run the 18-test CI smoke scope on an already prepared
+Run the 21-test CI smoke scope on an already prepared
 Android 13 emulator. Replace the serial with the intended target from
 `adb devices -l`; `ANDROID_SERIAL` keeps other connected devices out of the run.
 
@@ -180,14 +180,22 @@ ANDROID_SERIAL=emulator-5560 ./scripts/gradle-safe.sh --no-fallback :app:connect
 The default selection now includes `criticalFlowScreensRenderExpectedAnchors`:
 its obsolete selectors were repaired and its flaky annotation was removed.
 The annotation filter remains available for any future quarantined tests.
+Three About contact tests in `MainActivityContentFlowTest` cover clipboard
+content and dismissal, email/GitHub destinations, and missing-email-app recovery.
+They run automatically in the same selection, bringing its total to 21.
 Record the emulator image and version with the results: a local Google Play
 image is not identical to CI's AOSP image.
 Keep Gradle runs sequential. The XML results are under
 `app/build/outputs/androidTest-results/connected/` and the HTML report is under
 `app/build/reports/androidTests/connected/`.
-Codex verified ten consecutive runs of the repaired anchor test, then this
-command with all 18 tests on a local Android 13 Google Play emulator on
-2026-11-19. No automatic retries were used; this was not a new public CI run.
+On 2026-11-19, Codex verified ten consecutive runs of the repaired anchor test,
+then the original 18-test selection on a local Android 13 Google Play emulator.
+GitHub Actions also passed all 18 in
+[PR #2](https://github.com/Ewoc2026/ewoc/pull/2); Codex verified the downloaded
+XML and retry summary. Neither final run used automatic retries. Those results
+precede the three About tests added to the current selection.
+Codex then verified the expanded 21-test selection on the local Android 13
+Google Play emulator, with no failures, errors, skips, or automatic retries.
 
 ## Device Diagnostics
 
