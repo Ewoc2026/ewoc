@@ -21,7 +21,9 @@ class EditorDocumentFactoryTest {
         assertEquals(0, doc.segments.size)
         assertFalse(doc.isDirty)
         assertNull(doc.selectedNodeId)
-        assertTrue(doc.validationMarkers.isEmpty())
+        val titleMarker = doc.validationMarkers.single { it.field == "title" }
+        assertEquals(EditorValidationSeverity.ERROR, titleMarker.severity)
+        assertTrue(titleMarker.blocksExport)
     }
 
     @Test

@@ -158,13 +158,36 @@ Run all androidTests:
 ./gradlew :app:connectedDebugAndroidTest --no-daemon
 ```
 
-Run one instrumentation test class:
+Run the two local smoke test classes:
 
 ```bash
 ./gradlew :app:connectedDebugAndroidTest \
   -Pandroid.testInstrumentationRunnerArguments.class=io.github.ewoc2026.ewoc.ui.MainActivityContentFlowTest,io.github.ewoc2026.ewoc.MainActivityRecreationRotationTest \
   --no-daemon
 ```
+
+Run the 18-test CI smoke scope on an already prepared
+Android 13 emulator. Replace the serial with the intended target from
+`adb devices -l`; `ANDROID_SERIAL` keeps other connected devices out of the run.
+
+```bash
+ANDROID_SERIAL=emulator-5560 ./scripts/gradle-safe.sh --no-fallback :app:connectedDebugAndroidTest \
+  -Pandroid.testInstrumentationRunnerArguments.class=io.github.ewoc2026.ewoc.ui.MainActivityContentFlowTest,io.github.ewoc2026.ewoc.MainActivityRecreationRotationTest,io.github.ewoc2026.ewoc.MainActivityLifecycleContinuityTest \
+  -Pandroid.testInstrumentationRunnerArguments.notAnnotation=androidx.test.filters.FlakyTest \
+  --no-configuration-cache -Dkotlin.incremental=false --console=plain
+```
+
+The default selection now includes `criticalFlowScreensRenderExpectedAnchors`:
+its obsolete selectors were repaired and its flaky annotation was removed.
+The annotation filter remains available for any future quarantined tests.
+Record the emulator image and version with the results: a local Google Play
+image is not identical to CI's AOSP image.
+Keep Gradle runs sequential. The XML results are under
+`app/build/outputs/androidTest-results/connected/` and the HTML report is under
+`app/build/reports/androidTests/connected/`.
+Codex verified ten consecutive runs of the repaired anchor test, then this
+command with all 18 tests on a local Android 13 Google Play emulator on
+2026-11-19. No automatic retries were used; this was not a new public CI run.
 
 ## Device Diagnostics
 
@@ -301,7 +324,7 @@ Notes:
 - This emulator pipeline is for UI/Compose/instrumentation regressions.
 - By default, local `scripts/adb/emulator-smoke.sh` scope runs `MainActivityContentFlowTest` and `MainActivityRecreationRotationTest` (unless `--all-tests` is used).
 - By default, emulator smoke excludes tests annotated with `@FlakyTest`; use `--include-flaky` when needed.
-- As of March 4, 2026, `MainActivityContentFlowTest#criticalFlowScreensRenderExpectedAnchors` is tagged with `@FlakyTest`, so default smoke lanes skip it unless include-flaky mode is enabled.
+- On November 19, 2026, `MainActivityContentFlowTest#criticalFlowScreensRenderExpectedAnchors` returned to the default selection after selector repairs and ten consecutive local passes; it no longer needs include-flaky mode.
 - Local emulator smoke run artifacts include flaky policy fields in `run-summary.txt` (`exclude_flaky`, `include_flaky`).
 - BLE trainer behavior (FTMS/Tunturi) must still be validated on real hardware with `./scripts/adb/device-smoke.sh`.
 - If both USB device and emulator are connected, emulator runs stay deterministic because the script pins test execution via `ANDROID_SERIAL=emulator-<port>`.
@@ -316,6 +339,6 @@ GitHub smoke policy:
 - Deterministic reconnect/export additions run in default PR smoke scope:
   - `MainActivityLifecycleContinuityTest#reconnectMidSessionReturnsToSessionWithoutLosingRunningState`
   - `MainActivityContentFlowTest#summaryFitExportFailureKeepsErrorVisibleAndAllowsRetryAction`
-- Flaky inclusion remains configurable via workflow input; `include_flaky_tests=true` now explicitly includes the flaky-tagged anchor coverage.
+- Flaky inclusion remains configurable via workflow input; `include_flaky_tests=true` includes tests that still carry `@FlakyTest`. The restored anchor test runs in either mode.
 - On pull requests, `android-instrumentation-smoke` is non-blocking and retries once automatically when failure signatures match emulator/ADB infra instability.
 - GitHub smoke uploads `smoke-policy.txt` plus instrumentation reports as run artifacts (`smoke-policy.txt` now includes `smoke_test_classes`).

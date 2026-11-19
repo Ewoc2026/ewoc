@@ -5,6 +5,16 @@ file.
 
 ## [Unreleased]
 
+### Fixed
+
+- Instrumentation smoke tests now follow the current menu navigation state
+  and use the stable menu anchor instead of an unversioned title.
+- The formerly quarantined screen-anchor test is back in the default smoke
+  selection. It checks the fixed header's Quit action instead of a list item
+  position. Codex updated the tests and verified ten consecutive anchor-test
+  runs followed by all 18 smoke tests on a local Android 13 emulator.
+  Application behavior is unchanged.
+
 ## [1.0.4] - 2026-07-10
 
 ### Fixed
