@@ -35,9 +35,14 @@
         <!-- Menu -->
         <string name="menu_title">Ewoc</string>
         <string name="menu_about_title">About Ewoc</string>
+        <string name="menu_about_feedback">Feedback</string>
+        <string name="menu_about_email">Write email</string>
+        <string name="menu_about_copy_email">Copy address</string>
+        <string name="menu_about_email_open_failed">Could not open an email app. You can copy the address instead.</string>
+        <string name="about_feedback_email" translatable="false">ewoc@oikumene.works</string>
         <string name="menu_about_changelog">What\'s New (English only)</string>
         <string name="menu_about_user_guide">User Guide (English only)</string>
-        <string name="menu_about_support">Support (English only)</string>
+        <string name="menu_about_support">Feedback on GitHub (English only)</string>
         <string name="menu_about_privacy_policy">Privacy Policy (English only)</string>
         <string name="menu_about_open_link_failed">Could not open the link. Check that a browser is available.</string>
         <string name="about_url_changelog">https://github.com/Ewoc2026/ewoc/blob/main/CHANGELOG.md</string>

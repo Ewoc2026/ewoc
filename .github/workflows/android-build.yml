@@ -298,6 +298,12 @@ jobs:
         with:
           packages: platform-tools
 
+      - name: Enable emulator hardware acceleration
+        run: |
+          # Grant access to the existing device on this disposable runner, without a udev race.
+          sudo chmod a+rw /dev/kvm
+          test -r /dev/kvm && test -w /dev/kvm
+
       - name: Resolve smoke policy
         id: smoke-policy
         shell: bash
@@ -329,7 +335,8 @@ jobs:
           emulator-boot-timeout: 900
           disk-size: 4096M
           disable-animations: false
-          emulator-options: -no-snapshot -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -camera-front none
+          disable-linux-hw-accel: false
+          emulator-options: -accel on -no-snapshot -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -camera-front none
           script: |
             SMOKE_INCLUDE_FLAKY=true ./scripts/ci/run-instrumentation-smoke.sh
 
@@ -376,7 +383,8 @@ jobs:
           emulator-boot-timeout: 900
           disk-size: 4096M
           disable-animations: false
-          emulator-options: -no-snapshot -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -camera-front none
+          disable-linux-hw-accel: false
+          emulator-options: -accel on -no-snapshot -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -camera-front none
           script: |
             SMOKE_INCLUDE_FLAKY=false ./scripts/ci/run-instrumentation-smoke.sh
 

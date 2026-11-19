@@ -82,6 +82,25 @@ First steps:
 If the issue looks repeatable:
 - include the trainer model, host device model, and what happened right before the failure
 
+## Send Feedback
+
+Open the information **(i)** button on Ewoc's main menu. The About dialog
+shows **ewoc@oikumene.works** and these contact options:
+
+- **Write email** opens your email app with the recipient filled in. Write
+  and send your message there.
+- **Copy address** copies the address so you can use another email app or
+  webmail. This also works when Ewoc cannot open an email app.
+- **Feedback on GitHub** opens the
+  [issue tracker](https://github.com/Ewoc2026/ewoc/issues) as an alternative.
+  Creating an issue requires a GitHub account.
+
+The button labels follow the app's language. On a small screen or with large
+text, scroll the dialog to reach the remaining links. **Close** stays visible.
+Ewoc does not send a message automatically or attach diagnostic data.
+
+Codex wrote this feedback section and checked it against the implemented app.
+
 ## What To Send to Support
 
 If you contact support, include:

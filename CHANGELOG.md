@@ -5,8 +5,20 @@ file.
 
 ## [Unreleased]
 
+### Added
+
+- About now shows `ewoc@oikumene.works`, with actions to write an email or
+  copy the address, and a clearly named GitHub feedback alternative. The new
+  text is available in all seven supported languages. Codex implemented the
+  feedback UI and translations.
+- About keeps its content, including the title, scrollable so long labels and
+  large text remain reachable in short windows. The Close action stays visible.
+
 ### Fixed
 
+- Android instrumentation CI now enables and requires KVM acceleration. A
+  focused AOSP reproduction showed a System UI error dialog taking window
+  focus during software CPU emulation; the app and test assertions are unchanged.
 - Instrumentation smoke tests now follow the current menu navigation state
   and use the stable menu anchor instead of an unversioned title.
 - The formerly quarantined screen-anchor test is back in the default smoke

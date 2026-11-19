@@ -35,9 +35,13 @@
         <!-- Menu -->
         <string name="menu_title">Ewoc</string>
         <string name="menu_about_title">Tietoa Ewocista</string>
+        <string name="menu_about_feedback">Palaute</string>
+        <string name="menu_about_email">Kirjoita sähköposti</string>
+        <string name="menu_about_copy_email">Kopioi osoite</string>
+        <string name="menu_about_email_open_failed">Sähköpostisovellusta ei voitu avata. Voit kopioida osoitteen.</string>
         <string name="menu_about_changelog">Mitä uutta (English only)</string>
         <string name="menu_about_user_guide">Käyttöopas (English only)</string>
-        <string name="menu_about_support">Tuki (English only)</string>
+        <string name="menu_about_support">Palaute GitHubissa (English only)</string>
         <string name="menu_about_privacy_policy">Tietosuojakäytäntö (English only)</string>
         <string name="menu_about_open_link_failed">Linkkiä ei voitu avata. Tarkista, että selain on käytettävissä.</string>
         <string name="about_url_changelog">https://github.com/Ewoc2026/ewoc/blob/main/CHANGELOG.md</string>
