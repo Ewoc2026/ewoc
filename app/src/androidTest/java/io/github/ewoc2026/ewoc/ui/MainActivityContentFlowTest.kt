@@ -6,7 +6,8 @@ import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.hasScrollToIndexAction
-import androidx.test.filters.FlakyTest
+import androidx.compose.ui.test.hasTestTag
+import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
@@ -28,8 +29,6 @@ class MainActivityContentFlowTest {
     @get:Rule
     val composeRule = createAndroidComposeRule<ComponentActivity>()
 
-    // CI emulators occasionally fail this viewport scroll assertion despite local determinism.
-    @FlakyTest
     @Test
     fun criticalFlowScreensRenderExpectedAnchors() {
         val modelState = mutableStateOf(MainActivityUiModelTestFactory.base(screen = AppScreen.MENU))
@@ -56,7 +55,7 @@ class MainActivityContentFlowTest {
             )
         }
 
-        composeRule.onNodeWithText(composeRule.activity.getString(R.string.menu_title)).assertIsDisplayed()
+        composeRule.onNodeWithTag(DebugAutomationTags.MENU_ROOT).assertIsDisplayed()
 
         composeRule.runOnIdle {
             modelState.value = MainActivityUiModelTestFactory.base(screen = AppScreen.CONNECTING)
@@ -70,8 +69,13 @@ class MainActivityContentFlowTest {
             modelState.value = MainActivityUiModelTestFactory.base(screen = AppScreen.SESSION)
         }
         composeRule.waitForIdle()
-        composeRule.onNode(hasScrollToIndexAction()).performScrollToIndex(1)
-        composeRule.onNodeWithTag("sessionQuitButton").assertIsDisplayed()
+        composeRule.onNodeWithTag("sessionScreenRoot").assertIsDisplayed()
+        // Header and body controls share a tag; the compact header action stays visible
+        // without relying on the scrollable body's item positions.
+        composeRule.onNode(
+            hasTestTag("sessionQuitButton") and
+                hasText(composeRule.activity.getString(R.string.session_end_button_compact))
+        ).assertIsDisplayed()
 
         composeRule.runOnIdle {
             modelState.value = MainActivityUiModelTestFactory.base(screen = AppScreen.STOPPING)
@@ -112,6 +116,9 @@ class MainActivityContentFlowTest {
         composeRule.setContent {
             MainActivityContent(
                 model = modelState.value,
+                onActiveMenuSetupStepChanged = { step ->
+                    modelState.value = modelState.value.withMenuState { copy(activeSetupStep = step) }
+                },
                 onSelectWorkoutFile = {},
                 onFtpInputChanged = {},
                 onHrProfileAgeInputChanged = {},
@@ -132,7 +139,7 @@ class MainActivityContentFlowTest {
         }
 
         composeRule.runOnIdle {
-            modelState.value = MainActivityUiModelTestFactory.base(screen = AppScreen.MENU).withMenuState {
+            modelState.value = modelState.value.withMenuState {
                 copy(
                     activeDeviceSelectionKind = DeviceSelectionKind.FTMS,
                     deviceScanInProgress = true,
@@ -155,7 +162,7 @@ class MainActivityContentFlowTest {
         ).performScrollTo().assertIsDisplayed().assertIsNotEnabled()
 
         composeRule.runOnIdle {
-            modelState.value = MainActivityUiModelTestFactory.base(screen = AppScreen.MENU).withMenuState {
+            modelState.value = modelState.value.withMenuState {
                 copy(
                     activeDeviceSelectionKind = DeviceSelectionKind.FTMS,
                     deviceScanInProgress = false,
@@ -298,6 +305,9 @@ class MainActivityContentFlowTest {
         composeRule.setContent {
             MainActivityContent(
                 model = modelState.value,
+                onActiveMenuSetupStepChanged = { step ->
+                    modelState.value = modelState.value.withMenuState { copy(activeSetupStep = step) }
+                },
                 onSelectWorkoutFile = {},
                 onFtpInputChanged = {},
                 onHrProfileAgeInputChanged = {},
@@ -319,7 +329,7 @@ class MainActivityContentFlowTest {
 
         openSetupStep(R.string.menu_setup_step_devices_title)
         composeRule.runOnIdle {
-            modelState.value = MainActivityUiModelTestFactory.base(screen = AppScreen.MENU).withMenuState {
+            modelState.value = modelState.value.withMenuState {
                 copy(
                     activeDeviceSelectionKind = DeviceSelectionKind.FTMS,
                     deviceScanInProgress = false,
@@ -329,7 +339,7 @@ class MainActivityContentFlowTest {
             }
         }
 
-        composeRule.onNodeWithText(composeRule.activity.getString(R.string.menu_title)).assertIsDisplayed()
+        composeRule.onNodeWithTag(DebugAutomationTags.MENU_ROOT).assertIsDisplayed()
         composeRule.onNodeWithText(
             composeRule.activity.getString(R.string.menu_trainer_picker_title)
         ).performScrollTo().assertIsDisplayed()
@@ -339,7 +349,7 @@ class MainActivityContentFlowTest {
         ).performScrollTo().assertIsDisplayed().assertIsEnabled()
 
         composeRule.runOnIdle {
-            modelState.value = MainActivityUiModelTestFactory.base(screen = AppScreen.MENU).withMenuState {
+            modelState.value = modelState.value.withMenuState {
                 copy(
                     activeDeviceSelectionKind = DeviceSelectionKind.FTMS,
                     deviceScanInProgress = true,
@@ -358,7 +368,7 @@ class MainActivityContentFlowTest {
         ).performScrollTo().assertIsDisplayed().assertIsNotEnabled()
 
         composeRule.runOnIdle {
-            modelState.value = MainActivityUiModelTestFactory.base(screen = AppScreen.MENU).withMenuState {
+            modelState.value = modelState.value.withMenuState {
                 copy(
                     activeDeviceSelectionKind = DeviceSelectionKind.FTMS,
                     scannedDevices = listOf(
@@ -393,6 +403,9 @@ class MainActivityContentFlowTest {
         composeRule.setContent {
             MainActivityContent(
                 model = modelState.value,
+                onActiveMenuSetupStepChanged = { step ->
+                    modelState.value = modelState.value.withMenuState { copy(activeSetupStep = step) }
+                },
                 onSelectWorkoutFile = {},
                 onFtpInputChanged = {},
                 onHrProfileAgeInputChanged = {},
@@ -432,6 +445,9 @@ class MainActivityContentFlowTest {
         composeRule.setContent {
             MainActivityContent(
                 model = modelState.value,
+                onActiveMenuSetupStepChanged = { step ->
+                    modelState.value = modelState.value.withMenuState { copy(activeSetupStep = step) }
+                },
                 onSelectWorkoutFile = {},
                 onFtpInputChanged = {},
                 onHrProfileAgeInputChanged = {},
@@ -451,24 +467,23 @@ class MainActivityContentFlowTest {
             )
         }
 
-        val menuTitle = composeRule.activity.getString(R.string.menu_title)
         val startSession = composeRule.activity.getString(R.string.menu_start_session)
         val connecting = normalizedWaitingStatus(R.string.status_connecting)
         val connectingHint = composeRule.activity.getString(R.string.menu_connection_hint)
 
         openSetupStep(R.string.menu_setup_step_summary_title)
-        composeRule.onNodeWithText(menuTitle).assertIsDisplayed()
+        composeRule.onNodeWithTag(DebugAutomationTags.MENU_ROOT).assertIsDisplayed()
         composeRule.onNodeWithText(startSession).assertIsDisplayed().performClick()
         composeRule.runOnIdle {
             assertEquals(1, startClicks)
         }
 
         composeRule.runOnIdle {
-            modelState.value = MainActivityUiModelTestFactory.base(screen = AppScreen.MENU).withMenuState {
+            modelState.value = modelState.value.withMenuState {
                 copy(startEnabled = true)
             }
         }
-        composeRule.onNodeWithText(menuTitle).assertIsDisplayed()
+        composeRule.onNodeWithTag(DebugAutomationTags.MENU_ROOT).assertIsDisplayed()
         composeRule.onNodeWithText(startSession).assertIsDisplayed().performClick()
         composeRule.runOnIdle {
             assertEquals(2, startClicks)
@@ -493,6 +508,9 @@ class MainActivityContentFlowTest {
         composeRule.setContent {
             MainActivityContent(
                 model = modelState.value,
+                onActiveMenuSetupStepChanged = { step ->
+                    modelState.value = modelState.value.withMenuState { copy(activeSetupStep = step) }
+                },
                 onSelectWorkoutFile = {},
                 onFtpInputChanged = {},
                 onHrProfileAgeInputChanged = {},
@@ -514,7 +532,7 @@ class MainActivityContentFlowTest {
 
         openSetupStep(R.string.menu_setup_step_devices_title)
         composeRule.runOnIdle {
-            modelState.value = MainActivityUiModelTestFactory.base(screen = AppScreen.MENU).withMenuState {
+            modelState.value = modelState.value.withMenuState {
                 copy(
                     activeDeviceSelectionKind = DeviceSelectionKind.FTMS,
                     deviceScanInProgress = false,
@@ -534,7 +552,7 @@ class MainActivityContentFlowTest {
         }
 
         composeRule.runOnIdle {
-            modelState.value = MainActivityUiModelTestFactory.base(screen = AppScreen.MENU).withMenuState {
+            modelState.value = modelState.value.withMenuState {
                 copy(
                     activeDeviceSelectionKind = DeviceSelectionKind.FTMS,
                     deviceScanInProgress = true,

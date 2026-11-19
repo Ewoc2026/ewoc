@@ -10,6 +10,7 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.runtime.MutableState
 import androidx.lifecycle.ViewModelProvider
 import io.github.ewoc2026.ewoc.session.SessionPhase
+import io.github.ewoc2026.ewoc.ui.DebugAutomationTags
 import io.github.ewoc2026.ewoc.workout.Step
 import io.github.ewoc2026.ewoc.workout.WorkoutFile
 import org.junit.Assert.assertEquals
@@ -30,10 +31,8 @@ class MainActivityLifecycleContinuityTest {
 
     @Test
     fun launchStartsInMenuWithStartGateClosedByDefault() {
-        val menuTitle = composeRule.activity.getString(R.string.menu_title)
-
-        waitUntilMenuVisible(menuTitle = menuTitle)
-        composeRule.onNodeWithText(menuTitle).assertIsDisplayed()
+        waitUntilMenuVisible()
+        composeRule.onNodeWithTag(DebugAutomationTags.MENU_ROOT).assertIsDisplayed()
         composeRule.runOnIdle {
             val viewModel = currentViewModel()
             assertEquals(AppScreen.MENU, viewModel.uiState.screen.value)
@@ -75,7 +74,6 @@ class MainActivityLifecycleContinuityTest {
         val keepWaitingLabel = composeRule.activity.getString(R.string.connecting_timeout_keep_waiting)
         val retryLabel = composeRule.activity.getString(R.string.connecting_timeout_retry)
         val backToMenuLabel = composeRule.activity.getString(R.string.connecting_timeout_back_to_menu)
-        val menuTitle = composeRule.activity.getString(R.string.menu_title)
         val initialMockTrainerMode = currentViewModel().mockTrainerModeEnabledState.value
 
         try {
@@ -114,7 +112,7 @@ class MainActivityLifecycleContinuityTest {
                 backToMenuLabel = backToMenuLabel,
             )
             composeRule.onNodeWithText(backToMenuLabel).performClick()
-            waitUntilMenuVisible(menuTitle = menuTitle)
+            waitUntilMenuVisible()
             composeRule.runOnIdle {
                 val viewModel = currentViewModel()
                 assertEquals(AppScreen.MENU, viewModel.uiState.screen.value)
@@ -212,7 +210,6 @@ class MainActivityLifecycleContinuityTest {
 
     @Test
     fun bluetoothConnectPermissionDenyThenGrantMaintainsStateContinuity() {
-        val menuTitle = composeRule.activity.getString(R.string.menu_title)
         var connectPermissionGranted = false
         var scanPermissionGranted = true
         val initialMockTrainerMode = currentViewModel().mockTrainerModeEnabledState.value
@@ -231,7 +228,7 @@ class MainActivityLifecycleContinuityTest {
                 seedTrainerSelectionForSessionStart(viewModel)
                 viewModel.onStartSession()
             }
-            waitUntilMenuVisible(menuTitle = menuTitle)
+            waitUntilMenuVisible()
             composeRule.runOnIdle {
                 val viewModel = currentViewModel()
                 assertEquals(AppScreen.MENU, viewModel.uiState.screen.value)
@@ -242,7 +239,7 @@ class MainActivityLifecycleContinuityTest {
                 val vm = currentViewModel()
                 vm.onBluetoothPermissionResult(granted = false, requestId = vm.pendingBluetoothPermissionRequestId)
             }
-            waitUntilMenuVisible(menuTitle = menuTitle)
+            waitUntilMenuVisible()
             composeRule.runOnIdle {
                 val viewModel = currentViewModel()
                 assertEquals(AppScreen.MENU, viewModel.uiState.screen.value)
@@ -287,7 +284,6 @@ class MainActivityLifecycleContinuityTest {
 
     @Test
     fun bluetoothScanPermissionDenyThenGrantKeepsMenuContinuity() {
-        val menuTitle = composeRule.activity.getString(R.string.menu_title)
         val permissionRequired = composeRule.activity.getString(R.string.menu_device_scan_permission_required)
         var scanPermissionGranted = false
         val initialMockTrainerMode = currentViewModel().mockTrainerModeEnabledState.value
@@ -303,7 +299,7 @@ class MainActivityLifecycleContinuityTest {
                 )
                 viewModel.onMockTrainerModeChanged(enabled = false)
             }
-            waitUntilMenuVisible(menuTitle = menuTitle)
+            waitUntilMenuVisible()
 
             composeRule.runOnUiThread {
                 currentViewModel().onSearchFtmsDevicesRequested()
@@ -389,12 +385,11 @@ class MainActivityLifecycleContinuityTest {
     }
 
     private fun waitUntilMenuVisible(
-        menuTitle: String,
         timeoutMillis: Long = 20_000L,
     ) {
         composeRule.waitUntil(timeoutMillis) {
             try {
-                composeRule.onNodeWithText(menuTitle).assertIsDisplayed()
+                composeRule.onNodeWithTag(DebugAutomationTags.MENU_ROOT).assertIsDisplayed()
                 true
             } catch (_: AssertionError) {
                 false
