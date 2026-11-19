@@ -16,6 +16,9 @@ file.
 
 ### Fixed
 
+- Android instrumentation CI now enables and requires KVM acceleration. A
+  focused AOSP reproduction showed a System UI error dialog taking window
+  focus during software CPU emulation; the app and test assertions are unchanged.
 - Instrumentation smoke tests now follow the current menu navigation state
   and use the stable menu anchor instead of an unversioned title.
 - The formerly quarantined screen-anchor test is back in the default smoke
