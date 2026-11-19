@@ -9,8 +9,8 @@ import androidx.core.content.edit
  *
  * Stores the [SessionSetupMode], the source URI (when file-based), the packaged
  * bundled asset path (when the workout comes from APK assets), and the display
- * name. On restore the caller re-imports from the original source; if a SAF URI
- * is no longer accessible (e.g. expired permission) the restore is skipped.
+ * name. On restore the caller re-imports from the original source; an inaccessible
+ * document is handled as an import failure so the user can select a replacement.
  */
 object WorkoutSelectionSettingsStorage {
     private const val PREFERENCES_NAME = "ergometer_app_settings"

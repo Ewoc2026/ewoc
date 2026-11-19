@@ -3,19 +3,24 @@
 All notable public-release changes to this project are documented in this
 file.
 
-## [Unreleased]
+## [1.0.5] - Unreleased
 
 ### Added
 
 - About now shows `ewoc@oikumene.works`, with actions to write an email or
   copy the address, and a clearly named GitHub feedback alternative. The new
-  text is available in all seven supported languages. Codex implemented the
-  feedback UI and translations.
+  text is available in all seven supported languages.
 - About keeps its content, including the title, scrollable so long labels and
   large text remain reachable in short windows. The Close action stays visible.
 
 ### Fixed
 
+- JSON workout import now returns a failure result when the `format` field
+  contains an array or object, instead of letting a type exception escape.
+- FIT export now includes destination-opening exceptions in its existing
+  failure result handling.
+- Startup now handles document-metadata access failures as import errors,
+  keeping the menu available when a previously selected workout was deleted.
 - Android instrumentation CI now enables and requires KVM acceleration. A
   focused AOSP reproduction showed a System UI error dialog taking window
   focus during software CPU emulation; the app and test assertions are unchanged.
@@ -23,9 +28,11 @@ file.
   and use the stable menu anchor instead of an unversioned title.
 - The formerly quarantined screen-anchor test is back in the default smoke
   selection. It checks the fixed header's Quit action instead of a list item
-  position. Codex updated the tests and verified ten consecutive anchor-test
-  runs followed by all 18 smoke tests on a local Android 13 emulator.
-  Application behavior is unchanged.
+  position. Application behavior is unchanged.
+
+Codex implemented the feedback UI, translations and error-handling corrections,
+updated regression coverage, and performed the recorded JVM and Android
+validation. This version is prepared locally and has not been released.
 
 ## [1.0.4] - 2026-07-10
 

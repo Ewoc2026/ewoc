@@ -2394,8 +2394,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     /**
      * Restores the last workout selection from persistent storage after process death.
      *
-     * File-based selections are re-imported from the stored URI. If the URI is no longer
-     * readable (expired SAF permission), the restore is silently skipped.
+     * File-based selections are re-imported from the stored URI. If the document is no
+     * longer accessible, import failure leaves no active workout and allows replacement.
      * The bundled guided workout is re-created from the packaged provider.
      * Telemetry-only mode is restored directly.
      * Editor mode cannot be restored without serialized workout payload and is skipped.

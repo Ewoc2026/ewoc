@@ -1,6 +1,10 @@
 package io.github.ewoc2026.ewoc.session
 
+import android.content.ContentResolver
+import android.content.Context
 import android.content.ContextWrapper
+import android.net.Uri
+import android.provider.OpenableColumns
 import io.github.ewoc2026.ewoc.AppScreen
 import io.github.ewoc2026.ewoc.AppUiState
 import io.github.ewoc2026.ewoc.SessionSetupMode
@@ -21,6 +25,7 @@ import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import org.mockito.Mockito
 
 class SessionOrchestratorFlowTest {
     @Test
@@ -2458,6 +2463,38 @@ class SessionOrchestratorFlowTest {
     }
 
     @Test
+    fun workoutMetadataPermissionFailureClearsSelectionAndAllowsReplacement() {
+        val context = Mockito.mock(Context::class.java)
+        val resolver = Mockito.mock(ContentResolver::class.java)
+        val uri = Mockito.mock(Uri::class.java)
+        Mockito.`when`(context.contentResolver).thenReturn(resolver)
+        Mockito.`when`(uri.scheme).thenReturn(ContentResolver.SCHEME_CONTENT)
+        Mockito.`when`(
+            resolver.query(uri, arrayOf(OpenableColumns.DISPLAY_NAME), null, null, null),
+        ).thenThrow(SecurityException("Selected document access was revoked"))
+        val harness = createHarness(context = context)
+        harness.orchestrator.onWorkoutEdited(readyWorkout(), "previous.ewo")
+        assertTrue(harness.uiState.workoutReady.value)
+
+        harness.orchestrator.onWorkoutFileSelected(uri)
+
+        assertEquals(AppScreen.MENU, harness.uiState.screen.value)
+        assertNull(harness.uiState.selectedWorkout.value)
+        assertNull(harness.uiState.selectedImportedWorkout.value)
+        assertFalse(harness.uiState.workoutReady.value)
+        assertTrue(
+            requireNotNull(harness.uiState.selectedWorkoutImportError.value)
+                .contains("Could not read the selected file."),
+        )
+
+        harness.orchestrator.onWorkoutEdited(readyWorkout(), "replacement.ewo")
+
+        assertNotNull(harness.uiState.selectedWorkout.value)
+        assertTrue(harness.uiState.workoutReady.value)
+        assertNull(harness.uiState.selectedWorkoutImportError.value)
+    }
+
+    @Test
     fun importedErgoWorkoutBecomesReadyWhenPowerOnlyExecutionMapsSuccessfully() {
         val harness = createHarness()
         harness.uiState.selectedImportedWorkout.value = powerOnlyImportedWorkout()
@@ -3896,9 +3933,9 @@ class SessionOrchestratorFlowTest {
         allowLegacyWorkoutFallback: Boolean = false,
         indoorBikeParsingDispatcher: SessionIndoorBikeParsingDispatcher = DefaultSessionIndoorBikeParsingDispatcher(),
         sessionIdFactory: () -> String = { "session-default" },
+        context: Context = ContextWrapper(null),
     ): Harness {
         val uiState = AppUiState()
-        val context = ContextWrapper(null)
         val diagnosticsEvents = mutableListOf<SessionDiagnosticsEvent>()
 
         var keepScreenOnCalls = 0

@@ -1684,9 +1684,11 @@ class SessionOrchestrator internal constructor(
     }
 
     private fun importWorkoutFromUri(uri: Uri) {
-        val sourceName = resolveDisplayName(uri) ?: "selected_workout"
+        var sourceName = "selected_workout"
         var readFailureDetails: String? = null
         val content = try {
+            // Removed documents can revoke access before even their metadata can be queried.
+            sourceName = resolveDisplayName(uri) ?: sourceName
             openWorkoutInputStream(uri)?.bufferedReader(Charsets.UTF_8).use { reader ->
                 reader?.readText()
             }
